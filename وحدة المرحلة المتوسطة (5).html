@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة المرحلة المتوسطة - إدارة المهام</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+  :root {
+    --primary: #1a3a5c;
+    --primary-light: #2d5f8a;
+    --accent: #c8973a;
+    --accent-light: #e8b55a;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1a2535;
+    --text-muted: #6b7c93;
+    --border: #dce6f0;
+    --success: #2e7d52;
+    --success-bg: #eaf5ee;
+    --danger: #c0392b;
+    --shadow: 0 4px 20px rgba(26,58,92,0.10);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== LOGIN ===== */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, #3a7bd5 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #loginScreen::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(200,151,58,0.12);
+    top: -100px; left: -100px;
+  }
+
+  #loginScreen::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(200,151,58,0.08);
+    bottom: -80px; right: -80px;
+  }
+
+  .loginCard {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 380px;
+    max-width: 95vw;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .loginLogo {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+
+  .loginTitle {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .loginSub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .formGroup {
+    margin-bottom: 16px;
+    text-align: right;
+  }
+
+  .formGroup label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .formGroup input, .formGroup select, .formGroup textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s;
+    direction: rtl;
+  }
+
+  .formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    background: white;
+  }
+
+  .btnPrimary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 8px;
+  }
+
+  .btnPrimary:hover { opacity: 0.92; }
+  .btnPrimary:active { transform: scale(0.98); }
+
+  .errMsg {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* ===== MAIN APP ===== */
+  #appScreen { display: none; }
+
+  .topBar {
+    background: var(--primary);
+    color: white;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topBarRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topBarLogo {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .topBarTitle {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .topBarUser {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .userBadge {
+    background: rgba(255,255,255,0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  .btnLogout {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+
+  .btnLogout:hover { background: rgba(255,255,255,0.22); }
+
+  /* ===== TABS ===== */
+  .tabs {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+    gap: 4px;
+  }
+
+  .tab {
+    padding: 14px 20px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+  }
+
+  .tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px 20px;
+  }
+
+  .tabPane { display: none; }
+  .tabPane.active { display: block; }
+
+  /* ===== STATS ===== */
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .statCard {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border-right: 4px solid var(--accent);
+  }
+
+  .statNum {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* ===== ADD TASK FORM ===== */
+  .formCard {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+  }
+
+  .formCard h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .formRow { grid-template-columns: 1fr; }
+    .statsGrid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .btnAccent {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+  }
+
+  .btnAccent:hover { opacity: 0.88; }
+
+  /* ===== TABLE ===== */
+  .tableCard {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .tableHeader {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .tableHeader h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .filterGroup {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filterGroup select {
+    padding: 7px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    cursor: pointer;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--primary);
+    color: white;
+  }
+
+  thead th {
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: #f5f8fc; }
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td {
+    padding: 12px 16px;
+    color: var(--text);
+  }
+
+  .systemTag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .tag-نور { background: #e8f4fd; color: #1565c0; }
+  .tag-حضوري { background: #e8f5e9; color: #2e7d32; }
+  .tag-أعمالي { background: #fff3e0; color: #e65100; }
+  .tag-فارس { background: #f3e5f5; color: #6a1b9a; }
+  .tag-تواصل { background: #e0f2f1; color: #00695c; }
+  .tag-بريد { background: #e8eaf6; color: #283593; }
+  .tag-خطابات { background: #fce4ec; color: #880e4f; }
+
+  .emptyState {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+  }
+
+  .emptyState .emptyIcon { font-size: 48px; margin-bottom: 12px; }
+  .emptyState p { font-size: 15px; }
+
+  /* ===== ADMIN VIEW ===== */
+  .employeeGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .empCard {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-top: 4px solid var(--primary);
+  }
+
+  .empCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(26,58,92,0.15);
+  }
+
+  .empName { font-size: 15px; font-weight: 700; color: var(--primary); }
+  .empRole { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .empCount {
+    margin-top: 12px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .empCountLabel { font-size: 12px; color: var(--text-muted); }
+
+  .successToast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 999;
+    transition: transform 0.3s;
+  }
+
+  .successToast.show { transform: translateX(-50%) translateY(0); }
+
+  .sectionTitle {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 18px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== شاشة تسجيل الدخول ===== -->
+<div id="loginScreen">
+  <div class="loginCard">
+    <div class="loginLogo">🏫</div>
+    <div class="loginTitle">وحدة المرحلة المتوسطة</div>
+    <div class="loginSub">إدارة التعليم - منطقة القصيم</div>
+
+    <div class="formGroup">
+      <label>اسم المستخدم</label>
+      <input type="text" id="loginUser" placeholder="أدخلي اسمك" />
+    </div>
+    <div class="formGroup">
+      <label>كلمة السر</label>
+      <input type="password" id="loginPass" placeholder="••••••" />
+    </div>
+    <button class="btnPrimary" onclick="doLogin()">دخول</button>
+    <div class="errMsg" id="loginErr">اسم المستخدم أو كلمة السر غير صحيحة</div>
+  </div>
+</div>
+
+<!-- ===== التطبيق الرئيسي ===== -->
+<div id="appScreen">
+
+  <!-- الشريط العلوي -->
+  <div class="topBar">
+    <div class="topBarRight">
+      <div class="topBarLogo">🏫</div>
+      <div class="topBarTitle">وحدة المرحلة المتوسطة</div>
+    </div>
+    <div class="topBarUser">
+      <span class="userBadge" id="topUserName"></span>
+      <button class="btnLogout" onclick="doLogout()">خروج</button>
+    </div>
+  </div>
+
+  <!-- التبويبات -->
+  <div class="tabs" id="tabsBar">
+    <button class="tab active" onclick="switchTab('myTasks', this)">مهامي</button>
+    <button class="tab" onclick="switchTab('addTask', this)">تسجيل مهمة</button>
+    <button class="tab" id="adminTab" style="display:none" onclick="switchTab('adminView', this)">لوحة التحكم</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== مهامي ===== -->
+    <div class="tabPane active" id="myTasks">
+      <div class="statsGrid" id="myStats"></div>
+      <div class="tableCard">
+        <div class="tableHeader">
+          <h3>سجل المهام المنجزة</h3>
+          <div class="filterGroup">
+            <select id="filterSystem" onchange="renderMyTasks()">
+              <option value="">كل الأنظمة</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>التاريخ</th>
+                <th>النظام</th>
+                <th>المهمة</th>
+                <th>التفاصيل</th>
+                <th>الجهة المعنية</th>
+                <th>ملاحظة</th>
+              </tr>
+            </thead>
+            <tbody id="myTasksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== تسجيل مهمة ===== -->
+    <div class="tabPane" id="addTask">
+      <div class="formCard">
+        <h3>✅ تسجيل مهمة مكتملة</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">
+          سجّلي المهمة بعد إنجازها فقط — لا تُسجَّل المهام قيد التنفيذ
+        </p>
+
+        <div class="formRow">
+          <div class="formGroup">
+            <label>النظام / القسم</label>
+            <select id="taskSystem" onchange="loadTaskList()">
+              <option value="">اختاري النظام</option>
+            </select>
+          </div>
+          <div class="formGroup">
+            <label>المهمة</label>
+            <select id="taskName">
+              <option value="">اختاري أولاً النظام</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="formRow">
+          <div class="formGroup">
+            <label>تاريخ الإنجاز</label>
+            <input type="date" id="taskDate" />
+          </div>
+          <div class="formGroup">
+            <label>الجهة المعنية (اختياري)</label>
+            <input type="text" id="taskTarget" placeholder="مثال: مدرسة الأمل" />
+          </div>
+        </div>
+
+        <div class="formGroup">
+          <label>تفاصيل إضافية (اختياري)</label>
+          <textarea id="taskDetails" rows="3" placeholder="أي تفاصيل تودين إضافتها..."></textarea>
+        </div>
+
+        <div class="formGroup">
+          <label>ملاحظة (اختياري)</label>
+          <input type="text" id="taskNote" placeholder="ملاحظة مختصرة" />
+        </div>
+
+        <button class="btnAccent" onclick="submitTask()">تسجيل المهمة ✓</button>
+      </div>
+    </div>
+
+    <!-- ===== لوحة التحكم (مدير / ماجدة) ===== -->
+    <div class="tabPane" id="adminView">
+      <div class="sectionTitle">نظرة عامة على الفريق</div>
+      <div class="statsGrid" id="adminStats"></div>
+      <div class="divider"></div>
+      <div class="sectionTitle">أداء الموظفين</div>
+      <div class="employeeGrid" id="empGrid"></div>
+      <div class="divider"></div>
+      <div class="tableCard">
+        <div class="tableHeader">
+          <h3>جميع المهام المنجزة</h3>
+          <div class="filterGroup">
+            <select id="adminFilterEmp" onchange="renderAdminTable()">
+              <option value="">كل الموظفين</option>
+            </select>
+            <select id="adminFilterSys" onchange="renderAdminTable()">
+              <option value="">كل الأنظمة</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>التاريخ</th>
+                <th>الموظف</th>
+                <th>النظام</th>
+                <th>المهمة</th>
+                <th>التفاصيل</th>
+                <th>الجهة المعنية</th>
+                <th>ملاحظة</th>
+              </tr>
+            </thead>
+            <tbody id="adminTasksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="successToast" id="toast">✓ تم تسجيل المهمة بنجاح</div>
+
+<script>
+// =================== البيانات ===================
+
+const USERS = {
+  "فهد":    { pass: "fahad123",  name: "فهد محمد العناز",   role: "مدير",    isAdmin: true },
+  "ماجدة":  { pass: "majda123",  name: "ماجدة الفريدي",     role: "إدارية",  isAdmin: true },
+  "علي":    { pass: "ali123",    name: "علي الزامل",         role: "مشرف",    isAdmin: false },
+  "ندى":    { pass: "nada123",   name: "ندى الدباسي",        role: "مشرفة",   isAdmin: false },
+  "عبدالله":{ pass: "abdulla123",name: "عبدالله الغضية",     role: "إداري",   isAdmin: false },
+  "تهاني":  { pass: "tahani123", name: "تهاني الجطيلي",     role: "إدارية",  isAdmin: false },
+  "عائشة":  { pass: "aisha123",  name: "عائشة العتيبي",     role: "إدارية",  isAdmin: false },
+  "فاطمة":  { pass: "fatma123",  name: "فاطمة الطبيعي",     role: "إدارية",  isAdmin: false },
+  "هيفاء":  { pass: "haifa123",  name: "هيفاء الشهوان",     role: "إدارية",  isAdmin: false },
+  "أسماء":  { pass: "asma123",   name: "أسماء الزميع",      role: "إدارية",  isAdmin: false },
+};
+
+// مهام كل موظف حسب نظامه
+const TASK_LISTS = {
+  "فهد":    {
+    "إداري عام": ["مراجعة التقارير الأسبوعية","اعتماد الوثائق","متابعة أعمال الوحدة","الاجتماعات الإدارية","أخرى"]
+  },
+  "ماجدة":  {
+    "البريد الإلكتروني": ["استلام بريد وارد","إرسال بريد صادر","متابعة ردود البريد","أرشفة المراسلات","أخرى"],
+    "متابعة أعمال الموظفين": ["تقرير أسبوعي للموظفين","متابعة إنجاز المهام","إنشاء ملف تفاعلي","تطوير قاعدة البيانات","أخرى"],
+    "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "علي":    {
+    "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"]
+  },
+  "ندى":    {
+    "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"]
+  },
+  "عبدالله":{
+    "نور": ["متابعة تثبيت غياب الطلاب","متابعة رصد درجات الطلاب بالمدارس","متابعة فك الغياب لفترة معينة","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "تهاني":  {
+    "أعمالي": ["معالجة بريد صادر","معالجة بريد وارد","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "عائشة":  {
+    "فارس": ["اجازات موظفين الوحدة ومدراء المدارس","اعتماد أنشطة التطوير المهني للمدراء","نقل العهدة للمدراء","اعتماد الأداء الوظيفي والاهداف الوظيفية للكادر الإداري","تمديد التكليف للمدراء","اعتماد الأداء الوظيفي للمدراء والتابعين لهم","اعتماد التقاعد للمدراء","أخرى"],
+    "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "فاطمة":  {
+    "حضوري": ["اعتماد الاستئذان (فهد - ندى)","حصر اسبوعي للغياب والاستئذان","معالجة كثرة الاستئذان والغياب","برنت الاكسل وتصديرها","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "هيفاء":  {
+    "نور": ["اللقطة اليومية","متابعة المدارس الغير مثبتة للغياب في نظام نور","الرصد في الاكسل وفرزها والتواصل مع المدراء للتثبيت العاجل","حصر المدارس المتكررة في عدم التثبيت","تحديث قاعدة بيانات مدراء ومديرات المدارس نهاية كل شهر","أخرى"],
+    "فتح صلاحية الغياب": ["فتح صلاحية غياب للمدارس","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+  "أسماء":  {
+    "نور": ["اللقطة اليومية","متابعة المدارس الغير مثبتة للغياب في نظام نور","الرصد في الاكسل وفرزها والتواصل مع المدراء للتثبيت العاجل","حصر المدارس المتكررة في عدم التثبيت","تحديث قاعدة بيانات مدراء ومديرات المدارس نهاية كل شهر","أخرى"],
+    "فتح صلاحية الغياب": ["فتح صلاحية غياب للمدارس","أخرى"],
+    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
+  },
+};
+
+// =================== الحالة ===================
+let currentUser = null;
+let tasks = JSON.parse(localStorage.getItem('whdaTasks') || '[]');
+
+// =================== تسجيل الدخول ===================
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  const user = USERS[u];
+  if (user && user.pass === p) {
+    currentUser = { key: u, ...user };
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'block';
+    initApp();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// =================== تهيئة التطبيق ===================
+function initApp() {
+  document.getElementById('topUserName').textContent = currentUser.name + ' · ' + currentUser.role;
+
+  if (currentUser.isAdmin) {
+    document.getElementById('adminTab').style.display = 'block';
+    populateAdminFilters();
+    renderAdminStats();
+    renderEmpGrid();
+    renderAdminTable();
+  }
+
+  populateSystemFilter();
+  buildTaskForm();
+  renderMyTasks();
+  switchTab('myTasks', document.querySelector('.tab'));
+}
+
+// =================== فورم إضافة المهمة ===================
+function buildTaskForm() {
+  const systems = TASK_LISTS[currentUser.key] || {};
+  const sysSelect = document.getElementById('taskSystem');
+  sysSelect.innerHTML = '<option value="">اختاري النظام</option>';
+  Object.keys(systems).forEach(s => {
+    sysSelect.innerHTML += `<option value="${s}">${s}</option>`;
+  });
+  // تاريخ اليوم افتراضي
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('taskDate').value = today;
+}
+
+function loadTaskList() {
+  const sys = document.getElementById('taskSystem').value;
+  const tasks = (TASK_LISTS[currentUser.key] || {})[sys] || [];
+  const sel = document.getElementById('taskName');
+  sel.innerHTML = '<option value="">اختاري المهمة</option>';
+  tasks.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
+}
+
+function submitTask() {
+  const sys = document.getElementById('taskSystem').value;
+  const name = document.getElementById('taskName').value;
+  const date = document.getElementById('taskDate').value;
+  if (!sys || !name || !date) {
+    alert('يرجى اختيار النظام والمهمة والتاريخ');
+    return;
+  }
+  const task = {
+    id: Date.now(),
+    user: currentUser.key,
+    userName: currentUser.name,
+    date,
+    system: sys,
+    task: name,
+    details: document.getElementById('taskDetails').value.trim(),
+    target: document.getElementById('taskTarget').value.trim(),
+    note: document.getElementById('taskNote').value.trim(),
+  };
+  tasks.push(task);
+  saveTasks();
+  // إعادة ضبط الفورم
+  document.getElementById('taskSystem').value = '';
+  document.getElementById('taskName').innerHTML = '<option value="">اختاري أولاً النظام</option>';
+  document.getElementById('taskDetails').value = '';
+  document.getElementById('taskTarget').value = '';
+  document.getElementById('taskNote').value = '';
+  showToast();
+  renderMyTasks();
+  if (currentUser.isAdmin) {
+    renderAdminStats(); renderEmpGrid(); renderAdminTable();
+  }
+  switchTab('myTasks', document.querySelectorAll('.tab')[0]);
+}
+
+function saveTasks() {
+  localStorage.setItem('whdaTasks', JSON.stringify(tasks));
+}
+
+// =================== عرض مهامي ===================
+function populateSystemFilter() {
+  const systems = TASK_LISTS[currentUser.key] || {};
+  const sel = document.getElementById('filterSystem');
+  sel.innerHTML = '<option value="">كل الأنظمة</option>';
+  Object.keys(systems).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+function renderMyTasks() {
+  const filterSys = document.getElementById('filterSystem').value;
+  let myList = currentUser.isAdmin
+    ? tasks
+    : tasks.filter(t => t.user === currentUser.key);
+  if (filterSys) myList = myList.filter(t => t.system === filterSys);
+  myList = myList.slice().reverse();
+
+  // إحصائيات
+  const allMine = currentUser.isAdmin ? tasks : tasks.filter(t => t.user === currentUser.key);
+  const thisMonth = allMine.filter(t => t.date && t.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('myStats').innerHTML = `
+    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام المنجزة</div></div>
+    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">مهام هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
+  `;
+
+  const tbody = document.getElementById('myTasksBody');
+  if (!myList.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام مسجلة بعد</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = myList.map((t, i) => `
+    <tr>
+      <td>${myList.length - i}</td>
+      <td>${formatDate(t.date)}</td>
+      <td><span class="systemTag tag-${t.system}">${t.system}</span></td>
+      <td>${t.task}</td>
+      <td>${t.details || '—'}</td>
+      <td>${t.target || '—'}</td>
+      <td>${t.note || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// =================== لوحة التحكم ===================
+function renderAdminStats() {
+  const today = new Date().toISOString().split('T')[0];
+  const thisMonth = tasks.filter(t => t.date && t.date.startsWith(new Date().toISOString().slice(0,7)));
+  const todayTasks = tasks.filter(t => t.date === today);
+  document.getElementById('adminStats').innerHTML = `
+    <div class="statCard"><div class="statNum">${tasks.length}</div><div class="statLabel">إجمالي المهام</div></div>
+    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">مهام هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${todayTasks.length}</div><div class="statLabel">مهام اليوم</div></div>
+    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>
+  `;
+}
+
+function renderEmpGrid() {
+  const grid = document.getElementById('empGrid');
+  grid.innerHTML = Object.entries(USERS).map(([key, u]) => {
+    const count = tasks.filter(t => t.user === key).length;
+    return `
+      <div class="empCard" onclick="filterByEmp('${key}')">
+        <div class="empName">${u.name}</div>
+        <div class="empRole">${u.role}</div>
+        <div class="empCount">${count}</div>
+        <div class="empCountLabel">مهمة منجزة</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterByEmp(key) {
+  document.getElementById('adminFilterEmp').value = key;
+  renderAdminTable();
+  switchTab('adminView', document.getElementById('adminTab'));
+}
+
+function populateAdminFilters() {
+  const empSel = document.getElementById('adminFilterEmp');
+  empSel.innerHTML = '<option value="">كل الموظفين</option>';
+  Object.entries(USERS).forEach(([k, u]) => {
+    empSel.innerHTML += `<option value="${k}">${u.name}</option>`;
+  });
+  const sysSel = document.getElementById('adminFilterSys');
+  sysSel.innerHTML = '<option value="">كل الأنظمة</option>';
+  const allSystems = [...new Set(Object.values(TASK_LISTS).flatMap(s => Object.keys(s)))];
+  allSystems.forEach(s => sysSel.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+function renderAdminTable() {
+  const empF = document.getElementById('adminFilterEmp').value;
+  const sysF = document.getElementById('adminFilterSys').value;
+  let list = tasks.slice();
+  if (empF) list = list.filter(t => t.user === empF);
+  if (sysF) list = list.filter(t => t.system === sysF);
+  list = list.slice().reverse();
+
+  const tbody = document.getElementById('adminTasksBody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map((t, i) => `
+    <tr>
+      <td>${list.length - i}</td>
+      <td>${formatDate(t.date)}</td>
+      <td>${t.userName}</td>
+      <td><span class="systemTag tag-${t.system}">${t.system}</span></td>
+      <td>${t.task}</td>
+      <td>${t.details || '—'}</td>
+      <td>${t.target || '—'}</td>
+      <td>${t.note || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// =================== مساعدات ===================
+function switchTab(id, el) {
+  document.querySelectorAll('.tabPane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const [y, m, day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
