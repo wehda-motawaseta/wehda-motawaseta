@@ -4,739 +4,903 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة المرحلة المتوسطة - إدارة المهام</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
-
-  :root {
-    --primary: #1a3a5c;
-    --primary-light: #2d5f8a;
-    --accent: #c8973a;
-    --accent-light: #e8b55a;
-    --bg: #f0f4f8;
-    --card: #ffffff;
-    --text: #1a2535;
-    --text-muted: #6b7c93;
-    --border: #dce6f0;
-    --success: #2e7d52;
-    --success-bg: #eaf5ee;
-    --danger: #c0392b;
-    --shadow: 0 4px 20px rgba(26,58,92,0.10);
-    --radius: 14px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Tajawal', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  /* ===== LOGIN ===== */
-  #loginScreen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, #3a7bd5 100%);
-    position: relative;
-    overflow: hidden;
-  }
-
-  #loginScreen::before {
-    content: '';
-    position: absolute;
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: rgba(200,151,58,0.12);
-    top: -100px; left: -100px;
-  }
-
-  #loginScreen::after {
-    content: '';
-    position: absolute;
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    background: rgba(200,151,58,0.08);
-    bottom: -80px; right: -80px;
-  }
-
-  .loginCard {
-    background: white;
-    border-radius: 24px;
-    padding: 48px 40px;
-    width: 380px;
-    max-width: 95vw;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
-    position: relative;
-    z-index: 2;
-    text-align: center;
-  }
-
-  .loginLogo {
-    width: 72px; height: 72px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 32px;
-  }
-
-  .loginTitle {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 4px;
-  }
-
-  .loginSub {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 32px;
-  }
-
-  .formGroup {
-    margin-bottom: 16px;
-    text-align: right;
-  }
-
-  .formGroup label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-
-  .formGroup input, .formGroup select, .formGroup textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    background: var(--bg);
-    transition: border-color 0.2s;
-    direction: rtl;
-  }
-
-  .formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
-    outline: none;
-    border-color: var(--primary-light);
-    background: white;
-  }
-
-  .btnPrimary {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    margin-top: 8px;
-  }
-
-  .btnPrimary:hover { opacity: 0.92; }
-  .btnPrimary:active { transform: scale(0.98); }
-
-  .errMsg {
-    color: var(--danger);
-    font-size: 13px;
-    margin-top: 10px;
-    display: none;
-  }
-
-  /* ===== MAIN APP ===== */
-  #appScreen { display: none; }
-
-  .topBar {
-    background: var(--primary);
-    color: white;
-    padding: 0 24px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .topBarRight {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .topBarLogo {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-
-  .topBarTitle {
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  .topBarUser {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-  }
-
-  .userBadge {
-    background: rgba(255,255,255,0.15);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-  }
-
-  .btnLogout {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 13px;
-    transition: background 0.2s;
-  }
-
-  .btnLogout:hover { background: rgba(255,255,255,0.22); }
-
-  /* ===== TABS ===== */
-  .tabs {
-    background: white;
-    border-bottom: 2px solid var(--border);
-    display: flex;
-    padding: 0 24px;
-    gap: 4px;
-  }
-
-  .tab {
-    padding: 14px 20px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: -2px;
-  }
-
-  .tab.active {
-    color: var(--primary);
-    border-bottom-color: var(--accent);
-  }
-
-  /* ===== CONTENT ===== */
-  .content {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 28px 20px;
-  }
-
-  .tabPane { display: none; }
-  .tabPane.active { display: block; }
-
-  /* ===== STATS ===== */
-  .statsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-
-  .statCard {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
-    border-right: 4px solid var(--accent);
-  }
-
-  .statNum {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--primary);
-    line-height: 1;
-  }
-
-  .statLabel {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    font-weight: 500;
-  }
-
-  /* ===== ADD TASK FORM ===== */
-  .formCard {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px;
-    box-shadow: var(--shadow);
-    margin-bottom: 28px;
-  }
-
-  .formCard h3 {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--border);
-  }
-
-  .formRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  @media (max-width: 600px) {
-    .formRow { grid-template-columns: 1fr; }
-    .statsGrid { grid-template-columns: 1fr 1fr; }
-  }
-
-  .btnAccent {
-    padding: 12px 28px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-top: 8px;
-  }
-
-  .btnAccent:hover { opacity: 0.88; }
-
-  /* ===== TABLE ===== */
-  .tableCard {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .tableHeader {
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--border);
-  }
-
-  .tableHeader h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .filterGroup {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .filterGroup select {
-    padding: 7px 12px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    background: var(--bg);
-    cursor: pointer;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  thead {
-    background: var(--primary);
-    color: white;
-  }
-
-  thead th {
-    padding: 12px 16px;
-    text-align: right;
-    font-weight: 600;
-    font-size: 13px;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
-  tbody tr:hover { background: #f5f8fc; }
-  tbody tr:last-child { border-bottom: none; }
-
-  tbody td {
-    padding: 12px 16px;
-    color: var(--text);
-  }
-
-  .systemTag {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .tag-نور { background: #e8f4fd; color: #1565c0; }
-  .tag-حضوري { background: #e8f5e9; color: #2e7d32; }
-  .tag-أعمالي { background: #fff3e0; color: #e65100; }
-  .tag-فارس { background: #f3e5f5; color: #6a1b9a; }
-  .tag-تواصل { background: #e0f2f1; color: #00695c; }
-  .tag-بريد { background: #e8eaf6; color: #283593; }
-  .tag-خطابات { background: #fce4ec; color: #880e4f; }
-
-  .emptyState {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--text-muted);
-  }
-
-  .emptyState .emptyIcon { font-size: 48px; margin-bottom: 12px; }
-  .emptyState p { font-size: 15px; }
-
-  /* ===== ADMIN VIEW ===== */
-  .employeeGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-
-  .empCard {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-top: 4px solid var(--primary);
-  }
-
-  .empCard:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(26,58,92,0.15);
-  }
-
-  .empName { font-size: 15px; font-weight: 700; color: var(--primary); }
-  .empRole { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .empCount {
-    margin-top: 12px;
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--accent);
-  }
-  .empCountLabel { font-size: 12px; color: var(--text-muted); }
-
-  .successToast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--success);
-    color: white;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    z-index: 999;
-    transition: transform 0.3s;
-  }
-
-  .successToast.show { transform: translateX(-50%) translateY(0); }
-
-  .sectionTitle {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 18px;
-  }
-
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 24px 0;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+:root{--primary:#1a3a5c;--primary-light:#2d5f8a;--accent:#c8973a;--accent-light:#e8b55a;--bg:#f0f4f8;--card:#fff;--text:#1a2535;--text-muted:#6b7c93;--border:#dce6f0;--success:#2e7d52;--danger:#c0392b;--shadow:0 4px 20px rgba(26,58,92,0.10);--radius:14px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 60%,#3a7bd5 100%);position:relative;overflow:hidden;}
+#loginScreen::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(200,151,58,0.12);top:-100px;left:-100px;}
+.loginCard{background:white;border-radius:24px;padding:48px 40px;width:380px;max-width:95vw;box-shadow:0 24px 60px rgba(0,0,0,0.25);position:relative;z-index:2;text-align:center;}
+.loginLogo{width:72px;height:72px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;}
+.loginTitle{font-size:22px;font-weight:800;color:var(--primary);margin-bottom:4px;}
+.loginSub{font-size:13px;color:var(--text-muted);margin-bottom:32px;}
+.formGroup{margin-bottom:16px;text-align:right;}
+.formGroup label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+.formGroup input,.formGroup select,.formGroup textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;color:var(--text);background:var(--bg);transition:border-color 0.2s;direction:rtl;}
+.formGroup input:focus,.formGroup select:focus,.formGroup textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
+.btnPrimary{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border:none;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
+.errMsg{color:var(--danger);font-size:13px;margin-top:10px;display:none;}
+#appScreen{display:none;}
+.topBar{background:var(--primary);color:white;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.15);}
+.topBarRight{display:flex;align-items:center;gap:12px;}
+.topBarLogo{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.topBarTitle{font-size:16px;font-weight:700;}
+.userBadge{background:rgba(255,255,255,0.15);padding:5px 12px;border-radius:20px;font-size:13px;}
+.btnLogout{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;}
+.tabs{background:white;border-bottom:2px solid var(--border);display:flex;padding:0 16px;gap:2px;overflow-x:auto;}
+.tab{padding:14px 16px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-2px;}
+.tab.active{color:var(--primary);border-bottom-color:var(--accent);}
+.content{max-width:1100px;margin:0 auto;padding:24px 16px;}
+.tabPane{display:none;}.tabPane.active{display:block;}
+.statsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
+.statCard{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border-right:4px solid var(--accent);}
+.statNum{font-size:32px;font-weight:800;color:var(--primary);line-height:1;}
+.statLabel{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.formCard{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:24px;}
+.formCard h3{font-size:16px;font-weight:700;color:var(--primary);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);}
+.formRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.formRow{grid-template-columns:1fr;}}
+.btnAccent{padding:12px 24px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;border:none;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.tableCard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px;}
+.tableHeader{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px;}
+.tableHeader h3{font-size:15px;font-weight:700;color:var(--primary);}
+.filterGroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.filterGroup select,.filterGroup input[type=text],.filterGroup input[type=date]{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;background:var(--bg);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead{background:var(--primary);color:white;}
+thead th{padding:11px 14px;text-align:right;font-weight:600;font-size:12px;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:hover{background:#f5f8fc;}
+tbody td{padding:11px 14px;}
+.systemTag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.tag-نور{background:#e8f4fd;color:#1565c0;}
+.tag-حضوري{background:#e8f5e9;color:#2e7d32;}
+.tag-أعمالي{background:#fff3e0;color:#e65100;}
+.tag-فارس{background:#f3e5f5;color:#6a1b9a;}
+.tag-تواصل{background:#e0f2f1;color:#00695c;}
+.tag-بريد{background:#e8eaf6;color:#283593;}
+.tag-خطابات{background:#fce4ec;color:#880e4f;}
+.tag-default{background:#f0f4f8;color:#1a3a5c;}
+.genderTag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;}
+.g-بنين{background:#e3f2fd;color:#1565c0;}
+.g-بنات{background:#fce4ec;color:#880e4f;}
+.g-الكل{background:#f0f4f8;color:#455a64;}
+.chartCard{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
+.chartCard h3{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;}
+.chartBars{display:flex;align-items:flex-end;gap:8px;height:140px;}
+.chartBar{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.chartBarInner{width:100%;background:linear-gradient(180deg,var(--accent-light),var(--accent));border-radius:5px 5px 0 0;min-height:4px;transition:height 0.5s;}
+.chartBarLabel{font-size:10px;color:var(--text-muted);text-align:center;}
+.chartBarNum{font-size:11px;font-weight:700;color:var(--primary);}
+.empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
+.empCard{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;border-top:4px solid var(--primary);}
+.empCard:hover{transform:translateY(-2px);}
+.empName{font-size:14px;font-weight:700;color:var(--primary);}
+.empRole{font-size:11px;color:var(--text-muted);}
+.empCount{font-size:26px;font-weight:800;color:var(--accent);margin-top:10px;}
+.empCountLabel{font-size:11px;color:var(--text-muted);}
+.emptyState{text-align:center;padding:40px;color:var(--text-muted);}
+.emptyIcon{font-size:40px;margin-bottom:10px;}
+.sectionTitle{font-size:18px;font-weight:800;color:var(--primary);margin-bottom:16px;}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+.successToast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--success);color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;transition:transform 0.3s;}
+.successToast.show{transform:translateX(-50%) translateY(0);}
+.actionBtns{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px 0;}
+.btnPrint{padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+.btnExcel{padding:8px 16px;background:#217346;color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+.btnDelete{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:2px 6px;}
+@media print{.topBar,.tabs,.actionBtns,.filterGroup{display:none!important;}.content{padding:0;}.tableCard{box-shadow:none;}}
 </style>
 </head>
 <body>
 
-<!-- ===== شاشة تسجيل الدخول ===== -->
 <div id="loginScreen">
   <div class="loginCard">
     <div class="loginLogo">🏫</div>
     <div class="loginTitle">وحدة المرحلة المتوسطة</div>
-    <div class="loginSub">إدارة التعليم - منطقة القصيم</div>
-
-    <div class="formGroup">
-      <label>اسم المستخدم</label>
-      <input type="text" id="loginUser" placeholder="أدخلي اسمك" />
-    </div>
-    <div class="formGroup">
-      <label>كلمة السر</label>
-      <input type="password" id="loginPass" placeholder="••••••" />
-    </div>
+    <div class="loginSub">إدارة التعليم — منطقة القصيم</div>
+    <div class="formGroup"><label>اسم المستخدم</label><input type="text" id="loginUser" placeholder="أدخل اسمك"/></div>
+    <div class="formGroup"><label>كلمة السر</label><input type="password" id="loginPass" placeholder="••••••"/></div>
     <button class="btnPrimary" onclick="doLogin()">دخول</button>
     <div class="errMsg" id="loginErr">اسم المستخدم أو كلمة السر غير صحيحة</div>
   </div>
 </div>
 
-<!-- ===== التطبيق الرئيسي ===== -->
 <div id="appScreen">
-
-  <!-- الشريط العلوي -->
   <div class="topBar">
     <div class="topBarRight">
       <div class="topBarLogo">🏫</div>
       <div class="topBarTitle">وحدة المرحلة المتوسطة</div>
     </div>
-    <div class="topBarUser">
+    <div style="display:flex;align-items:center;gap:8px">
       <span class="userBadge" id="topUserName"></span>
       <button class="btnLogout" onclick="doLogout()">خروج</button>
     </div>
   </div>
 
-  <!-- التبويبات -->
-  <div class="tabs" id="tabsBar">
-    <button class="tab active" onclick="switchTab('myTasks', this)">مهامي</button>
-    <button class="tab" onclick="switchTab('addTask', this)">تسجيل مهمة</button>
-    <button class="tab" id="adminTab" style="display:none" onclick="switchTab('adminView', this)">لوحة التحكم</button>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('myTasks',this)">📋 مهامي</button>
+    <button class="tab" onclick="switchTab('addTask',this)">➕ تسجيل مهمة</button>
+    <button class="tab" onclick="switchTab('myChart',this)">📊 إحصائياتي</button>
+    <button class="tab" id="adminTab" style="display:none" onclick="switchTab('adminView',this)">🛡️ لوحة التحكم</button>
   </div>
 
   <div class="content">
 
-    <!-- ===== مهامي ===== -->
+    <!-- مهامي -->
     <div class="tabPane active" id="myTasks">
       <div class="statsGrid" id="myStats"></div>
       <div class="tableCard">
         <div class="tableHeader">
-          <h3>سجل المهام المنجزة</h3>
+          <h3>📋 سجل المهام المنجزة</h3>
           <div class="filterGroup">
-            <select id="filterSystem" onchange="renderMyTasks()">
-              <option value="">كل الأنظمة</option>
-            </select>
+            <input type="text" id="searchInput" placeholder="🔍 بحث..." oninput="renderMyTasks()" style="width:140px"/>
+            <select id="filterSystem" onchange="renderMyTasks()"><option value="">كل الأنظمة</option></select>
+            <input type="date" id="dateFrom" onchange="renderMyTasks()" title="من تاريخ"/>
+            <input type="date" id="dateTo" onchange="renderMyTasks()" title="إلى تاريخ"/>
           </div>
+        </div>
+        <div class="actionBtns">
+          <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
+          <button class="btnExcel" onclick="exportExcel('my')">📥 Excel</button>
         </div>
         <div style="overflow-x:auto">
           <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>التاريخ</th>
-                <th>النظام</th>
-                <th>المهمة</th>
-                <th>التفاصيل</th>
-                <th>الجهة المعنية</th>
-                <th>ملاحظة</th>
-              </tr>
-            </thead>
+            <thead><tr><th>#</th><th>التاريخ</th><th>النظام</th><th>الجنس</th><th>المهمة</th><th>التفاصيل</th><th>الجهة المعنية</th><th>مرفق</th><th>ملاحظة</th><th>حذف</th></tr></thead>
             <tbody id="myTasksBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ===== تسجيل مهمة ===== -->
+    <!-- تسجيل مهمة -->
     <div class="tabPane" id="addTask">
       <div class="formCard">
         <h3>✅ تسجيل مهمة مكتملة</h3>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">
-          سجّلي المهمة بعد إنجازها فقط — لا تُسجَّل المهام قيد التنفيذ
-        </p>
-
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">تُسجَّل المهمة بعد إنجازها فقط</p>
         <div class="formRow">
-          <div class="formGroup">
-            <label>النظام / القسم</label>
-            <select id="taskSystem" onchange="loadTaskList()">
-              <option value="">اختاري النظام</option>
+          <div class="formGroup"><label>النظام *</label>
+            <select id="taskSystem" onchange="loadTaskList()"><option value="">اختر النظام</option></select>
+          </div>
+          <div class="formGroup"><label>المهمة *</label>
+            <select id="taskName"><option value="">اختر النظام أولاً</option></select>
+          </div>
+        </div>
+        <div class="formRow">
+          <div class="formGroup"><label>تاريخ الإنجاز *</label>
+            <input type="date" id="taskDate"/>
+          </div>
+          <div class="formGroup"><label>جنس المهمة</label>
+            <select id="taskGender">
+              <option value="الكل">الكل</option>
+              <option value="بنين">بنين</option>
+              <option value="بنات">بنات</option>
             </select>
           </div>
-          <div class="formGroup">
-            <label>المهمة</label>
-            <select id="taskName">
-              <option value="">اختاري أولاً النظام</option>
-            </select>
-          </div>
         </div>
-
+        <div class="formGroup"><label>الجهة المعنية</label>
+          <select id="taskTarget"><option value="">اختر الجهة</option></select>
+        </div>
+        <div class="formGroup"><label>تفاصيل إضافية</label>
+          <textarea id="taskDetails" rows="3" placeholder="أي تفاصيل..."></textarea>
+        </div>
         <div class="formRow">
-          <div class="formGroup">
-            <label>تاريخ الإنجاز</label>
-            <input type="date" id="taskDate" />
+          <div class="formGroup"><label>رابط مرفق (Drive)</label>
+            <input type="text" id="taskLink" placeholder="https://drive.google.com/..."/>
           </div>
-          <div class="formGroup">
-            <label>الجهة المعنية (اختياري)</label>
-            <input type="text" id="taskTarget" placeholder="مثال: مدرسة الأمل" />
+          <div class="formGroup"><label>ملاحظة</label>
+            <input type="text" id="taskNote" placeholder="ملاحظة مختصرة"/>
           </div>
         </div>
-
-        <div class="formGroup">
-          <label>تفاصيل إضافية (اختياري)</label>
-          <textarea id="taskDetails" rows="3" placeholder="أي تفاصيل تودين إضافتها..."></textarea>
-        </div>
-
-        <div class="formGroup">
-          <label>ملاحظة (اختياري)</label>
-          <input type="text" id="taskNote" placeholder="ملاحظة مختصرة" />
-        </div>
-
         <button class="btnAccent" onclick="submitTask()">تسجيل المهمة ✓</button>
       </div>
     </div>
 
-    <!-- ===== لوحة التحكم (مدير / ماجدة) ===== -->
+    <!-- إحصائياتي -->
+    <div class="tabPane" id="myChart">
+      <div class="sectionTitle">📊 إحصائياتي</div>
+      <div class="statsGrid" id="chartStats"></div>
+      <div class="chartCard"><h3>المهام حسب النظام</h3><div class="chartBars" id="systemChart"></div></div>
+      <div class="chartCard"><h3>المهام حسب الشهر (آخر 6 أشهر)</h3><div class="chartBars" id="monthChart"></div></div>
+    </div>
+
+    <!-- لوحة التحكم -->
     <div class="tabPane" id="adminView">
-      <div class="sectionTitle">نظرة عامة على الفريق</div>
+      <div class="sectionTitle">🛡️ لوحة تحكم المدير</div>
       <div class="statsGrid" id="adminStats"></div>
+      <div class="chartCard"><h3>إنجازات الفريق</h3><div class="chartBars" id="empChart"></div></div>
       <div class="divider"></div>
       <div class="sectionTitle">أداء الموظفين</div>
-      <div class="employeeGrid" id="empGrid"></div>
+      <div class="empGrid" id="empGrid"></div>
       <div class="divider"></div>
       <div class="tableCard">
         <div class="tableHeader">
-          <h3>جميع المهام المنجزة</h3>
+          <h3>جميع المهام</h3>
           <div class="filterGroup">
-            <select id="adminFilterEmp" onchange="renderAdminTable()">
-              <option value="">كل الموظفين</option>
-            </select>
-            <select id="adminFilterSys" onchange="renderAdminTable()">
-              <option value="">كل الأنظمة</option>
-            </select>
+            <input type="text" id="adminSearch" placeholder="🔍 بحث..." oninput="renderAdminTable()" style="width:130px"/>
+            <select id="adminFilterEmp" onchange="renderAdminTable()"><option value="">كل الموظفين</option></select>
+            <select id="adminFilterSys" onchange="renderAdminTable()"><option value="">كل الأنظمة</option></select>
+            <input type="date" id="adminDateFrom" onchange="renderAdminTable()" title="من"/>
+            <input type="date" id="adminDateTo" onchange="renderAdminTable()" title="إلى"/>
           </div>
+        </div>
+        <div class="actionBtns">
+          <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
+          <button class="btnExcel" onclick="exportExcel('admin')">📥 Excel</button>
         </div>
         <div style="overflow-x:auto">
           <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>التاريخ</th>
-                <th>الموظف</th>
-                <th>النظام</th>
-                <th>المهمة</th>
-                <th>التفاصيل</th>
-                <th>الجهة المعنية</th>
-                <th>ملاحظة</th>
-              </tr>
-            </thead>
+            <thead><tr><th>#</th><th>التاريخ</th><th>الموظف</th><th>النظام</th><th>الجنس</th><th>المهمة</th><th>التفاصيل</th><th>الجهة المعنية</th><th>مرفق</th><th>ملاحظة</th></tr></thead>
             <tbody id="adminTasksBody"></tbody>
           </table>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
 <div class="successToast" id="toast">✓ تم تسجيل المهمة بنجاح</div>
 
 <script>
-// =================== البيانات ===================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTBRQ2OsDwJhTM43BYl29maHdMuGoaOsHLeOdXnTvWHFM7T8g9rhKFj_aZbnQPEu33-Q/exec';
 
 const USERS = {
-  "فهد":    { pass: "fahad123",  name: "فهد محمد العناز",   role: "مدير",    isAdmin: true },
-  "ماجدة":  { pass: "majda123",  name: "ماجدة الفريدي",     role: "إدارية",  isAdmin: true },
-  "علي":    { pass: "ali123",    name: "علي الزامل",         role: "مشرف",    isAdmin: false },
-  "ندى":    { pass: "nada123",   name: "ندى الدباسي",        role: "مشرفة",   isAdmin: false },
-  "عبدالله":{ pass: "abdulla123",name: "عبدالله الغضية",     role: "إداري",   isAdmin: false },
-  "تهاني":  { pass: "tahani123", name: "تهاني الجطيلي",     role: "إدارية",  isAdmin: false },
-  "عائشة":  { pass: "aisha123",  name: "عائشة العتيبي",     role: "إدارية",  isAdmin: false },
-  "فاطمة":  { pass: "fatma123",  name: "فاطمة الطبيعي",     role: "إدارية",  isAdmin: false },
-  "هيفاء":  { pass: "haifa123",  name: "هيفاء الشهوان",     role: "إدارية",  isAdmin: false },
-  "أسماء":  { pass: "asma123",   name: "أسماء الزميع",      role: "إدارية",  isAdmin: false },
+  "فهد":     {pass:"fahad123", name:"فهد محمد العناز", role:"مدير",   isAdmin:true},
+  "ماجدة":   {pass:"majda123", name:"ماجدة الفريدي",   role:"إدارية", isAdmin:true},
+  "علي":     {pass:"ali123",   name:"علي الزامل",       role:"مشرف",   isAdmin:false},
+  "ندى":     {pass:"nada123",  name:"ندى الدباسي",      role:"مشرفة",  isAdmin:false},
+  "عبدالله": {pass:"1234",     name:"عبدالله الغضية",   role:"إداري",  isAdmin:false},
+  "تهاني":   {pass:"tahani123",name:"تهاني الجطيلي",   role:"إدارية", isAdmin:false},
+  "عائشة":   {pass:"aisha123", name:"عائشة العتيبي",   role:"إدارية", isAdmin:false},
+  "فاطمة":   {pass:"fatma123", name:"فاطمة الطبيعي",   role:"إدارية", isAdmin:false},
+  "هيفاء":   {pass:"haifa123", name:"هيفاء الشهوان",   role:"إدارية", isAdmin:false},
+  "أسماء":   {pass:"asma123",  name:"أسماء الزميع",    role:"إدارية", isAdmin:false},
 };
 
-// مهام كل موظف حسب نظامه
-const TASK_LISTS = {
-  "فهد":    {
-    "إداري عام": ["مراجعة التقارير الأسبوعية","اعتماد الوثائق","متابعة أعمال الوحدة","الاجتماعات الإدارية","أخرى"]
-  },
-  "ماجدة":  {
-    "البريد الإلكتروني": ["استلام بريد وارد","إرسال بريد صادر","متابعة ردود البريد","أرشفة المراسلات","أخرى"],
-    "متابعة أعمال الموظفين": ["تقرير أسبوعي للموظفين","متابعة إنجاز المهام","إنشاء ملف تفاعلي","تطوير قاعدة البيانات","أخرى"],
-    "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "علي":    {
-    "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"]
-  },
-  "ندى":    {
-    "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"]
-  },
-  "عبدالله":{
-    "نور": ["متابعة تثبيت غياب الطلاب","متابعة رصد درجات الطلاب بالمدارس","متابعة فك الغياب لفترة معينة","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "تهاني":  {
-    "أعمالي": ["معالجة بريد صادر","معالجة بريد وارد","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "عائشة":  {
-    "فارس": ["اجازات موظفين الوحدة ومدراء المدارس","اعتماد أنشطة التطوير المهني للمدراء","نقل العهدة للمدراء","اعتماد الأداء الوظيفي والاهداف الوظيفية للكادر الإداري","تمديد التكليف للمدراء","اعتماد الأداء الوظيفي للمدراء والتابعين لهم","اعتماد التقاعد للمدراء","أخرى"],
-    "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "فاطمة":  {
-    "حضوري": ["اعتماد الاستئذان (فهد - ندى)","حصر اسبوعي للغياب والاستئذان","معالجة كثرة الاستئذان والغياب","برنت الاكسل وتصديرها","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "هيفاء":  {
-    "نور": ["اللقطة اليومية","متابعة المدارس الغير مثبتة للغياب في نظام نور","الرصد في الاكسل وفرزها والتواصل مع المدراء للتثبيت العاجل","حصر المدارس المتكررة في عدم التثبيت","تحديث قاعدة بيانات مدراء ومديرات المدارس نهاية كل شهر","أخرى"],
-    "فتح صلاحية الغياب": ["فتح صلاحية غياب للمدارس","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
-  "أسماء":  {
-    "نور": ["اللقطة اليومية","متابعة المدارس الغير مثبتة للغياب في نظام نور","الرصد في الاكسل وفرزها والتواصل مع المدراء للتثبيت العاجل","حصر المدارس المتكررة في عدم التثبيت","تحديث قاعدة بيانات مدراء ومديرات المدارس نهاية كل شهر","أخرى"],
-    "فتح صلاحية الغياب": ["فتح صلاحية غياب للمدارس","أخرى"],
-    "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"]
-  },
+const ALL_SYSTEMS = {
+  "نور": ["اللقطة اليومية","متابعة المدارس المتأخرة في تثبيت الغياب والتواصل مع المدراء","الرصد في الاكسل وفرزها","حصر المدارس المتكررة في عدم التثبيت وإرسال خطابات التذكير","تحديث قاعدة بيانات مدراء ومديرات المدارس","متابعة رصد درجات الطلاب بالمدارس","متابعة فك الغياب لفترة معينة","فتح صلاحية غياب للمدارس","أخرى"],
+  "حضوري": ["اعتماد الاستئذان","حصر اسبوعي للغياب والاستئذان","معالجة كثرة الاستئذان والغياب","برنت الاكسل وتصديرها","أخرى"],
+  "أعمالي": ["معالجة بريد صادر","معالجة بريد وارد","أخرى"],
+  "فارس": ["اجازات موظفين الوحدة ومدراء المدارس","اعتماد أنشطة التطوير المهني للمدراء","نقل العهدة للمدراء","اعتماد الأداء الوظيفي والاهداف الوظيفية للكادر الإداري","تمديد التكليف للمدراء","اعتماد الأداء الوظيفي للمدراء والتابعين لهم","اعتماد التقاعد للمدراء","أخرى"],
+  "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
+  "البريد الإلكتروني": ["استلام بريد وارد","إرسال بريد صادر","متابعة ردود البريد","أرشفة المراسلات","أخرى"],
+  "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"],
+  "متابعة أعمال الموظفين": ["تقرير أسبوعي للموظفين","متابعة إنجاز المهام","إنشاء ملف تفاعلي","تطوير وإدارة المنظومة الإدارية","أخرى"],
+  "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"],
+  "إداري عام": ["مراجعة التقارير الأسبوعية","اعتماد الوثائق","متابعة أعمال الوحدة","الاجتماعات الإدارية","أخرى"],
 };
 
-// =================== الحالة ===================
+// ===== قائمة الجهات المعنية =====
+// يمكن تعديل هذه القائمة مباشرة هنا
+const DEPARTMENTS = [
+  "إدارة التعليم منطقة القصيم",
+  "وحدة المرحلة المتوسطة",
+  "وحدة المرحلة الابتدائية",
+  "وحدة المرحلة الثانوية",
+  "قسم الموارد البشرية",
+  "قسم الشؤون التعليمية",
+  "قسم جودة الخدمات",
+];
+
+const SCHOOLS = [
+  "متوسطة اجنادين  بعين ابن فهيد",
+  "متوسطة الأميرسعودبن ناصربن فرحان آل سعود بأبالورود",
+  "متوسطة البندرية",
+  "متوسطة التنومة",
+  "متوسطة السلام بخصيبة",
+  "متوسطة ضيدة",
+  "متوسطة الاحمدية",
+  "متوسطة الحباب بن المنذر",
+  "متوسطة الرواد الأهليه   بالبدائع",
+  "متوسطة المنار",
+  "متوسطة بشير بن سعد",
+  "متوسطة حراء",
+  "متوسطة ربيعة بن أكثم",
+  "متوسطة مسلم بن يسار",
+  "متوسطة ميمون بن مهران",
+  "مدرسة القبعية المتوسطة",
+  "متوسطة أنجال المستقبل الأهلية بالبكيرية",
+  "متوسطة الآفاق النموذجية الأهلية بالبكيرية",
+  "متوسطة الأمير ناصر بن فرحان آل سعود بالفويلق",
+  "متوسطة الأنواء بالشيحية",
+  "متوسطة القادسية",
+  "متوسطة المهاجرين بالهلالية",
+  "متوسطة النعمان بن بشير",
+  "متوسطة رافع بن المعلا بالضلفعة",
+  "متوسطة عبدالله بن محمد الخليفي",
+  "متوسطة كحلة",
+  "متوسطة أنس بن مالك",
+  "متوسطة الأمير فيصل بن بندر",
+  "متوسطة الأندلس الأهلية",
+  "متوسطة الحرمين بالرس",
+  "متوسطة الخشيبي",
+  "متوسطة الدحلة والخريشاء",
+  "متوسطة الرضم",
+  "متوسطة الشبيكية",
+  "متوسطة الشنانة",
+  "متوسطة الشيخ ابن عثيمين",
+  "متوسطة الشيخ عبدالعزيز ابن باز",
+  "متوسطة الصمعورية",
+  "متوسطة الظاهرية والمندسة",
+  "متوسطة العاقر",
+  "متوسطة العباس",
+  "متوسطة العرداء",
+  "متوسطة الغبية",
+  "متوسطة الفكرالتربوي الاهلية",
+  "متوسطة الوطن",
+  "متوسطة بدائع الضبطان",
+  "متوسطة دخنة",
+  "متوسطة سلام",
+  "متوسطة ضرية",
+  "متوسطة طيبة بالرس",
+  "متوسطة عثمان بن عفان",
+  "متوسطة علي بن أبي طالب",
+  "متوسطة عمر بن عبدالعزيز",
+  "متوسطة قصر ابن عقيل",
+  "مدارس شركة الحضارة الاهلية متوسط بنين",
+  "متوسطة الشماسية",
+  "متوسطة النبقية",
+  "متوسطة الخرماء الشمالية للبنين",
+  "متوسطة الصالحية للبنين",
+  "متوسطة الملقاء للبنين",
+  "متوسطة حذيفة بن اليمان",
+  "متوسطة حكيم بن حزام",
+  "متوسطة ربيق للبنين",
+  "متوسطة روضة الحسو للبنين",
+  "متوسطة صقلية",
+  "متوسطة أبان السعودية في أبو طلح",
+  "متوسطة الاسامر",
+  "متوسطة البديعة",
+  "متوسطة الجرذاوية",
+  "متوسطة الروضة",
+  "متوسطة الزهيرية",
+  "متوسطة الطرفية الغربية",
+  "متوسطة الغضياء والسلمات",
+  "متوسطة القيصومة",
+  "متوسطة المرموثة",
+  "متوسطة المشاش والرفايع والركنة",
+  "متوسطة الناصفة",
+  "متوسطة النبهانية",
+  "متوسطة الهمجة",
+  "متوسطة رفايع اللهيب",
+  "متوسطة ضليع رشيد",
+  "متوسطة عطي",
+  "متوسطة فياضة",
+  "المدرسة الباكستانية - متوسط - بنين",
+  "المدرسة الفلبينية - متوسط - بنين",
+  "المدرسة المركزية المتوسطة - بنين",
+  "المدرسة الهندية - متوسط - بنين",
+  "الوسام العالمية",
+  "متوسطة أسعد بن زرارة",
+  "متوسطة إبن حجر العسقلاني( القصيم)",
+  "متوسطة ابن الجوزي",
+  "متوسطة ابن خلدون ببريدة",
+  "متوسطة ابن عبدالبر",
+  "متوسطة ابن قدامة",
+  "متوسطة ابن كثير ببريدة",
+  "متوسطة ابن هشام",
+  "متوسطة ابي داوود",
+  "متوسطة ابي عبيدة ببريدة",
+  "متوسطة اجيال الزرقاء",
+  "متوسطة الأمير فهد الفيصل",
+  "متوسطة الأميرفهد بن ابراهيم بن مشاري",
+  "متوسطة الأمين ببريدة",
+  "متوسطة الإمام البخاري ببريدة",
+  "متوسطة الإمام النسائي",
+  "متوسطة الإمام تركي بن عبدالله",
+  "متوسطة الاحنف بن قيس",
+  "متوسطة الامام الأوزاعي",
+  "متوسطة الامام الترمذي",
+  "متوسطة الامام محمد بن سعود",
+  "متوسطة البصر",
+  "متوسطة البيان",
+  "متوسطة التربية النموذجية بنين",
+  "متوسطة التميز العالمية",
+  "متوسطة التميز المسار المصري",
+  "متوسطة الثامرية للبنين",
+  "متوسطة الجديدات",
+  "متوسطة الجزيرة",
+  "متوسطة الحرمين بريدة",
+  "متوسطة الخير الاهلية",
+  "متوسطة الرواد الأهلية ببريدة",
+  "متوسطة الشهداء  ببريدة",
+  "متوسطة الشيخ عبدالعزيز بن باز",
+  "متوسطة الشيخ عبدالله بن إبراهيم بن سليم",
+  "متوسطة الطرفية الشرقية",
+  "متوسطة الطفيل بن عمرو",
+  "متوسطة العقيلات",
+  "متوسطة الغد النموذجية الأهلية في بريدة",
+  "متوسطة القادسية",
+  "متوسطة القعقاع بن عمرو",
+  "متوسطة المريدسية",
+  "متوسطة النخبة",
+  "متوسطة النزهة",
+  "متوسطة النهضة",
+  "متوسطة امام الدعوة  ببريدة",
+  "متوسطة بشر بن الحارث",
+  "متوسطة بلاط الشهداء",
+  "متوسطة جابر بن عبدالله",
+  "متوسطة حبيب بن زيد",
+  "متوسطة حنظلة بن ابي عامر",
+  "متوسطة حويلان",
+  "متوسطة ذات الصواري",
+  "متوسطة رياض القصيم الأهلية",
+  "متوسطة زيد الخير",
+  "متوسطة سيبوية",
+  "متوسطة صقر قريش ببريدة",
+  "متوسطة صلاح الدين الأيوبي",
+  "متوسطة صهيب الرومي",
+  "متوسطة طلائع القصيم الأهلية ببريدة",
+  "متوسطة طلحة بن عبيد الله التيمي",
+  "متوسطة طيبة ببريدة",
+  "متوسطة عبد الله بن الزبير",
+  "متوسطة عبدالرحمن الناصر",
+  "متوسطة عبدالله بن المبارك",
+  "متوسطة عبدالله بن مسعود ببريدة",
+  "متوسطة عبدالله بن مظعون",
+  "متوسطة عكاشة بن محصن بقبه",
+  "متوسطة علوم النخبة",
+  "متوسطة علي الحصين",
+  "متوسطة عمر بن الخطاب رضي الله عنه",
+  "متوسطة عمران بن حصين",
+  "متوسطة عمورية",
+  "متوسطة عين جالوت",
+  "متوسطة قباء",
+  "متوسطة قتادة بن النعمان",
+  "متوسطة قرطبة",
+  "متوسطة قصيباء",
+  "متوسطة مؤتة بالقرين",
+  "متوسطة مالك بن عامر",
+  "متوسطة مجمع القيروان التعليمي",
+  "متوسطة مجمع صالح بن علي العثيم",
+  "متوسطة مدارس بوابة المعالي العالمية - المسار المصري",
+  "متوسطة مدارس نوران العالمية",
+  "متوسطة منارات القصيم الأهلية",
+  "متوسطة مناهل  التربية",
+  "متوسطة مناهل التربية مسار مصري",
+  "متوسطة نهاوند بالخبراء",
+  "متوسطة نوران المسار المصري..",
+  "متوسطة يحيى بن معين",
+  "مجمع الأمير سلطان - القسم متوسطة",
+  "مجمع الخليج التعليمي القسم المتوسط",
+  "مدارس التربية النموذجية المسار الدولي ببريدة - المرحلة المتوسطة بنين",
+  "مدارس بوابة المعالي العالمية المتوسطة",
+  "مدارس قيم بريدة القصيم - متوسط - بنين - أهلي",
+  "مدرسة الامام السيوطي المتوسطة",
+  "مدرسة ضراس المتوسطة",
+  "منارات القصيم - المسار المصري بنين",
+  "متوسطة الألباني الرائدة",
+  "متوسطة الأمير عبدالله بن جلوي آل سعود بصبيح",
+  "متوسطة السيح والحجازية",
+  "متوسطة النمرية",
+  "متوسطة مجمع الشيخ محمدبن ابراهيم الخضير",
+  "متوسطة أبي فراس الحمداني",
+  "متوسطة النقرة",
+  "متوسطة امباري",
+  "متوسطة ذوقان",
+  "مدرسة الحيسونيةالمتوسطة",
+  "مدرسة عبد المحسن بن عبد الله العثيم المتوسطة",
+  "متوسط مدارس النخبة التربوية بنين",
+  "متوسطة أبي عبيدة بعنيزة",
+  "متوسطة أبي هريرة بعنيزة",
+  "متوسطة ابن تيمية بعنيزة",
+  "متوسطة ابن صالح للموهوبين",
+  "متوسطة الانصار",
+  "متوسطة الحفيرة",
+  "متوسطة الروغانى",
+  "متوسطة الشيخ محمد المانع",
+  "متوسطة القادسية",
+  "متوسطة المثنى بن حارثة",
+  "متوسطة الملك فهد",
+  "متوسطة حسان بن ثابت بعنيزة",
+  "متوسطة حطين",
+  "متوسطة سهيل بن عمرو",
+  "متوسطة عبدالله بن رواحة",
+  "متوسطة عبدالله بن مسعود بعنيزة",
+  "متوسطة عمرو بن العاص",
+  "متوسطة عنيزة الأهلية - بنين",
+  "متوسطة فلسطين",
+  "متوسطة قدرات النموذجية تعليم عام",
+  "متوسطة مجمع العليان التعليمي",
+  "متوسطة مجمع الفاخرية التعليمي",
+  "متوسطة مدارس سماء عنيزة العالمية بنين",
+  "متوسطة مدارس عنيزة الأهلية (مسار مصري )",
+  "متوسطة مدارس عنيزة العالمية - بنين",
+  "مدارس سماء عنيزة متوسط بنين-المسار المصري",
+  "متوسط الطراق والمخرم",
+  "متوسطة الخليل بن أحمد الفراهيدي",
+  "متوسطة اوثال",
+  "متوسطة صقر الجزيرة",
+  "متوسطة كبد",
+  "مدرسة البسيتين المتوسطة  -بنين",
+  "متوسطة الأمير محمد بن أحمد السديري",
+  "متوسطة مناهل البكيرية (بنين)",
+  "متوسطة الإمام الكسائي لتحفيظ القرآن الكريم",
+  "مجمع الشيخ صالح بن عبدالعزيز الراجحي لتحفيظ القرآن الكريم -متوسط",
+  "متوسطة تحفيظ القرآن الكريم بالرس",
+  "متوسطة تحفيظ القرآن الكريم بضرية",
+  "متوسطة عاصم بن أبي النجود لتحفيظ القرآن",
+  "تحفيظ متوسطة الإمام أبي عمرو الداني لتحفيظ القرآن الكريم",
+  "تحفيظ متوسطة سعيد بن زيد لتحفيظ القرآن الكريم",
+  "تحفيظ متوسطة عبد الله بن حذافة السهمي لتحفيظ القرآن الكريم",
+  "تحفيظ متوسطة مكي بن أبي طالب لتحفيظ القران الكريم",
+  "متوسطة الشيخ محمد بن عثيمين لتحفيظ القرآن الكريم",
+  "متوسطة القاسم بن سلام لتحفيظ القرآن الكريم",
+  "متوسطة ابن عامر الشامي لتحفيظ القرآن الكريم",
+  "تحفيظ متوسطة الامام خلف لتحفيظ القران الكريم",
+  "متوسطة الامام عاصم  لتحفيظ القرآن",
+  "متوسطة حفص لتحفيظ القرآن الكريم",
+  "متوسطة عيون الجواء لتحفيظ القرآن الكريم",
+  "مجمع الشيخ عبدالعزيز المسند لحفيظ القرآن الكريم - القسم المتوسط",
+  "توحد - متوسطة السلام بخصيبة",
+  "عوق عقلي متوسطة الأمير سعود بن ناصر بن فرحان آل سعود في أبا الورود",
+  "عوق عقلي- متوسطة السلام بخصيبة",
+  "توحد مدرسة المنار المتوسطة",
+  "عوق عقلي - متوسطة الأحمدية",
+  "عوق عقلي متوسط حراء",
+  "برنامج التربية الفكرية بمتوسطة النعمان بن بشير",
+  "برنامج التربية الفكرية بمدرسة الأمير ناصر بن فرحان المتوسطة للبنين",
+  "برنامج  التربية الفكرية ( متوسط )  في متوسطة علي بن أبي طالب",
+  "برنامج (التربية الفكرية) بمتوسطة دخنة",
+  "برنامج التربية الفكرية ( متوسط ) في ابتدائية ضرية",
+  "برنامج التربية الفكرية بمتوسطة العاقر",
+  "برنامج تعدد العوق للمرحلة المتوسطة بابتدائية السعودية بالرس",
+  "برنامج توحد (متوسط) في متوسطة أنس بن مالك",
+  "فكري - متوسطة الشماسية بالشماسية",
+  "فكري - متوسطة النبقية",
+  "برنامج التوحد في متوسطة حذيفة بن اليمان",
+  "فكري- متوسطة الخرماء الشمالية بنين",
+  "متوسطة العمار (فكري)",
+  "متوسطة المذنب (فكري)",
+  "متوسطة الملقاء (فكري)",
+  "عوق عقلي  متوسطة النبهانية",
+  "عوق عقلي متوسطة المرموثه",
+  "توحد - متوسطة الشهداء ببريدة",
+  "توحد متوسطة جنوب بريدة",
+  "عوق بصري متوسطة معهد النور",
+  "عوق سمعي متوسطة معهد الامل للصم",
+  "عوق عقلي  متوسطة الحرمين",
+  "عوق عقلي  متوسطة الطفيل بن عمرو",
+  "عوق عقلي  متوسطة النزهة",
+  "عوق عقلي  متوسطة عكاشة بن محصن بقبه",
+  "عوق عقلي - متوسط معهد التربية الفكرية جنوب",
+  "عوق عقلي - متوسطة الاحنف بن قيس",
+  "عوق عقلي - متوسطة عبدالله بن مظعون",
+  "عوق عقلي - متوسطة عمران بن حصين",
+  "عوق عقلي - متوسطة مؤتة بالقرين",
+  "عوق عقلي - متوسطة معهدالتربية الفكرية شمال",
+  "عوق عقلي متوسطة عبد الرحمن الناصر",
+  "عوق عقلي- متوسطة البصر",
+  "عوق عقلي- متوسطة قصيباء",
+  "فكري- متوسطة بشر بن الحارث",
+  "فكري- متوسطة ذات الصواري",
+  "متوسطة غدق التنمية - التربية الخاصة",
+  "متوسطة معهد النور للمكفوفين تعدد عوق",
+  "مركز التوحد للمرحلة المتوسطة شمال بريدة",
+  "عوق عقلي - متوسطة الألباني برياض الخبراء",
+  "فكري - متوسطة جابر بن عبدالله بالفوارة",
+  "عوق عقلي - متوسط الامام البزار",
+  "عوق عقلي- متوسطة الحيسونية",
+  "عوق فكري مدرسة أبي فراس الحمداني المتوسطة",
+  "اضطراب طيف التوحد ذوي الأداء المنخفض في مدرسة عبدالله بن مسعود المتوسطة للبنين",
+  "برنامج التربية الفكرية بمدرسة عبدالله بن مسعود المتوسطة للبنين",
+  "متوسطة قدرات النموذجية الأهلية للتربية الخاصة بنين",
+  "متوسطة قدرات النموذجية الاهلية للتربية الخاصه -توحد",
+  "عوق عقلي - متوسطة البسيتين",
+  "عوق عقلي --متوسطة كبد",
+  "عوق عقلي متوسطة الخليل بن أحمد",
+  "متوسطة البكيرية الليلية",
+  "متوسطة الفويلق الليلية",
+  "متوسطة الرس الليلة",
+  "متوسطة صلاح الدين الليلية",
+  "متوسطة الذيبية الليلية",
+  "متوسطة بدر الليلية ( القصيم)",
+  "متوسطة بريدة للتعليم المستمر",
+  "متوسطة بلال بن رباح الليلية",
+  "مدرسة أبي موسى الأشعري المتوسطة للتعليم المستمر.",
+  "مدرسة ابن كثير المتوسطة للتعليم المستمر.",
+  "المتوسطه الاولى بقبه بمحافظة الاسياح",
+  "متوسطة أباالورود بمحافظة الاسياح",
+  "متوسطة البندرية بمحافظة الاسياح",
+  "متوسطة التنومة بمحافظة الاسياح",
+  "متوسطة الخصيبة بمحافظة الاسياح",
+  "متوسطة ضيدة بمحافظة الاسياح",
+  "متوسطة عين بن فهيد بمحافظة الاسياح",
+  "المتوسطة الأولى بمحافظة البدائع",
+  "المتوسطة الثالثة بمحافظة البدائع",
+  "المتوسطة الثانية بمحافظة البدائع",
+  "المتوسطة الخامسة بمحافظة البدائع",
+  "المتوسطة السادسة بمحافظة البدائع",
+  "متوسطة الدحلة بالبدائع",
+  "متوسطة الرواد الاهلية بالبدائع (متوسط)",
+  "متوسطة العبدلية للبنات",
+  "متوسطة القبعية",
+  "متوسطة علباء",
+  "المتوسطة الأولى بالبكيرية",
+  "المتوسطة الأولى بالشيحية",
+  "المتوسطة الأولى بالضلفعة",
+  "المتوسطة الأولى بالفويلق",
+  "المتوسطة الأولى بالهلالية",
+  "المتوسطة الأولى بساق",
+  "المتوسطة الأولى بكحلة",
+  "المتوسطة الثالثة بالبكيرية",
+  "المتوسطة الثانية بالبكيرية",
+  "المتوسطة الرابعة بالبكيرية",
+  "متوسطة الآفاق النموذجية الأهلية بنات",
+  "المتوسطة الأولى بالرس",
+  "المتوسطة التاسعة بالرس",
+  "المتوسطة الثالثة بالرس",
+  "المتوسطة الثامنة بالرس",
+  "المتوسطة الثانية عشرة بالرس",
+  "المتوسطة الثانيه بالرس",
+  "المتوسطة الحادية عشر بالرس",
+  "المتوسطة الخامسة بالرس",
+  "المتوسطة الرابعة بالرس",
+  "المتوسطة السابعة بالرس",
+  "المتوسطة السادسة بالرس",
+  "متوسطة  قصر بن عقيل",
+  "متوسطة أم المؤمنين عائشة بنت أبي بكر بالرس",
+  "متوسطة الحوطة",
+  "متوسطة الخشيبى",
+  "متوسطة الدحلة بالرس",
+  "متوسطة الشبيكية",
+  "متوسطة الشنانه",
+  "متوسطة الصمعوريه",
+  "متوسطة العاقر",
+  "متوسطة العرداء",
+  "متوسطة الغصون",
+  "متوسطة دخنة",
+  "متوسطة سلام",
+  "متوسطة ضرية",
+  "متوسطة مسكه",
+  "مدارس شركة الحضارة الاهلية متوسط بنات",
+  "مدرسة متوسطة الفكر التربوي الأهلية للبنات",
+  "المتوسطة الاولى بالنبقية",
+  "متوسطة أم حزم",
+  "متوسطة الربيعية",
+  "متوسطة الشماسية",
+  "المتوسطة الأولى بالمذنب",
+  "المتوسطة الثالثة بالمذنب",
+  "المتوسطة الثانية بالمذنب",
+  "المتوسطة الخامسة بالمذنب",
+  "متوسطة الحسو",
+  "متوسطة الخرماء الشمالية",
+  "متوسطة الصالحية",
+  "متوسطة الملقاء",
+  "متوسطة ربيق",
+  "المتوسطة الأولى بأبو طلح  في محافظة النبهانيه",
+  "المتوسطة الأولى بالأسامر  في محافظة النبهانيه",
+  "المتوسطة الأولى بالجرذاوية  في محافظة النبهانيه",
+  "المتوسطة الأولى بالركنة  في محافظة النبهانيه",
+  "متوسطة الصليبي في محافظة النبهانيه",
+  "متوسطة الغضياء والسلمات  في محافظة النبهانيه",
+  "متوسطة الناصفة  في محافظة النبهانيه",
+  "متوسطة النبهانية في محافظة النبهانيه",
+  "متوسطة الهمجة  في محافظة النبهانيه",
+  "متوسطة رفائع اللهيب  في محافظة النبهانيه",
+  "متوسطة ضليع رشيد  في محافظة النبهانيه",
+  "متوسطة عريفجان ساحوق بعقلة الصقور",
+  "مدرسة أبانات المتوسطة للبنات",
+  "البنجلاديشية متوسطة",
+  "المتوسطة الأولى بالبطين",
+  "المتوسطة الأولى بالشقة السفلى",
+  "المتوسطة الأولى بالفوارة",
+  "المتوسطة الأولى بالمدرج",
+  "المتوسطة الأولى ببريدة",
+  "المتوسطة الأولى بشرى",
+  "المتوسطة الأولى بقصيباء",
+  "المتوسطة التاسعة ببريدة",
+  "المتوسطة التاسعة عشرة ببريدة",
+  "المتوسطة التاسعة و الثلاثون ببريدة",
+  "المتوسطة التاسعة و العشرون  ببريدة",
+  "المتوسطة التاسعة والأربعون ببريدة",
+  "المتوسطة الثالثة ببريدة",
+  "المتوسطة الثالثة عشرة ببريدة",
+  "المتوسطة الثالثة و الأربعون ببريدة",
+  "المتوسطة الثالثة و الخمسون ببريدة",
+  "المتوسطة الثالثة و العشرون ببريدة",
+  "المتوسطة الثالثة والثلاثون ببريدة",
+  "المتوسطة الثامنة ببريدة",
+  "المتوسطة الثامنة عشرة ببريدة",
+  "المتوسطة الثامنة و الأربعون ببريدة",
+  "المتوسطة الثامنة والعشرون ببريدة",
+  "المتوسطة الثانية بالشقة",
+  "المتوسطة الثانية عشرة ببريدة",
+  "المتوسطة الثانية والثلاثون ببريدة",
+  "المتوسطة الثانية والخمسون ببريدة",
+  "المتوسطة الثانية والعشرون ببريدة",
+  "المتوسطة الثلاثون ببريدة",
+  "المتوسطة الحادية والاربعون ببريدة",
+  "المتوسطة الحادية والثلاثون ببريدة",
+  "المتوسطة الحادية والخمسون ببريدة",
+  "المتوسطة الحادية والعشرون ببريدة",
+  "المتوسطة الخامسة ببريدة",
+  "المتوسطة الخامسة عشرة ببريدة",
+  "المتوسطة الخامسة و الأربعون ببريدة",
+  "المتوسطة الخامسة والثلاثون ببريدة",
+  "المتوسطة الخامسة والخمسون ببريدة",
+  "المتوسطة الخامسة والعشرون ببريدة",
+  "المتوسطة الخمسون ببريدة",
+  "المتوسطة الرابعة ببريدة",
+  "المتوسطة السابعة ببريدة",
+  "المتوسطة السابعة عشرة ببريدة",
+  "المتوسطة السابعة والثلاثون ببريدة",
+  "المتوسطة السابعة والعشرون ببريدة",
+  "المتوسطة السادسة ببريدة",
+  "المتوسطة السادسة عشرة ببريدة",
+  "المتوسطة السادسة والأربعون ببريدة",
+  "المتوسطة السادسة والعشرون ببريدة",
+  "المتوسطة السادسه و الثلاثون ببريدة",
+  "المتوسطة العاشرة ببريدة",
+  "المتوسطة العشرون ببريدة",
+  "المتوسطةالحادية عشرة ببريدة",
+  "المتوسطه الاربعون ببريدة",
+  "المتوسطه السابعة والأربعون ببريدة",
+  "المدرسة الباكستانية - متوسط - بنات",
+  "المدرسة الفلبينية - متوسط - بنات",
+  "المدرسة المركزية المتوسطة - بنات",
+  "المدرسة الهندية - متوسط - بنات",
+  "متوسطة أم المؤمنين حفصة رضي الله عنها",
+  "متوسطة البصر ببريدة",
+  "متوسطة التربية النموذجية",
+  "متوسطة التميز العالميه",
+  "متوسطة التميز المسار المصري بنات",
+  "متوسطة الثامرية",
+  "متوسطة الخضر والوجيعان ببريدة",
+  "متوسطة الطرفية الشرقية",
+  "متوسطة العمار",
+  "متوسطة الغد النموذجيه",
+  "متوسطة الغماس ببريدة",
+  "متوسطة القرعاء ببريدة",
+  "متوسطة القصيعة ببريدة",
+  "متوسطة القويع ببريدة",
+  "متوسطة المريدسية ببريدة",
+  "متوسطة المليداء ببريدة",
+  "متوسطة النخيل - للبنات",
+  "متوسطة بوابة المعالي العالمية",
+  "متوسطة حويلان ببريدة",
+  "متوسطة خب ثنيان ببريدة",
+  "متوسطة خضيراء ببريدة",
+  "متوسطة رياض القصيم الأهلية ببريدة",
+  "متوسطة ضراس ببريدة",
+  "متوسطة طلائع القصيم الأهلية ببريدة للبنات",
+  "متوسطة عباقرة النيل - المسار المصري",
+  "متوسطة فجر القصيم (مسار مصري)",
+  "متوسطة فجر القصيم الأهلية",
+  "متوسطة مدارس عباقرة النيل العالمية للبنات",
+  "متوسطة منارات القصيم الأهلية ببريدة",
+  "متوسطة نوران العالمية.",
+  "متوسطة نوران المسار المصري...",
+  "متوسطه الرواد للبنات",
+  "مدارس التربية النموذجية المسار الدولي ببريدة - المرحلة المتوسطة بنات",
+  "مدارس بوابة المعالي المتوسطة - المسار المصري",
+  "مدارس قيم بريدة - متوسط بنات أهلي",
+  "مدرسة مجمع الأمير سلطان للموهوبات - المتوسطة",
+  "معهد الطيران للقوات البرية ببريدة",
+  "منارات القصيم -المسار المصري بنات",
+  "المتوسطة الأولى بالجرير الشمالي",
+  "المتوسطة الأولى في محافظة رياض الخبراء",
+  "المتوسطة الثانية في محافظة رياض الخبراء",
+  "متوسطة الدريميحة في محافظة رياض الخبراء",
+  "متوسطة الدليمية في محافظة رياض الخبراء",
+  "متوسطة الذيبية في محافظة رياض الخبراء",
+  "متوسطة الروضة في محافظة رياض الخبراء",
+  "متوسطة السحابين في محافظة رياض الخبراء",
+  "متوسطة السيح في محافظة رياض الخبراء",
+  "متوسطة القرين في محافظة رياض الخبراء",
+  "متوسطة صبيح في محافظة رياض الخبراء",
+  "متوسطة عطي في محافظة رياض الخبراء",
+  "مدرسة منيرة بنت حسن النعيم المتوسطة بالخبراء",
+  "متوسطة الظاهرية بضرية",
+  "المتوسطة الأولى بعقلة الصقور",
+  "المتوسطة الثانية بعقلة الصقور",
+  "متوسطة أمباري بعقلة الصقور",
+  "متوسطة الحيسونية",
+  "متوسطة الطرفية الغربية بعقلة الصقور",
+  "متوسطة القاعية",
+  "متوسطة المحيلاني",
+  "متوسطة النقرة",
+  "متوسطة عمائر سعيدة بعقلة الصقور",
+  "متوسطة قطن بعقلة الصقور",
+  "المتوسطة الأولى بعنيزة",
+  "المتوسطة التاسعة بعنيزة",
+  "المتوسطة الثالثة بعنيزة",
+  "المتوسطة الثالثة عشرة بعنيزة",
+  "المتوسطة الثامنة بعنيزة",
+  "المتوسطة الثامنة عشرة بعنيزة",
+  "المتوسطة الثانية بعنيزة",
+  "المتوسطة الثانية عشرة بعنيزة",
+  "المتوسطة الحادية عشرة بعنيزة",
+  "المتوسطة الخامسة بعنيزة",
+  "المتوسطة الخامسة عشرة بعنيزة",
+  "المتوسطة الرابعة بعنيزة",
+  "المتوسطة الرابعة عشرة  بعنيزة",
+  "المتوسطة السابعة بعنيزة",
+  "المتوسطة السابعة عشرة بعنيزة",
+  "المتوسطة السادسة بعنيزة",
+  "المتوسطة السادسة عشرة بعنيزة",
+  "المتوسطة العاشرة بعنيزة",
+  "متوسطة  عنيزة العالمية",
+  "متوسطة أم المؤمنين خديجة بنت خويلد بعنيزة",
+  "متوسطة الروغاني",
+  "متوسطة العونية",
+  "متوسطة الوهلان",
+  "متوسطة سماء عنيزة العالمية",
+  "متوسطة مدارس النخبة التربوية",
+  "متوسطة مدارس عنيزة الأهلية بنات",
+  "متوسطة مدارس عنيزة الأهلية بنات (مسار مصري )",
+  "مدارس سماء عنيزة متوسط بنات-المسار المصري",
+  "مدارس مآثر الأهلية - متوسط",
+  "المتوسطة الأولى بأوثال",
+  "المتوسطة الأولى بالطراق",
+  "المتوسطة الأولى بالقوارة",
+  "المتوسطة الأولى بعيون الجواء",
+  "المتوسطة الأولى بغاف الجواء",
+  "المتوسطة الأولى بكبد",
+  "متوسطة مناهل البكيرية (بنات)",
+  "مدرسة البسيتين المتوسطة  - بنات",
+  "المتوسطة الأولى لتحفيظ القرآن الكريم بقبة بمحافظة الاسياح",
+  "متوسطة تحفيظ القرآن الكريم بمحافظة البدائع",
+  "المتوسطة الأولى لتحفيظ القرآن الكريم بالبكيرية",
+  "متوسطة تحفيظ القرآن الكريم الأولى بالرس",
+  "متوسطة تحفيظ القرآن الكريم الثانية بالرس",
+  "متوسطة تحفيظ القرآن الكريم بالشماسية",
+  "متوسطة تحفيظ القرآن الكريم بالمذنب",
+  "المتوسطة الأولى لتحفيظ القرآن الكريم ببريدة",
+  "المتوسطة الثالثة لتحفيظ القرآن الكريم ببريدة",
+  "المتوسطة الخامسة لتحفيظ القرآن الكريم ببريدة",
+  "المتوسطة الرابعه لتحفيظ القرآن الكريم ببريدة",
+  "المتوسطة السادسة لتحفيظ القرآن الكريم ببريدة",
+  "المتوسطةالثانية لتحفيظ القرآن الكريم ببريدة",
+  "متوسطة تحفيظ القرآن الكريم بالمريدسية",
+  "متوسطة تحفيظ القرآن الكريم بالخبراء في محافظة رياض الخبراء",
+  "متوسطة تحفيظ القرآن الكريم في محافظة رياض الخبراء",
+  "متوسطة تحفيظ القرآن الثانية بعنيزة",
+  "متوسطة مجمع حمد صالح الحركان لتحفيظ القرآن الكريم",
+  "المتوسطة الأولى لتحفيظ القرآن بعيون الجواء",
+  "عوق عقلي متوسطة خصيبة بالأسياح",
+  "عوق فكري مدرسة قبه المتوسطة",
+  "عوق عقلي المتوسطة الأولى بالبدائع",
+  "برنامج التربية الفكرية للمرحلة المتوسطة بابتدائية الطفولة المبكرة بكحلة",
+  "فصول التربية الفكرية بالمتوسطة الرابعة بالبكيرية",
+  "برنامج التوحد بمتوسطة دخنة",
+  "برنامج العوق الفكري للمرحلة المتوسطة بالرس",
+  "عوق فكري مدرسة الشماسية المتوسطة",
+  "فصول التربية الفكرية المتوسطة بالمذنب",
+  "متوسطة التوحد - بالثانوية الثانية بالمذنب",
+  "توحد مدرسة السادسة والثلاثون المتوسطة ببريدة",
+  "عوق بصري متوسطة معهد النور",
+  "عوق سمعي المتوسطة معهد الامل",
+  "عوق عقلي المتوسطة الثالثة والعشرون ببريدة",
+  "عوق عقلي المتوسطة الخامسة والعشرون ببريدة",
+  "عوق عقلي متوسطة معهد التربية الفكرية ببريدة",
+  "فكري - المتوسطة الأولى بالفوارة",
+  "عوق عقلي المتوسطة الأولى برياض الخبراء",
+  "عوق عقلي متوسطة الذيبية في رياض الخبراء",
+  "فكري - المتوسطة الأولى بعقلة الصقور",
+  "برنامج اضطراب طيف التوحد ذوي الأداء المنخفض في المرحلة المتوسطة للبنات",
+  "برنامج العوق الفكري في المتوسطة الثانية عشرة بعنيزة",
+  "متوسطة قدرات النموذجية للتربية الخاصة-تربية فكرية",
+  "متوسطة قدرات النموذجية للتربية الخاصة-توحد",
+  "عوق عقلي المتوسطة الأولى بعيون الجواء",
+  "متوسطة تعليم الكبيرات بالرس",
+  "متوسطة فجر القصيم لتعليم الكبيرات",
+  "متوسطة تعليم الكبيرات بعنيزة"
+];
+
+const ALL_TARGETS = [...DEPARTMENTS, ...SCHOOLS];
+
 let currentUser = null;
 let tasks = JSON.parse(localStorage.getItem('whdaTasks') || '[]');
 
-// =================== تسجيل الدخول ===================
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value.trim();
   const user = USERS[u];
   if (user && user.pass === p) {
-    currentUser = { key: u, ...user };
+    currentUser = {key:u,...user};
     document.getElementById('loginErr').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appScreen').style.display = 'block';
@@ -745,11 +909,9 @@ function doLogin() {
     document.getElementById('loginErr').style.display = 'block';
   }
 }
-
-document.getElementById('loginPass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 });
-
 function doLogout() {
   currentUser = null;
   document.getElementById('loginScreen').style.display = 'flex';
@@ -758,219 +920,165 @@ function doLogout() {
   document.getElementById('loginPass').value = '';
 }
 
-// =================== تهيئة التطبيق ===================
-function initApp() {
+async function initApp() {
   document.getElementById('topUserName').textContent = currentUser.name + ' · ' + currentUser.role;
-
-  if (currentUser.isAdmin) {
-    document.getElementById('adminTab').style.display = 'block';
-    populateAdminFilters();
-    renderAdminStats();
-    renderEmpGrid();
-    renderAdminTable();
-  }
-
-  populateSystemFilter();
+  if (currentUser.isAdmin) document.getElementById('adminTab').style.display = 'block';
+  await loadFromSheet();
   buildTaskForm();
+  populateSystemFilter();
   renderMyTasks();
+  renderMyChart();
+  if (currentUser.isAdmin) { populateAdminFilters(); renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
   switchTab('myTasks', document.querySelector('.tab'));
 }
 
-// =================== فورم إضافة المهمة ===================
+async function saveToSheet(task) {
+  try { await fetch(SCRIPT_URL, {method:'POST', body:JSON.stringify(task)}); } catch(e) {}
+}
+async function loadFromSheet() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    if (data.success && data.data.length > 1) {
+      tasks = data.data.slice(1).map(r => ({
+        id:r[0], date:r[1], userName:r[2],
+        user: Object.keys(USERS).find(k=>USERS[k].name===r[2]) || '',
+        system:r[3], task:r[4], details:r[5]||'', target:r[6]||'',
+        link:r[7]||'', note:r[8]||'', gender:r[9]||'الكل'
+      })).filter(t=>t.id);
+      localStorage.setItem('whdaTasks', JSON.stringify(tasks));
+    }
+  } catch(e) {}
+}
+function saveTasks() { localStorage.setItem('whdaTasks', JSON.stringify(tasks)); }
+
 function buildTaskForm() {
-  const systems = TASK_LISTS[currentUser.key] || {};
-  const sysSelect = document.getElementById('taskSystem');
-  sysSelect.innerHTML = '<option value="">اختاري النظام</option>';
-  Object.keys(systems).forEach(s => {
-    sysSelect.innerHTML += `<option value="${s}">${s}</option>`;
-  });
-  // تاريخ اليوم افتراضي
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('taskDate').value = today;
+  const sel = document.getElementById('taskSystem');
+  sel.innerHTML = '<option value="">اختر النظام</option>';
+  Object.keys(ALL_SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+  document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+  const tsel = document.getElementById('taskTarget');
+  tsel.innerHTML = '<option value="">اختر الجهة</option><option value="أخرى">أخرى (اكتب يدوياً)</option>';
+  ALL_TARGETS.forEach(t => tsel.innerHTML += `<option value="${t}">${t}</option>`);
 }
 
 function loadTaskList() {
   const sys = document.getElementById('taskSystem').value;
-  const tasks = (TASK_LISTS[currentUser.key] || {})[sys] || [];
+  const list = ALL_SYSTEMS[sys] || [];
   const sel = document.getElementById('taskName');
-  sel.innerHTML = '<option value="">اختاري المهمة</option>';
-  tasks.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
+  sel.innerHTML = '<option value="">اختر المهمة</option>';
+  list.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
 }
 
 function submitTask() {
   const sys = document.getElementById('taskSystem').value;
   const name = document.getElementById('taskName').value;
   const date = document.getElementById('taskDate').value;
-  if (!sys || !name || !date) {
-    alert('يرجى اختيار النظام والمهمة والتاريخ');
-    return;
-  }
+  if (!sys) { alert('يرجى اختيار النظام'); return; }
+  if (!name) { alert('يرجى اختيار المهمة'); return; }
+  if (!date) { alert('يرجى اختيار تاريخ الإنجاز'); return; }
   const task = {
-    id: Date.now(),
-    user: currentUser.key,
-    userName: currentUser.name,
-    date,
-    system: sys,
-    task: name,
+    id: Date.now(), user: currentUser.key, userName: currentUser.name,
+    date, system: sys, task: name,
     details: document.getElementById('taskDetails').value.trim(),
     target: document.getElementById('taskTarget').value.trim(),
+    link: document.getElementById('taskLink').value.trim(),
     note: document.getElementById('taskNote').value.trim(),
+    gender: document.getElementById('taskGender').value,
   };
   tasks.push(task);
   saveTasks();
-  // إعادة ضبط الفورم
+  saveToSheet(task);
+  ['taskDetails','taskLink','taskNote'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('taskSystem').value = '';
-  document.getElementById('taskName').innerHTML = '<option value="">اختاري أولاً النظام</option>';
-  document.getElementById('taskDetails').value = '';
+  document.getElementById('taskName').innerHTML = '<option value="">اختر النظام أولاً</option>';
   document.getElementById('taskTarget').value = '';
-  document.getElementById('taskNote').value = '';
+  document.getElementById('taskGender').value = 'الكل';
+  document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
   showToast();
-  renderMyTasks();
-  if (currentUser.isAdmin) {
-    renderAdminStats(); renderEmpGrid(); renderAdminTable();
-  }
+  renderMyTasks(); renderMyChart();
+  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
   switchTab('myTasks', document.querySelectorAll('.tab')[0]);
 }
 
-function saveTasks() {
-  localStorage.setItem('whdaTasks', JSON.stringify(tasks));
+function deleteTask(id) {
+  if (!confirm('هل تريدين حذف هذه المهمة؟')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  saveTasks();
+  renderMyTasks(); renderMyChart();
+  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
 }
 
-// =================== عرض مهامي ===================
 function populateSystemFilter() {
-  const systems = TASK_LISTS[currentUser.key] || {};
   const sel = document.getElementById('filterSystem');
   sel.innerHTML = '<option value="">كل الأنظمة</option>';
-  Object.keys(systems).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+  Object.keys(ALL_SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+function filterTasks(list, searchId, sysId, fromId, toId) {
+  const search = document.getElementById(searchId).value.trim().toLowerCase();
+  const sys = document.getElementById(sysId).value;
+  const from = document.getElementById(fromId).value;
+  const to = document.getElementById(toId).value;
+  if (search) list = list.filter(t=>(t.task+t.system+t.details+t.target+t.note+(t.userName||'')).toLowerCase().includes(search));
+  if (sys) list = list.filter(t=>t.system===sys);
+  if (from) list = list.filter(t=>t.date>=from);
+  if (to) list = list.filter(t=>t.date<=to);
+  return list;
 }
 
 function renderMyTasks() {
-  const filterSys = document.getElementById('filterSystem').value;
-  let myList = currentUser.isAdmin
-    ? tasks
-    : tasks.filter(t => t.user === currentUser.key);
-  if (filterSys) myList = myList.filter(t => t.system === filterSys);
-  myList = myList.slice().reverse();
-
-  // إحصائيات
-  const allMine = currentUser.isAdmin ? tasks : tasks.filter(t => t.user === currentUser.key);
-  const thisMonth = allMine.filter(t => t.date && t.date.startsWith(new Date().toISOString().slice(0,7)));
+  let mine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
+  const allMine = mine.slice();
+  mine = filterTasks(mine,'searchInput','filterSystem','dateFrom','dateTo');
+  mine = mine.slice().reverse();
+  const thisMonth = allMine.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
   document.getElementById('myStats').innerHTML = `
-    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام المنجزة</div></div>
-    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">مهام هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام</div></div>
+    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">هذا الشهر</div></div>
     <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
   `;
-
   const tbody = document.getElementById('myTasksBody');
-  if (!myList.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام مسجلة بعد</p></div></td></tr>`;
-    return;
-  }
-  tbody.innerHTML = myList.map((t, i) => `
+  if (!mine.length) { tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`; return; }
+  tbody.innerHTML = mine.map((t,i)=>`
     <tr>
-      <td>${myList.length - i}</td>
-      <td>${formatDate(t.date)}</td>
-      <td><span class="systemTag tag-${t.system}">${t.system}</span></td>
-      <td>${t.task}</td>
-      <td>${t.details || '—'}</td>
-      <td>${t.target || '—'}</td>
-      <td>${t.note || '—'}</td>
-    </tr>
-  `).join('');
+      <td>${mine.length-i}</td><td>${formatDate(t.date)}</td>
+      <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
+      <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
+      <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
+      <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
+      <td>${t.note||'—'}</td>
+      <td><button class="btnDelete" onclick="deleteTask(${t.id})" title="حذف">🗑️</button></td>
+    </tr>`).join('');
 }
 
-// =================== لوحة التحكم ===================
+function renderMyChart() {
+  const allMine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
+  const thisMonth = allMine.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('chartStats').innerHTML = `
+    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام</div></div>
+    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
+  `;
+  const sysCounts = {};
+  allMine.forEach(t=>{ sysCounts[t.system]=(sysCounts[t.system]||0)+1; });
+  const maxSys = Math.max(...Object.values(sysCounts),1);
+  document.getElementById('systemChart').innerHTML = Object.entries(sysCounts).map(([s,c])=>`
+    <div class="chartBar"><div class="chartBarNum">${c}</div>
+    <div class="chartBarInner" style="height:${Math.max((c/maxSys)*120,4)}px"></div>
+    <div class="chartBarLabel">${s}</div></div>`).join('') || '<p style="color:var(--text-muted);padding:20px">لا توجد بيانات</p>';
+  const months=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
+  const mc=months.map(m=>allMine.filter(t=>t.date&&t.date.startsWith(m)).length);
+  const maxM=Math.max(...mc,1);
+  document.getElementById('monthChart').innerHTML = months.map((m,i)=>`
+    <div class="chartBar"><div class="chartBarNum">${mc[i]}</div>
+    <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*120,4)}px"></div>
+    <div class="chartBarLabel">${m.slice(5)}</div></div>`).join('');
+}
+
 function renderAdminStats() {
-  const today = new Date().toISOString().split('T')[0];
-  const thisMonth = tasks.filter(t => t.date && t.date.startsWith(new Date().toISOString().slice(0,7)));
-  const todayTasks = tasks.filter(t => t.date === today);
+  const today=new Date().toISOString().split('T')[0];
+  const tm=tasks.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
   document.getElementById('adminStats').innerHTML = `
     <div class="statCard"><div class="statNum">${tasks.length}</div><div class="statLabel">إجمالي المهام</div></div>
-    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">مهام هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${todayTasks.length}</div><div class="statLabel">مهام اليوم</div></div>
-    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>
-  `;
-}
-
-function renderEmpGrid() {
-  const grid = document.getElementById('empGrid');
-  grid.innerHTML = Object.entries(USERS).map(([key, u]) => {
-    const count = tasks.filter(t => t.user === key).length;
-    return `
-      <div class="empCard" onclick="filterByEmp('${key}')">
-        <div class="empName">${u.name}</div>
-        <div class="empRole">${u.role}</div>
-        <div class="empCount">${count}</div>
-        <div class="empCountLabel">مهمة منجزة</div>
-      </div>
-    `;
-  }).join('');
-}
-
-function filterByEmp(key) {
-  document.getElementById('adminFilterEmp').value = key;
-  renderAdminTable();
-  switchTab('adminView', document.getElementById('adminTab'));
-}
-
-function populateAdminFilters() {
-  const empSel = document.getElementById('adminFilterEmp');
-  empSel.innerHTML = '<option value="">كل الموظفين</option>';
-  Object.entries(USERS).forEach(([k, u]) => {
-    empSel.innerHTML += `<option value="${k}">${u.name}</option>`;
-  });
-  const sysSel = document.getElementById('adminFilterSys');
-  sysSel.innerHTML = '<option value="">كل الأنظمة</option>';
-  const allSystems = [...new Set(Object.values(TASK_LISTS).flatMap(s => Object.keys(s)))];
-  allSystems.forEach(s => sysSel.innerHTML += `<option value="${s}">${s}</option>`);
-}
-
-function renderAdminTable() {
-  const empF = document.getElementById('adminFilterEmp').value;
-  const sysF = document.getElementById('adminFilterSys').value;
-  let list = tasks.slice();
-  if (empF) list = list.filter(t => t.user === empF);
-  if (sysF) list = list.filter(t => t.system === sysF);
-  list = list.slice().reverse();
-
-  const tbody = document.getElementById('adminTasksBody');
-  if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="8"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`;
-    return;
-  }
-  tbody.innerHTML = list.map((t, i) => `
-    <tr>
-      <td>${list.length - i}</td>
-      <td>${formatDate(t.date)}</td>
-      <td>${t.userName}</td>
-      <td><span class="systemTag tag-${t.system}">${t.system}</span></td>
-      <td>${t.task}</td>
-      <td>${t.details || '—'}</td>
-      <td>${t.target || '—'}</td>
-      <td>${t.note || '—'}</td>
-    </tr>
-  `).join('');
-}
-
-// =================== مساعدات ===================
-function switchTab(id, el) {
-  document.querySelectorAll('.tabPane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if (el) el.classList.add('active');
-}
-
-function formatDate(d) {
-  if (!d) return '—';
-  const [y, m, day] = d.split('-');
-  return `${day}/${m}/${y}`;
-}
-
-function showToast() {
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-</script>
-</body>
-</html>
+    <div class="statCard"><div class="statNum">${tm.length}</div><div class="statLabel">
