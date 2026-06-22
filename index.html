@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+<head>a
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة المرحلة المتوسطة - إدارة المهام</title>
@@ -275,13 +275,26 @@ const ALL_SYSTEMS = {
 // ===== قائمة الجهات المعنية =====
 // يمكن تعديل هذه القائمة مباشرة هنا
 const DEPARTMENTS = [
+  // ===== يمكن تعديل هذه القائمة وإضافة جهات جديدة =====
   "إدارة التعليم منطقة القصيم",
   "وحدة المرحلة المتوسطة",
   "وحدة المرحلة الابتدائية",
   "وحدة المرحلة الثانوية",
-  "قسم الموارد البشرية",
-  "قسم الشؤون التعليمية",
-  "قسم جودة الخدمات",
+  "المساعد للشؤون التعليمية",
+  "إدارة الموارد البشرية",
+  "إدارة الموارد البشرية (قسم شؤون المعلمين)",
+  "إدارة المراجعة الداخلية",
+  "إدارة الشؤون القانونية",
+  "إدارة جودة الخدمات",
+  "إدارة تنمية القدرات (قسم ذوي الإعاقة)",
+  "إدارة تقويم الأداء المعرفي والمهاري",
+  "إدارة التطوير والتحول",
+  "قسم الأمن والسلامة والمرافق",
+  "قسم الإشراف التربوي",
+  "قسم التوجيه الطلابي",
+  "تصدير من وحدة المرحلة المتوسطة إلى مدراء المدارس",
+  "تصدير من وحدة المرحلة المتوسطة لقسم الإدارة المدرسية",
+  // ===== أضيفي جهات جديدة هنا =====
 ];
 
 const SCHOOLS = [
@@ -1081,4 +1094,86 @@ function renderAdminStats() {
   const tm=tasks.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
   document.getElementById('adminStats').innerHTML = `
     <div class="statCard"><div class="statNum">${tasks.length}</div><div class="statLabel">إجمالي المهام</div></div>
-    <div class="statCard"><div class="statNum">${tm.length}</div><div class="statLabel">
+    <div class="statCard"><div class="statNum">${tm.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${tasks.filter(t=>t.date===today).length}</div><div class="statLabel">اليوم</div></div>
+    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>
+  `;
+}
+function renderEmpChart() {
+  const ec=Object.entries(USERS).map(([k,u])=>({name:u.name.split(' ')[0],count:tasks.filter(t=>t.user===k).length}));
+  const max=Math.max(...ec.map(e=>e.count),1);
+  document.getElementById('empChart').innerHTML=ec.map(e=>`
+    <div class="chartBar"><div class="chartBarNum">${e.count}</div>
+    <div class="chartBarInner" style="height:${Math.max((e.count/max)*120,4)}px"></div>
+    <div class="chartBarLabel">${e.name}</div></div>`).join('');
+}
+function renderEmpGrid() {
+  document.getElementById('empGrid').innerHTML=Object.entries(USERS).map(([k,u])=>{
+    const count=tasks.filter(t=>t.user===k).length;
+    return `<div class="empCard" onclick="filterByEmp('${k}')">
+      <div class="empName">${u.name}</div><div class="empRole">${u.role}</div>
+      <div class="empCount">${count}</div><div class="empCountLabel">مهمة منجزة</div></div>`;
+  }).join('');
+}
+function filterByEmp(key) {
+  document.getElementById('adminFilterEmp').value=key;
+  renderAdminTable();
+  switchTab('adminView',document.getElementById('adminTab'));
+}
+function populateAdminFilters() {
+  const es=document.getElementById('adminFilterEmp');
+  es.innerHTML='<option value="">كل الموظفين</option>';
+  Object.entries(USERS).forEach(([k,u])=>es.innerHTML+=`<option value="${k}">${u.name}</option>`);
+  const ss=document.getElementById('adminFilterSys');
+  ss.innerHTML='<option value="">كل الأنظمة</option>';
+  Object.keys(ALL_SYSTEMS).forEach(s=>ss.innerHTML+=`<option value="${s}">${s}</option>`);
+}
+function renderAdminTable() {
+  const empF=document.getElementById('adminFilterEmp').value;
+  let list=tasks.slice();
+  if(empF) list=list.filter(t=>t.user===empF);
+  list=filterTasks(list,'adminSearch','adminFilterSys','adminDateFrom','adminDateTo');
+  list=list.slice().reverse();
+  const tbody=document.getElementById('adminTasksBody');
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`;return;}
+  tbody.innerHTML=list.map((t,i)=>`
+    <tr><td>${list.length-i}</td><td>${formatDate(t.date)}</td><td>${t.userName}</td>
+    <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
+    <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
+    <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
+    <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
+    <td>${t.note||'—'}</td></tr>`).join('');
+}
+
+function exportExcel(type) {
+  let list=type==='admin'?tasks:tasks.filter(t=>currentUser.isAdmin?true:t.user===currentUser.key);
+  list=list.slice().reverse();
+  const h=type==='admin'
+    ?['#','التاريخ','الموظف','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة']
+    :['#','التاريخ','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة'];
+  const rows=list.map((t,i)=>type==='admin'
+    ?[list.length-i,t.date,t.userName,t.system,t.gender||'الكل',t.task,t.details||'',t.target||'',t.note||'']
+    :[list.length-i,t.date,t.system,t.gender||'الكل',t.task,t.details||'',t.target||'',t.note||'']);
+  const ws=XLSX.utils.aoa_to_sheet([h,...rows]);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'المهام');
+  XLSX.writeFile(wb,`مهام_الوحدة_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function getTagClass(sys){
+  const m={'نور':'tag-نور','حضوري':'tag-حضوري','أعمالي':'tag-أعمالي','فارس':'tag-فارس','تواصل':'tag-تواصل','البريد الإلكتروني':'tag-بريد','خطابات':'tag-خطابات'};
+  return m[sys]||'tag-default';
+}
+function switchTab(id,el){
+  document.querySelectorAll('.tabPane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  if(id==='myChart')renderMyChart();
+  if(id==='adminView'&&currentUser.isAdmin){renderAdminStats();renderEmpGrid();renderAdminTable();renderEmpChart();}
+}
+function formatDate(d){if(!d)return '—';const[y,m,day]=d.split('-');return `${day}/${m}/${y}`;}
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
