@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>a
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة المرحلة المتوسطة - إدارة المهام</title>
@@ -48,6 +48,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .tableHeader h3{font-size:15px;font-weight:700;color:var(--primary);}
 .filterGroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
 .filterGroup select,.filterGroup input[type=text],.filterGroup input[type=date]{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;background:var(--bg);}
+.btnClear{padding:7px 10px;background:var(--danger);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 thead{background:var(--primary);color:white;}
 thead th{padding:11px 14px;text-align:right;font-weight:600;font-size:12px;}
@@ -69,17 +70,17 @@ tbody td{padding:11px 14px;}
 .g-الكل{background:#f0f4f8;color:#455a64;}
 .chartCard{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
 .chartCard h3{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;}
-.chartBars{display:flex;align-items:flex-end;gap:8px;height:140px;}
-.chartBar{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
-.chartBarInner{width:100%;background:linear-gradient(180deg,var(--accent-light),var(--accent));border-radius:5px 5px 0 0;min-height:4px;transition:height 0.5s;}
-.chartBarLabel{font-size:10px;color:var(--text-muted);text-align:center;}
-.chartBarNum{font-size:11px;font-weight:700;color:var(--primary);}
+.chartBars{display:flex;align-items:flex-end;gap:8px;height:160px;overflow-x:auto;padding-bottom:4px;}
+.chartBar{min-width:50px;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.chartBarInner{width:80%;border-radius:6px 6px 0 0;min-height:4px;transition:height 0.5s;}
+.chartBarLabel{font-size:10px;color:var(--text-muted);text-align:center;word-break:break-all;}
+.chartBarNum{font-size:12px;font-weight:700;color:var(--primary);}
 .empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
 .empCard{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;border-top:4px solid var(--primary);}
 .empCard:hover{transform:translateY(-2px);}
 .empName{font-size:14px;font-weight:700;color:var(--primary);}
 .empRole{font-size:11px;color:var(--text-muted);}
-.empCount{font-size:26px;font-weight:800;color:var(--accent);margin-top:10px;}
+.empCount{font-size:26px;font-weight:800;margin-top:10px;}
 .empCountLabel{font-size:11px;color:var(--text-muted);}
 .emptyState{text-align:center;padding:40px;color:var(--text-muted);}
 .emptyIcon{font-size:40px;margin-bottom:10px;}
@@ -91,7 +92,25 @@ tbody td{padding:11px 14px;}
 .btnPrint{padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
 .btnExcel{padding:8px 16px;background:#217346;color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
 .btnDelete{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:2px 6px;}
-@media print{.topBar,.tabs,.actionBtns,.filterGroup{display:none!important;}.content{padding:0;}.tableCard{box-shadow:none;}}
+.btnRefresh{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;}
+.searchBox{position:relative;display:inline-block;}
+.searchBox input{width:200px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;}
+.searchDropdown{position:absolute;top:100%;right:0;width:300px;max-height:200px;overflow-y:auto;background:white;border:1.5px solid var(--border);border-radius:8px;box-shadow:var(--shadow);z-index:200;display:none;}
+.searchDropdown.show{display:block;}
+.searchDropItem{padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);}
+.searchDropItem:hover{background:var(--bg);}
+.footer{text-align:center;padding:20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:20px;}
+@media print{
+  .topBar,.tabs,.actionBtns,.filterGroup,.btnRefresh,.btnDelete,.btnLogout{display:none!important;}
+  .content{padding:0!important;max-width:100%!important;}
+  .tableCard{box-shadow:none!important;border:1px solid #ddd;}
+  .footer{display:block!important;text-align:center;padding:10px;font-size:11px;}
+  body{font-size:12px;}
+  table{font-size:11px;}
+  thead{background:#1a3a5c!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{color:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .systemTag{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
 </style>
 </head>
 <body>
@@ -115,6 +134,7 @@ tbody td{padding:11px 14px;}
       <div class="topBarTitle">وحدة المرحلة المتوسطة</div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
+      <button class="btnRefresh" onclick="refreshData()" title="تحديث البيانات">🔄 تحديث</button>
       <span class="userBadge" id="topUserName"></span>
       <button class="btnLogout" onclick="doLogout()">خروج</button>
     </div>
@@ -136,10 +156,11 @@ tbody td{padding:11px 14px;}
         <div class="tableHeader">
           <h3>📋 سجل المهام المنجزة</h3>
           <div class="filterGroup">
-            <input type="text" id="searchInput" placeholder="🔍 بحث..." oninput="renderMyTasks()" style="width:140px"/>
+            <input type="text" id="searchInput" placeholder="🔍 بحث بالمهمة..." oninput="renderMyTasks()" style="width:150px"/>
             <select id="filterSystem" onchange="renderMyTasks()"><option value="">كل الأنظمة</option></select>
             <input type="date" id="dateFrom" onchange="renderMyTasks()" title="من تاريخ"/>
             <input type="date" id="dateTo" onchange="renderMyTasks()" title="إلى تاريخ"/>
+            <button class="btnClear" onclick="clearDateFilter()">مسح</button>
           </div>
         </div>
         <div class="actionBtns">
@@ -180,9 +201,21 @@ tbody td{padding:11px 14px;}
             </select>
           </div>
         </div>
-        <div class="formGroup"><label>الجهة المعنية</label>
-          <select id="taskTarget"><option value="">اختر الجهة</option></select>
+
+        <!-- الجهة المعنية مع بحث -->
+        <div class="formGroup">
+          <label>الجهة المعنية</label>
+          <input type="text" id="targetSearch" placeholder="🔍 ابحث باسم الجهة أو المدرسة..." oninput="filterTargets()" autocomplete="off"/>
+          <div class="searchDropdown" id="targetDropdown"></div>
+          <input type="hidden" id="taskTarget"/>
+          <div id="selectedTarget" style="margin-top:6px;font-size:13px;color:var(--primary);font-weight:600;"></div>
         </div>
+        <!-- خانة كتابة يدوية إذا اختار أخرى -->
+        <div class="formGroup" id="otherTargetGroup" style="display:none">
+          <label>اكتب اسم الجهة يدوياً</label>
+          <input type="text" id="otherTarget" placeholder="اكتب اسم الجهة..."/>
+        </div>
+
         <div class="formGroup"><label>تفاصيل إضافية</label>
           <textarea id="taskDetails" rows="3" placeholder="أي تفاصيل..."></textarea>
         </div>
@@ -202,6 +235,9 @@ tbody td{padding:11px 14px;}
     <div class="tabPane" id="myChart">
       <div class="sectionTitle">📊 إحصائياتي</div>
       <div class="statsGrid" id="chartStats"></div>
+      <div class="actionBtns" style="margin-bottom:16px">
+        <button class="btnExcel" onclick="exportChartExcel()">📥 تصدير إحصائيات Excel</button>
+      </div>
       <div class="chartCard"><h3>المهام حسب النظام</h3><div class="chartBars" id="systemChart"></div></div>
       <div class="chartCard"><h3>المهام حسب الشهر (آخر 6 أشهر)</h3><div class="chartBars" id="monthChart"></div></div>
     </div>
@@ -210,7 +246,7 @@ tbody td{padding:11px 14px;}
     <div class="tabPane" id="adminView">
       <div class="sectionTitle">🛡️ لوحة تحكم المدير</div>
       <div class="statsGrid" id="adminStats"></div>
-      <div class="chartCard"><h3>إنجازات الفريق</h3><div class="chartBars" id="empChart"></div></div>
+      <div class="chartCard"><h3>🏆 إنجازات الفريق</h3><div class="chartBars" id="empChart"></div></div>
       <div class="divider"></div>
       <div class="sectionTitle">أداء الموظفين</div>
       <div class="empGrid" id="empGrid"></div>
@@ -224,6 +260,7 @@ tbody td{padding:11px 14px;}
             <select id="adminFilterSys" onchange="renderAdminTable()"><option value="">كل الأنظمة</option></select>
             <input type="date" id="adminDateFrom" onchange="renderAdminTable()" title="من"/>
             <input type="date" id="adminDateTo" onchange="renderAdminTable()" title="إلى"/>
+            <button class="btnClear" onclick="clearAdminDateFilter()">مسح</button>
           </div>
         </div>
         <div class="actionBtns">
@@ -238,6 +275,11 @@ tbody td{padding:11px 14px;}
         </div>
       </div>
     </div>
+
+  </div>
+
+  <div class="footer">
+    إعداد وتصميم: <strong>ماجدة الفريدي</strong> — وحدة المرحلة المتوسطة — إدارة التعليم منطقة القصيم
   </div>
 </div>
 
@@ -247,35 +289,90 @@ tbody td{padding:11px 14px;}
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTBRQ2OsDwJhTM43BYl29maHdMuGoaOsHLeOdXnTvWHFM7T8g9rhKFj_aZbnQPEu33-Q/exec';
 
 const USERS = {
-  "فهد":     {pass:"fahad123", name:"فهد محمد العناز", role:"مدير",   isAdmin:true},
-  "ماجدة":   {pass:"majda123", name:"ماجدة الفريدي",   role:"إدارية", isAdmin:true},
-  "علي":     {pass:"ali123",   name:"علي الزامل",       role:"مشرف",   isAdmin:false},
-  "ندى":     {pass:"nada123",  name:"ندى الدباسي",      role:"مشرفة",  isAdmin:false},
-  "عبدالله": {pass:"1234",     name:"عبدالله الغضية",   role:"إداري",  isAdmin:false},
-  "تهاني":   {pass:"tahani123",name:"تهاني الجطيلي",   role:"إدارية", isAdmin:false},
-  "عائشة":   {pass:"aisha123", name:"عائشة العتيبي",   role:"إدارية", isAdmin:false},
-  "فاطمة":   {pass:"fatma123", name:"فاطمة الطبيعي",   role:"إدارية", isAdmin:false},
-  "هيفاء":   {pass:"haifa123", name:"هيفاء الشهوان",   role:"إدارية", isAdmin:false},
-  "أسماء":   {pass:"asma123",  name:"أسماء الزميع",    role:"إدارية", isAdmin:false},
+  "فهد":     {pass:"1111", name:"فهد محمد العناز", role:"مدير",   isAdmin:true,  color:"#1a3a5c"},
+  "ماجدة":   {pass:"2222", name:"ماجدة الفريدي",   role:"إدارية", isAdmin:true,  color:"#c8973a"},
+  "علي":     {pass:"3333", name:"علي الزامل",       role:"مشرف",   isAdmin:false, color:"#2e7d52"},
+  "ندى":     {pass:"4444", name:"ندى الدباسي",      role:"مشرفة",  isAdmin:false, color:"#6a1b9a"},
+  "عبدالله": {pass:"5555", name:"عبدالله الغضية",   role:"إداري",  isAdmin:false, color:"#1565c0"},
+  "تهاني":   {pass:"6666", name:"تهاني الجطيلي",   role:"إدارية", isAdmin:false, color:"#e65100"},
+  "عائشة":   {pass:"7777", name:"عائشة العتيبي",   role:"إدارية", isAdmin:false, color:"#880e4f"},
+  "فاطمة":   {pass:"8888", name:"فاطمة الطبيعي",   role:"إدارية", isAdmin:false, color:"#00695c"},
 };
 
 const ALL_SYSTEMS = {
-  "نور": ["اللقطة اليومية","متابعة المدارس المتأخرة في تثبيت الغياب والتواصل مع المدراء","الرصد في الاكسل وفرزها","حصر المدارس المتكررة في عدم التثبيت وإرسال خطابات التذكير","تحديث قاعدة بيانات مدراء ومديرات المدارس","متابعة رصد درجات الطلاب بالمدارس","متابعة فك الغياب لفترة معينة","فتح صلاحية غياب للمدارس","أخرى"],
-  "حضوري": ["اعتماد الاستئذان","حصر اسبوعي للغياب والاستئذان","معالجة كثرة الاستئذان والغياب","برنت الاكسل وتصديرها","أخرى"],
-  "أعمالي": ["معالجة بريد صادر","معالجة بريد وارد","أخرى"],
-  "فارس": ["اجازات موظفين الوحدة ومدراء المدارس","اعتماد أنشطة التطوير المهني للمدراء","نقل العهدة للمدراء","اعتماد الأداء الوظيفي والاهداف الوظيفية للكادر الإداري","تمديد التكليف للمدراء","اعتماد الأداء الوظيفي للمدراء والتابعين لهم","اعتماد التقاعد للمدراء","أخرى"],
-  "تواصل": ["الرد على التذاكر","تحرير خطابات التذاكر","تصدير تذاكر تواصل","أخرى"],
-  "البريد الإلكتروني": ["استلام بريد وارد","إرسال بريد صادر","متابعة ردود البريد","أرشفة المراسلات","أخرى"],
-  "خطابات": ["كتابة نماذج المخاطبات","شهادات شكر وتقدير","إفادات","أخرى"],
-  "متابعة أعمال الموظفين": ["تقرير أسبوعي للموظفين","متابعة إنجاز المهام","إنشاء ملف تفاعلي","تطوير وإدارة المنظومة الإدارية","أخرى"],
-  "إشراف": ["متابعة المدارس","زيارات إشرافية","تقارير الإشراف","أخرى"],
-  "إداري عام": ["مراجعة التقارير الأسبوعية","اعتماد الوثائق","متابعة أعمال الوحدة","الاجتماعات الإدارية","أخرى"],
+  "نور": {
+    "اللقطة اليومية": [],
+    "متابعة المدارس المتأخرة في تثبيت الغياب": ["التواصل مع المدراء","الرصد في الاكسل","إرسال خطابات التذكير"],
+    "حصر المدارس المتكررة في عدم التثبيت": [],
+    "تحديث قاعدة بيانات مدراء ومديرات المدارس": [],
+    "متابعة رصد درجات الطلاب بالمدارس": [],
+    "متابعة فك الغياب لفترة معينة": [],
+    "فتح صلاحية غياب للمدارس": [],
+    "أخرى": []
+  },
+  "حضوري": {
+    "اعتماد الاستئذان": [],
+    "حصر اسبوعي للغياب والاستئذان": [],
+    "معالجة كثرة الاستئذان والغياب": [],
+    "برنت الاكسل وتصديرها": [],
+    "أخرى": []
+  },
+  "أعمالي": {
+    "معالجة بريد صادر": [],
+    "معالجة بريد وارد": [],
+    "أخرى": []
+  },
+  "فارس": {
+    "اجازات موظفين الوحدة ومدراء المدارس": [],
+    "اعتماد أنشطة التطوير المهني للمدراء": [],
+    "نقل العهدة للمدراء": [],
+    "اعتماد الأداء الوظيفي والاهداف الوظيفية": [],
+    "تمديد التكليف للمدراء": [],
+    "اعتماد الأداء الوظيفي للمدراء والتابعين": [],
+    "اعتماد التقاعد للمدراء": [],
+    "أخرى": []
+  },
+  "تواصل": {
+    "الرد على التذاكر": [],
+    "تحرير خطابات التذاكر": [],
+    "تصدير تذاكر تواصل": [],
+    "أخرى": []
+  },
+  "البريد الإلكتروني": {
+    "استلام بريد وارد": [],
+    "إرسال بريد صادر": [],
+    "متابعة ردود البريد": [],
+    "أرشفة المراسلات": [],
+    "أخرى": []
+  },
+  "خطابات": {
+    "كتابة نماذج المخاطبات": [],
+    "شهادات شكر وتقدير": [],
+    "إفادات": [],
+    "أخرى": []
+  },
+  "متابعة أعمال الموظفين": {
+    "تقرير أسبوعي للموظفين": [],
+    "متابعة إنجاز المهام": [],
+    "تطوير وإدارة المنظومة الإدارية": [],
+    "أخرى": []
+  },
+  "إشراف": {
+    "متابعة المدارس": [],
+    "زيارات إشرافية": [],
+    "تقارير الإشراف": [],
+    "أخرى": []
+  },
+  "إداري عام": {
+    "مراجعة التقارير الأسبوعية": [],
+    "اعتماد الوثائق": [],
+    "متابعة أعمال الوحدة": [],
+    "الاجتماعات الإدارية": [],
+    "أخرى": []
+  },
 };
 
-// ===== قائمة الجهات المعنية =====
-// يمكن تعديل هذه القائمة مباشرة هنا
 const DEPARTMENTS = [
-  // ===== يمكن تعديل هذه القائمة وإضافة جهات جديدة =====
   "إدارة التعليم منطقة القصيم",
   "وحدة المرحلة المتوسطة",
   "وحدة المرحلة الابتدائية",
@@ -294,7 +391,7 @@ const DEPARTMENTS = [
   "قسم التوجيه الطلابي",
   "تصدير من وحدة المرحلة المتوسطة إلى مدراء المدارس",
   "تصدير من وحدة المرحلة المتوسطة لقسم الإدارة المدرسية",
-  // ===== أضيفي جهات جديدة هنا =====
+  "أخرى (اكتب يدوياً)",
 ];
 
 const SCHOOLS = [
@@ -924,7 +1021,13 @@ function doLogin() {
 }
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.searchBox') && !e.target.closest('#targetSearch') && !e.target.closest('#targetDropdown')) {
+      document.getElementById('targetDropdown').classList.remove('show');
+    }
+  });
 });
+
 function doLogout() {
   currentUser = null;
   document.getElementById('loginScreen').style.display = 'flex';
@@ -945,12 +1048,21 @@ async function initApp() {
   switchTab('myTasks', document.querySelector('.tab'));
 }
 
+async function refreshData() {
+  await loadFromSheet();
+  renderMyTasks();
+  renderMyChart();
+  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
+  showToast('✓ تم تحديث البيانات');
+}
+
 async function saveToSheet(task) {
   try { await fetch(SCRIPT_URL, {method:'POST', body:JSON.stringify(task)}); } catch(e) {}
 }
+
 async function loadFromSheet() {
   try {
-    const res = await fetch(SCRIPT_URL);
+    const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
     const data = await res.json();
     if (data.success && data.data.length > 1) {
       tasks = data.data.slice(1).map(r => ({
@@ -963,24 +1075,47 @@ async function loadFromSheet() {
     }
   } catch(e) {}
 }
+
 function saveTasks() { localStorage.setItem('whdaTasks', JSON.stringify(tasks)); }
+
+// SEARCH TARGET
+function filterTargets() {
+  const q = document.getElementById('targetSearch').value.trim();
+  const dropdown = document.getElementById('targetDropdown');
+  if (!q) { dropdown.classList.remove('show'); return; }
+  const filtered = ALL_TARGETS.filter(t => t.includes(q)).slice(0, 20);
+  if (!filtered.length) { dropdown.classList.remove('show'); return; }
+  dropdown.innerHTML = filtered.map(t =>
+    `<div class="searchDropItem" onclick="selectTarget('${t.replace(/'/g,"\'")}')">  ${t}</div>`
+  ).join('');
+  dropdown.classList.add('show');
+}
+
+function selectTarget(val) {
+  document.getElementById('targetSearch').value = val;
+  document.getElementById('taskTarget').value = val;
+  document.getElementById('selectedTarget').textContent = '';
+  document.getElementById('targetDropdown').classList.remove('show');
+  if (val === 'أخرى (اكتب يدوياً)') {
+    document.getElementById('otherTargetGroup').style.display = 'block';
+  } else {
+    document.getElementById('otherTargetGroup').style.display = 'none';
+  }
+}
 
 function buildTaskForm() {
   const sel = document.getElementById('taskSystem');
   sel.innerHTML = '<option value="">اختر النظام</option>';
   Object.keys(ALL_SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
   document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
-  const tsel = document.getElementById('taskTarget');
-  tsel.innerHTML = '<option value="">اختر الجهة</option><option value="أخرى">أخرى (اكتب يدوياً)</option>';
-  ALL_TARGETS.forEach(t => tsel.innerHTML += `<option value="${t}">${t}</option>`);
 }
 
 function loadTaskList() {
   const sys = document.getElementById('taskSystem').value;
-  const list = ALL_SYSTEMS[sys] || [];
+  const tasks_list = ALL_SYSTEMS[sys] ? Object.keys(ALL_SYSTEMS[sys]) : [];
   const sel = document.getElementById('taskName');
   sel.innerHTML = '<option value="">اختر المهمة</option>';
-  list.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
+  tasks_list.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
 }
 
 function submitTask() {
@@ -990,11 +1125,17 @@ function submitTask() {
   if (!sys) { alert('يرجى اختيار النظام'); return; }
   if (!name) { alert('يرجى اختيار المهمة'); return; }
   if (!date) { alert('يرجى اختيار تاريخ الإنجاز'); return; }
+
+  let target = document.getElementById('taskTarget').value || document.getElementById('targetSearch').value;
+  if (target === 'أخرى (اكتب يدوياً)') {
+    target = document.getElementById('otherTarget').value.trim();
+  }
+
   const task = {
     id: Date.now(), user: currentUser.key, userName: currentUser.name,
     date, system: sys, task: name,
     details: document.getElementById('taskDetails').value.trim(),
-    target: document.getElementById('taskTarget').value.trim(),
+    target: target,
     link: document.getElementById('taskLink').value.trim(),
     note: document.getElementById('taskNote').value.trim(),
     gender: document.getElementById('taskGender').value,
@@ -1002,13 +1143,16 @@ function submitTask() {
   tasks.push(task);
   saveTasks();
   saveToSheet(task);
-  ['taskDetails','taskLink','taskNote'].forEach(id => document.getElementById(id).value = '');
+
+  ['taskDetails','taskLink','taskNote','targetSearch','otherTarget'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('taskTarget').value = '';
   document.getElementById('taskSystem').value = '';
   document.getElementById('taskName').innerHTML = '<option value="">اختر النظام أولاً</option>';
-  document.getElementById('taskTarget').value = '';
   document.getElementById('taskGender').value = 'الكل';
   document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
-  showToast();
+  document.getElementById('otherTargetGroup').style.display = 'none';
+
+  showToast('✓ تم تسجيل المهمة بنجاح');
   renderMyTasks(); renderMyChart();
   if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
   switchTab('myTasks', document.querySelectorAll('.tab')[0]);
@@ -1020,6 +1164,18 @@ function deleteTask(id) {
   saveTasks();
   renderMyTasks(); renderMyChart();
   if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
+}
+
+function clearDateFilter() {
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  renderMyTasks();
+}
+
+function clearAdminDateFilter() {
+  document.getElementById('adminDateFrom').value = '';
+  document.getElementById('adminDateTo').value = '';
+  renderAdminTable();
 }
 
 function populateSystemFilter() {
@@ -1061,7 +1217,7 @@ function renderMyTasks() {
       <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
       <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
       <td>${t.note||'—'}</td>
-      <td><button class="btnDelete" onclick="deleteTask(${t.id})" title="حذف">🗑️</button></td>
+      <td><button class="btnDelete" onclick="deleteTask(${t.id})">🗑️</button></td>
     </tr>`).join('');
 }
 
@@ -1073,19 +1229,20 @@ function renderMyChart() {
     <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">هذا الشهر</div></div>
     <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
   `;
+  const colors = ['#1a3a5c','#c8973a','#2e7d52','#6a1b9a','#1565c0','#e65100','#880e4f','#00695c','#37474f','#bf360c'];
   const sysCounts = {};
   allMine.forEach(t=>{ sysCounts[t.system]=(sysCounts[t.system]||0)+1; });
   const maxSys = Math.max(...Object.values(sysCounts),1);
-  document.getElementById('systemChart').innerHTML = Object.entries(sysCounts).map(([s,c])=>`
+  document.getElementById('systemChart').innerHTML = Object.entries(sysCounts).map(([s,c],i)=>`
     <div class="chartBar"><div class="chartBarNum">${c}</div>
-    <div class="chartBarInner" style="height:${Math.max((c/maxSys)*120,4)}px"></div>
+    <div class="chartBarInner" style="height:${Math.max((c/maxSys)*130,4)}px;background:${colors[i%colors.length]};"></div>
     <div class="chartBarLabel">${s}</div></div>`).join('') || '<p style="color:var(--text-muted);padding:20px">لا توجد بيانات</p>';
   const months=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
   const mc=months.map(m=>allMine.filter(t=>t.date&&t.date.startsWith(m)).length);
   const maxM=Math.max(...mc,1);
   document.getElementById('monthChart').innerHTML = months.map((m,i)=>`
     <div class="chartBar"><div class="chartBarNum">${mc[i]}</div>
-    <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*120,4)}px"></div>
+    <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*130,4)}px;background:${colors[i%colors.length]};"></div>
     <div class="chartBarLabel">${m.slice(5)}</div></div>`).join('');
 }
 
@@ -1099,27 +1256,35 @@ function renderAdminStats() {
     <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>
   `;
 }
+
 function renderEmpChart() {
-  const ec=Object.entries(USERS).map(([k,u])=>({name:u.name.split(' ')[0],count:tasks.filter(t=>t.user===k).length}));
-  const max=Math.max(...ec.map(e=>e.count),1);
-  document.getElementById('empChart').innerHTML=ec.map(e=>`
-    <div class="chartBar"><div class="chartBarNum">${e.count}</div>
-    <div class="chartBarInner" style="height:${Math.max((e.count/max)*120,4)}px"></div>
-    <div class="chartBarLabel">${e.name}</div></div>`).join('');
-}
-function renderEmpGrid() {
-  document.getElementById('empGrid').innerHTML=Object.entries(USERS).map(([k,u])=>{
-    const count=tasks.filter(t=>t.user===k).length;
-    return `<div class="empCard" onclick="filterByEmp('${k}')">
-      <div class="empName">${u.name}</div><div class="empRole">${u.role}</div>
-      <div class="empCount">${count}</div><div class="empCountLabel">مهمة منجزة</div></div>`;
+  const entries = Object.entries(USERS);
+  const max = Math.max(...entries.map(([k])=>tasks.filter(t=>t.user===k).length),1);
+  document.getElementById('empChart').innerHTML = entries.map(([k,u])=>{
+    const count = tasks.filter(t=>t.user===k).length;
+    return `<div class="chartBar">
+      <div class="chartBarNum">${count}</div>
+      <div class="chartBarInner" style="height:${Math.max((count/max)*130,4)}px;background:${u.color};"></div>
+      <div class="chartBarLabel">${u.name.split(' ')[0]}</div></div>`;
   }).join('');
 }
+
+function renderEmpGrid() {
+  document.getElementById('empGrid').innerHTML = Object.entries(USERS).map(([k,u])=>{
+    const count = tasks.filter(t=>t.user===k).length;
+    return `<div class="empCard" onclick="filterByEmp('${k}')" style="border-top-color:${u.color}">
+      <div class="empName">${u.name}</div><div class="empRole">${u.role}</div>
+      <div class="empCount" style="color:${u.color}">${count}</div>
+      <div class="empCountLabel">مهمة منجزة</div></div>`;
+  }).join('');
+}
+
 function filterByEmp(key) {
   document.getElementById('adminFilterEmp').value=key;
   renderAdminTable();
   switchTab('adminView',document.getElementById('adminTab'));
 }
+
 function populateAdminFilters() {
   const es=document.getElementById('adminFilterEmp');
   es.innerHTML='<option value="">كل الموظفين</option>';
@@ -1128,6 +1293,7 @@ function populateAdminFilters() {
   ss.innerHTML='<option value="">كل الأنظمة</option>';
   Object.keys(ALL_SYSTEMS).forEach(s=>ss.innerHTML+=`<option value="${s}">${s}</option>`);
 }
+
 function renderAdminTable() {
   const empF=document.getElementById('adminFilterEmp').value;
   let list=tasks.slice();
@@ -1136,44 +1302,125 @@ function renderAdminTable() {
   list=list.slice().reverse();
   const tbody=document.getElementById('adminTasksBody');
   if(!list.length){tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`;return;}
-  tbody.innerHTML=list.map((t,i)=>`
-    <tr><td>${list.length-i}</td><td>${formatDate(t.date)}</td><td>${t.userName}</td>
-    <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
-    <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
-    <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
-    <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
-    <td>${t.note||'—'}</td></tr>`).join('');
+  tbody.innerHTML=list.map((t,i)=>{
+    const uColor = USERS[t.user]?USERS[t.user].color:'var(--primary)';
+    return `<tr>
+      <td>${list.length-i}</td><td>${formatDate(t.date)}</td>
+      <td style="color:${uColor};font-weight:600">${t.userName}</td>
+      <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
+      <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
+      <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
+      <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
+      <td>${t.note||'—'}</td></tr>`;
+  }).join('');
 }
 
 function exportExcel(type) {
-  let list=type==='admin'?tasks:tasks.filter(t=>currentUser.isAdmin?true:t.user===currentUser.key);
-  list=list.slice().reverse();
-  const h=type==='admin'
-    ?['#','التاريخ','الموظف','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة']
-    :['#','التاريخ','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة'];
-  const rows=list.map((t,i)=>type==='admin'
-    ?[list.length-i,t.date,t.userName,t.system,t.gender||'الكل',t.task,t.details||'',t.target||'',t.note||'']
-    :[list.length-i,t.date,t.system,t.gender||'الكل',t.task,t.details||'',t.target||'',t.note||'']);
-  const ws=XLSX.utils.aoa_to_sheet([h,...rows]);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'المهام');
-  XLSX.writeFile(wb,`مهام_الوحدة_${new Date().toISOString().slice(0,10)}.xlsx`);
+  try {
+    let list = type==='admin' ? tasks : tasks.filter(t=>currentUser.isAdmin?true:t.user===currentUser.key);
+    if (!list.length) { alert('لا توجد بيانات للتصدير'); return; }
+    list = list.slice().reverse();
+    const h = type==='admin'
+      ?['#','التاريخ','الموظف','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة']
+      :['#','التاريخ','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة'];
+    const rows = list.map((t,i)=> type==='admin'
+      ?[list.length-i, t.date||'', t.userName||'', t.system||'', t.gender||'الكل', t.task||'', t.details||'', t.target||'', t.note||'']
+      :[list.length-i, t.date||'', t.system||'', t.gender||'الكل', t.task||'', t.details||'', t.target||'', t.note||'']);
+
+    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8">
+    <style>
+      body{direction:rtl;font-family:Tahoma,Arial,sans-serif;}
+      table{border-collapse:collapse;width:100%;direction:rtl;}
+      th{background-color:#1A3A5C;color:white;font-weight:bold;padding:10px 12px;border:1px solid #C8973A;font-size:13px;text-align:right;}
+      td{padding:8px 12px;border:1px solid #DCE6F0;font-size:12px;text-align:right;}
+      tr:nth-child(even) td{background-color:#F0F4F8;}
+      tr:nth-child(odd) td{background-color:#FFFFFF;}
+      .title{background-color:#C8973A;color:white;font-size:15px;font-weight:bold;padding:12px;text-align:center;border:2px solid #1A3A5C;}
+      .footer{color:#6b7c93;font-size:11px;text-align:center;padding:8px;}
+    </style></head><body>
+    <table>
+      <tr><td colspan="${h.length}" class="title">سجل مهام وحدة المرحلة المتوسطة — إدارة التعليم منطقة القصيم</td></tr>
+      <tr>${h.map(col=>`<th>${col}</th>`).join('')}</tr>
+      ${rows.map(row=>`<tr>${row.map(cell=>`<td>${cell||''}</td>`).join('')}</tr>`).join('')}
+      <tr><td colspan="${h.length}" class="footer">إعداد وتصميم: ماجدة الفريدي | تاريخ التصدير: ${new Date().toLocaleDateString('ar-SA')}</td></tr>
+    </table></body></html>`;
+
+    const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `مهام_الوحدة_${new Date().toISOString().slice(0,10)}.xls`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('حدث خطأ في التصدير');
+    console.error(e);
+  }
+}
+
+function exportChartExcel() {
+  try {
+    const allMine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
+    if (!allMine.length) { alert('لا توجد بيانات للتصدير'); return; }
+    const sysCounts = {};
+    allMine.forEach(t=>{ sysCounts[t.system]=(sysCounts[t.system]||0)+1; });
+    const sorted = Object.entries(sysCounts).sort((a,b)=>b[1]-a[1]);
+
+    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8">
+    <style>
+      body{direction:rtl;font-family:Tahoma,Arial,sans-serif;}
+      table{border-collapse:collapse;width:60%;direction:rtl;}
+      th{background-color:#C8973A;color:white;font-weight:bold;padding:10px 14px;border:1px solid #1A3A5C;font-size:13px;text-align:right;}
+      td{padding:8px 14px;border:1px solid #DCE6F0;font-size:12px;text-align:right;}
+      tr:nth-child(even) td{background-color:#F0F4F8;}
+      .title{background-color:#1A3A5C;color:white;font-size:15px;font-weight:bold;padding:12px;text-align:center;}
+      .footer{color:#6b7c93;font-size:11px;text-align:center;padding:8px;}
+    </style></head><body>
+    <table>
+      <tr><td colspan="2" class="title">إحصائيات المهام — وحدة المرحلة المتوسطة</td></tr>
+      <tr><th>النظام</th><th>عدد المهام</th></tr>
+      ${sorted.map(([s,c])=>`<tr><td>${s}</td><td style="text-align:center;font-weight:bold;color:#1A3A5C">${c}</td></tr>`).join('')}
+      <tr><td style="font-weight:bold;background:#1A3A5C;color:white">الإجمالي</td><td style="font-weight:bold;text-align:center;background:#1A3A5C;color:white">${allMine.length}</td></tr>
+      <tr><td colspan="2" class="footer">إعداد وتصميم: ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
+    </table></body></html>`;
+
+    const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `إحصائيات_${new Date().toISOString().slice(0,10)}.xls`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('حدث خطأ في التصدير');
+    console.error(e);
+  }
 }
 
 function getTagClass(sys){
   const m={'نور':'tag-نور','حضوري':'tag-حضوري','أعمالي':'tag-أعمالي','فارس':'tag-فارس','تواصل':'tag-تواصل','البريد الإلكتروني':'tag-بريد','خطابات':'tag-خطابات'};
   return m[sys]||'tag-default';
 }
+
 function switchTab(id,el){
   document.querySelectorAll('.tabPane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(el)el.classList.add('active');
-  if(id==='myChart')renderMyChart();
-  if(id==='adminView'&&currentUser.isAdmin){renderAdminStats();renderEmpGrid();renderAdminTable();renderEmpChart();}
+  if(id==='myChart') renderMyChart();
+  if(id==='adminView'&&currentUser&&currentUser.isAdmin){renderAdminStats();renderEmpGrid();renderAdminTable();renderEmpChart();}
 }
-function formatDate(d){if(!d)return '—';const[y,m,day]=d.split('-');return `${day}/${m}/${y}`;}
-function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+function formatDate(d){if(!d)return '—';const[y,m,day]=String(d).split('-');return `${day}/${m}/${y}`;}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent = msg || '✓ تم بنجاح';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
 </script>
 </body>
 </html>
