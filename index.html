@@ -4,411 +4,431 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وحدة دعم التميز المدرسي — 1448هـ</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
-:root{--primary:#1b4332;--primary-light:#2d6a4f;--accent:#b7950b;--accent-light:#d4ac0d;--bg:#f0f4f8;--card:#fff;--text:#1a2535;--text-muted:#6b7c93;--border:#dce6f0;--success:#2e7d52;--danger:#c0392b;--shadow:0 4px 20px rgba(26,58,92,0.10);--radius:14px;}
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+:root{
+  --primary:#1b4332;--primary-light:#2d6a4f;--primary-pale:#d8f3dc;
+  --gold:#b7950b;--gold-light:#d4ac0d;--gold-pale:#fef9e7;
+  --navy:#0d1b2a;--bg:#f4f7f4;--card:#fff;
+  --text:#0d1b2a;--muted:#6b7c6b;--border:#cde0cd;
+  --success:#1b4332;--danger:#c0392b;--warn:#e67e22;--info:#1565c0;
+  --shadow:0 2px 16px rgba(27,67,50,0.09);--radius:12px;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 60%,#3a7bd5 100%);position:relative;overflow:hidden;}
-#loginScreen::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(200,151,58,0.12);top:-100px;left:-100px;}
-.loginCard{background:white;border-radius:24px;padding:48px 40px;width:380px;max-width:95vw;box-shadow:0 24px 60px rgba(0,0,0,0.25);position:relative;z-index:2;text-align:center;}
-.loginLogo{width:72px;height:72px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;}
-.loginTitle{font-size:22px;font-weight:800;color:var(--primary);margin-bottom:4px;}
-.loginSub{font-size:13px;color:var(--text-muted);margin-bottom:32px;}
-.formGroup{margin-bottom:16px;text-align:right;}
-.formGroup label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
-.formGroup input,.formGroup select,.formGroup textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;color:var(--text);background:var(--bg);transition:border-color 0.2s;direction:rtl;}
-.formGroup input:focus,.formGroup select:focus,.formGroup textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
-.btnPrimary{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border:none;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
-.errMsg{color:var(--danger);font-size:13px;margin-top:10px;display:none;}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#0d2b1a 0%,#1b4332 40%,#2d6a4f 100%);
+  position:relative;overflow:hidden;}
+#loginScreen::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;
+  background:rgba(183,149,11,0.08);top:-150px;right:-100px;}
+#loginScreen::after{content:'';position:absolute;width:350px;height:350px;border-radius:50%;
+  background:rgba(255,255,255,0.04);bottom:-80px;left:-80px;}
+.loginCard{background:white;border-radius:22px;padding:44px 38px;width:400px;max-width:95vw;
+  box-shadow:0 32px 80px rgba(0,0,0,0.28);position:relative;z-index:2;text-align:center;}
+.loginLogo{width:72px;height:72px;margin:0 auto 18px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(27,67,50,0.25);}
+.loginLogoSvg{width:40px;height:40px;}
+.loginTitle{font-size:19px;font-weight:900;color:var(--primary);margin-bottom:3px;}
+.loginSub{font-size:12px;color:var(--muted);margin-bottom:3px;}
+.loginYear{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:28px;}
+.fg{margin-bottom:14px;text-align:right;}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:9px;font-family:'Tajawal',sans-serif;font-size:14px;color:var(--text);
+  background:var(--bg);direction:rtl;transition:border-color 0.2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
+.btnLogin{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  color:white;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;
+  font-size:15px;font-weight:800;cursor:pointer;margin-top:6px;
+  transition:opacity 0.2s;}
+.btnLogin:hover{opacity:0.9;}
+.errMsg{color:var(--danger);font-size:12px;margin-top:8px;display:none;}
+
+/* APP */
 #appScreen{display:none;}
-.topBar{background:var(--primary);color:white;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.15);}
-.topBarRight{display:flex;align-items:center;gap:12px;}
-.topBarLogo{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.topBarTitle{font-size:16px;font-weight:700;}
-.userBadge{background:rgba(255,255,255,0.15);padding:5px 12px;border-radius:20px;font-size:13px;}
-.btnLogout{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;}
-.tabs{background:white;border-bottom:2px solid var(--border);display:flex;padding:0 16px;gap:2px;overflow-x:auto;}
-.tab{padding:14px 16px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-2px;}
-.tab.active{color:var(--primary);border-bottom-color:var(--accent);}
-.content{max-width:1100px;margin:0 auto;padding:24px 16px;}
+.topBar{background:var(--primary);color:white;padding:0 20px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.18);}
+.topLeft{display:flex;align-items:center;gap:10px;}
+.topLogoSvg{width:30px;height:30px;}
+.topTitle{font-size:15px;font-weight:800;}
+.topRight{display:flex;align-items:center;gap:7px;}
+.userBadge{background:rgba(255,255,255,0.15);padding:4px 11px;border-radius:16px;font-size:12px;}
+.btnTop{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);
+  color:white;padding:5px 11px;border-radius:7px;cursor:pointer;
+  font-family:'Tajawal',sans-serif;font-size:12px;transition:background 0.2s;}
+.btnTop:hover{background:rgba(255,255,255,0.2);}
+
+/* TABS */
+.tabs{background:white;border-bottom:2px solid var(--border);
+  display:flex;padding:0 16px;gap:2px;overflow-x:auto;}
+.tab{padding:13px 14px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;
+  color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;
+  cursor:pointer;white-space:nowrap;margin-bottom:-2px;transition:all 0.2s;}
+.tab.active{color:var(--primary);border-bottom-color:var(--gold);}
+
+.content{max-width:1100px;margin:0 auto;padding:22px 16px;}
 .tabPane{display:none;}.tabPane.active{display:block;}
-.statsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
-.statCard{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border-right:4px solid var(--accent);}
-.statNum{font-size:32px;font-weight:800;color:var(--primary);line-height:1;}
-.statLabel{font-size:12px;color:var(--text-muted);margin-top:4px;}
-.formCard{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:24px;}
-.formCard h3{font-size:16px;font-weight:700;color:var(--primary);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);}
-.formRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:600px){.formRow{grid-template-columns:1fr;}}
-.btnAccent{padding:12px 24px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;border:none;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
-.tableCard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px;}
-.tableHeader{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px;}
-.tableHeader h3{font-size:15px;font-weight:700;color:var(--primary);}
-.filterGroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-.filterGroup select,.filterGroup input[type=text],.filterGroup input[type=date]{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;background:var(--bg);}
-.btnClear{padding:7px 10px;background:var(--danger);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
+.secTitle{font-size:17px;font-weight:900;color:var(--primary);margin-bottom:16px;}
+
+/* STATS */
+.statsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px;}
+.statCard{background:var(--card);border-radius:var(--radius);padding:16px 18px;
+  box-shadow:var(--shadow);border-right:4px solid var(--gold);}
+.statNum{font-size:30px;font-weight:900;color:var(--primary);line-height:1;}
+.statLabel{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* FORM */
+.formCard{background:var(--card);border-radius:var(--radius);padding:22px;
+  box-shadow:var(--shadow);margin-bottom:20px;}
+.formCard h3{font-size:15px;font-weight:800;color:var(--primary);
+  margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.formRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:600px){.formRow{grid-template-columns:1fr;}.statsGrid{grid-template-columns:1fr 1fr;}}
+.btnGold{padding:11px 22px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:white;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;
+  font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;}
+.btnGreen{padding:11px 22px;background:var(--primary);color:white;border:none;
+  border-radius:9px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-top:8px;margin-right:8px;}
+
+/* TABLE */
+.tableCard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  overflow:hidden;margin-bottom:18px;}
+.tableHeader{padding:14px 18px;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px;}
+.tableHeader h3{font-size:14px;font-weight:800;color:var(--primary);}
+.fg2{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.fg2 select,.fg2 input{padding:6px 10px;border:1.5px solid var(--border);
+  border-radius:7px;font-family:'Tajawal',sans-serif;font-size:12px;background:var(--bg);}
+.btnClear{padding:6px 10px;background:var(--danger);color:white;border:none;
+  border-radius:7px;font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
 thead{background:var(--primary);color:white;}
-thead th{padding:11px 14px;text-align:right;font-weight:600;font-size:12px;}
-tbody tr{border-bottom:1px solid var(--border);}
-tbody tr:hover{background:#f5f8fc;}
-tbody td{padding:11px 14px;}
-.systemTag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
-.tag-نور{background:#e8f4fd;color:#1565c0;}
-.tag-حضوري{background:#e8f5e9;color:#2e7d32;}
-.tag-أعمالي{background:#fff3e0;color:#e65100;}
-.tag-فارس{background:#f3e5f5;color:#6a1b9a;}
-.tag-تواصل{background:#e0f2f1;color:#00695c;}
-.tag-بريد{background:#e8eaf6;color:#283593;}
-.tag-خطابات{background:#fce4ec;color:#880e4f;}
-.tag-default{background:#f0f4f8;color:#1a3a5c;}
-.genderTag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;}
-.g-بنين{background:#e3f2fd;color:#1565c0;}
-.g-بنات{background:#fce4ec;color:#880e4f;}
-.g-الكل{background:#f0f4f8;color:#455a64;}
-.chartCard{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
-.chartCard h3{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;}
-.chartBars{display:flex;align-items:flex-end;gap:8px;height:160px;overflow-x:auto;padding-bottom:4px;}
-.chartBar{min-width:50px;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
-.chartBarInner{width:80%;border-radius:6px 6px 0 0;min-height:4px;transition:height 0.5s;}
-.chartBarLabel{font-size:10px;color:var(--text-muted);text-align:center;word-break:break-all;}
-.chartBarNum{font-size:12px;font-weight:700;color:var(--primary);}
-.empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
-.empCard{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;border-top:4px solid var(--primary);}
+thead th{padding:10px 12px;text-align:right;font-weight:700;font-size:11px;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
+tbody tr:hover{background:#f0f7f0;}
+tbody td{padding:10px 12px;}
+.tdWrap{max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
+.b-done{background:#d8f3dc;color:var(--primary);}
+.b-prog{background:#fff3cd;color:#856404;}
+.b-follow{background:#fff8e1;color:#f57f17;}
+.b-late{background:#fde8e8;color:var(--danger);}
+
+.typeBadge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;}
+.t0{background:#d8f3dc;color:#1b4332;}
+.t1{background:#e8f4fd;color:#1565c0;}
+.t2{background:#fff3e0;color:#e65100;}
+.t3{background:#f3e5f5;color:#6a1b9a;}
+.t4{background:#fce4ec;color:#880e4f;}
+.t5{background:#e0f2f1;color:#00695c;}
+.t6{background:#e8eaf6;color:#283593;}
+.t7{background:#fff8e1;color:#f57f17;}
+.t8{background:#fde8e8;color:#c0392b;}
+.t9{background:#e8f4fd;color:#0277bd;}
+
+/* CHART */
+.chartCard{background:var(--card);border-radius:var(--radius);padding:18px;
+  box-shadow:var(--shadow);margin-bottom:18px;}
+.chartCard h3{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;}
+.chartBars{display:flex;align-items:flex-end;gap:7px;height:140px;overflow-x:auto;padding-bottom:4px;}
+.chartBar{min-width:48px;flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.chartBarInner{width:76%;border-radius:5px 5px 0 0;min-height:4px;transition:height 0.5s;}
+.chartBarLabel{font-size:9px;color:var(--muted);text-align:center;word-break:break-all;line-height:1.2;}
+.chartBarNum{font-size:11px;font-weight:800;color:var(--primary);}
+
+/* EMP */
+.empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:20px;}
+.empCard{background:var(--card);border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;border-top:4px solid var(--primary);}
 .empCard:hover{transform:translateY(-2px);}
-.empName{font-size:14px;font-weight:700;color:var(--primary);}
-.empRole{font-size:11px;color:var(--text-muted);}
-.empCount{font-size:26px;font-weight:800;margin-top:10px;}
-.empCountLabel{font-size:11px;color:var(--text-muted);}
-.emptyState{text-align:center;padding:40px;color:var(--text-muted);}
-.emptyIcon{font-size:40px;margin-bottom:10px;}
-.sectionTitle{font-size:18px;font-weight:800;color:var(--primary);margin-bottom:16px;}
-.divider{height:1px;background:var(--border);margin:20px 0;}
-.successToast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--success);color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;transition:transform 0.3s;}
-.successToast.show{transform:translateX(-50%) translateY(0);}
-.actionBtns{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px 0;}
-.btnPrint{padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
-.btnExcel{padding:8px 16px;background:#217346;color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
-.btnDelete{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:2px 6px;}
-.btnRefresh{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;}
-.searchBox{position:relative;display:inline-block;}
-.searchBox input{width:200px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;}
-.searchDropdown{position:absolute;top:100%;right:0;width:300px;max-height:200px;overflow-y:auto;background:white;border:1.5px solid var(--border);border-radius:8px;box-shadow:var(--shadow);z-index:200;display:none;}
-.searchDropdown.show{display:block;}
-.searchDropItem{padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);}
-.searchDropItem:hover{background:var(--bg);}
-.footer{text-align:center;padding:20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:20px;}
+.empName{font-size:13px;font-weight:800;color:var(--primary);}
+.empRole{font-size:10px;color:var(--muted);margin-top:2px;}
+.empCount{font-size:24px;font-weight:900;margin-top:8px;}
+.empCountLabel{font-size:10px;color:var(--muted);}
+
+/* SEARCH DROP */
+.dropWrap{position:relative;}
+.searchDrop{position:absolute;top:100%;right:0;width:100%;max-height:180px;
+  overflow-y:auto;background:white;border:1.5px solid var(--border);
+  border-radius:8px;box-shadow:var(--shadow);z-index:200;display:none;}
+.searchDrop.show{display:block;}
+.dropItem{padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--border);}
+.dropItem:hover{background:var(--bg);}
+
+/* ACTIONS */
+.actionBtns{display:flex;gap:8px;flex-wrap:wrap;padding:10px 18px 0;}
+.btnPrint{padding:7px 14px;background:var(--primary);color:white;border:none;
+  border-radius:7px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
+.btnExcel{padding:7px 14px;background:#217346;color:white;border:none;
+  border-radius:7px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
+.btnDel{background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px;padding:2px 5px;}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--primary);color:white;padding:11px 22px;border-radius:10px;
+  font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;transition:transform 0.3s;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.emptyState{text-align:center;padding:36px;color:var(--muted);}
+.emptyIcon{font-size:36px;margin-bottom:8px;}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+.footer{text-align:left;padding:16px 20px;font-size:11px;color:var(--muted);
+  border-top:1px solid var(--border);margin-top:20px;}
+
 @media print{
-  .topBar,.tabs,.actionBtns,.filterGroup,.btnRefresh,.btnDelete,.btnLogout{display:none!important;}
+  .topBar,.tabs,.actionBtns,.fg2,.btnDel,.btnTop{display:none!important;}
   .content{padding:0!important;max-width:100%!important;}
-  .tableCard{box-shadow:none!important;border:1px solid #ddd;}
-  .footer{display:block!important;text-align:center;padding:10px;font-size:11px;}
-  body{font-size:12px;}
-  table{font-size:11px;}
-  thead{background:#1a3a5c!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  thead th{color:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .systemTag{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .tableCard{box-shadow:none!important;}
+  .footer{display:block!important;}
+  thead{background:var(--primary)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{color:white!important;}
 }
 </style>
 </head>
 <body>
 
+<!-- ===== LOGIN ===== -->
 <div id="loginScreen">
-  <div class="loginCard">
-    <div class="loginLogo">🏆</div>
-    <div class="loginTitle">وحدة دعم التميز المدرسي</div>
-    <div class="loginSub">إدارة التعليم — منطقة القصيم | 1448هـ</div>
-    <div class="formGroup"><label>اسم المستخدم</label><input type="text" id="loginUser" placeholder="أدخل اسمك"/></div>
-    <div class="formGroup"><label>كلمة السر</label><input type="password" id="loginPass" placeholder="••••••"/></div>
-    <button class="btnPrimary" onclick="doLogin()">دخول</button>
-    <div class="errMsg" id="loginErr">اسم المستخدم أو كلمة السر غير صحيحة</div>
+<div class="loginCard">
+  <div class="loginLogo">
+    <svg class="loginLogoSvg" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#b7950b" stroke-width="2.5"/>
+      <path d="M20 30 L20 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M13 19 L20 12 L27 19" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 26 Q20 22 26 26" stroke="#b7950b" stroke-width="2" stroke-linecap="round"/>
+    </svg>
   </div>
+  <div class="loginTitle">وحدة دعم التميز المدرسي</div>
+  <div class="loginSub">إدارة التعليم — منطقة القصيم</div>
+  <div class="loginYear">العام الدراسي 1448هـ</div>
+  <div class="fg"><label>اسم المستخدم</label>
+    <input type="text" id="loginUser" placeholder="أدخل اسمك"/></div>
+  <div class="fg"><label>كلمة السر</label>
+    <input type="password" id="loginPass" placeholder="••••••"/></div>
+  <button class="btnLogin" onclick="doLogin()">دخول</button>
+  <div class="errMsg" id="loginErr">اسم المستخدم أو كلمة السر غير صحيحة</div>
+</div>
 </div>
 
+<!-- ===== APP ===== -->
 <div id="appScreen">
-  <div class="topBar">
-    <div class="topBarRight">
-      <div class="topBarLogo">🏆</div>
-      <div class="topBarTitle">وحدة دعم التميز المدرسي</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <button class="btnRefresh" onclick="refreshData()" title="تحديث البيانات">🔄 تحديث</button>
-      <span class="userBadge" id="topUserName"></span>
-      <button class="btnLogout" onclick="doLogout()">خروج</button>
-    </div>
+<div class="topBar">
+  <div class="topLeft">
+    <svg class="topLogoSvg" viewBox="0 0 30 30" fill="none">
+      <circle cx="15" cy="15" r="13" stroke="#b7950b" stroke-width="2"/>
+      <path d="M15 22 L15 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 14 L15 9 L20 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 20 Q15 17 20 20" stroke="#b7950b" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="topTitle">وحدة دعم التميز المدرسي</span>
   </div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('myTasks',this)">📋 أعمالي</button>
-    <button class="tab" onclick="switchTab('addTask',this)">➕ تسجيل عمل</button>
-    <button class="tab" onclick="switchTab('myChart',this)">📊 إحصائياتي</button>
-    <button class="tab" id="adminTab" style="display:none" onclick="switchTab('adminView',this)">🛡️ لوحة القيادة</button>
-  </div>
-
-  <div class="content">
-
-    <!-- مهامي -->
-    <div class="tabPane active" id="myTasks">
-      <div class="statsGrid" id="myStats"></div>
-      <div class="tableCard">
-        <div class="tableHeader">
-          <h3>📋 سجل المهام المنجزة</h3>
-          <div class="filterGroup">
-            <input type="text" id="searchInput" placeholder="🔍 بحث بالمهمة..." oninput="renderMyTasks()" style="width:150px"/>
-            <select id="filterSystem" onchange="renderMyTasks()"><option value="">كل الأنظمة</option></select>
-            <input type="date" id="dateFrom" onchange="renderMyTasks()" title="من تاريخ"/>
-            <input type="date" id="dateTo" onchange="renderMyTasks()" title="إلى تاريخ"/>
-            <button class="btnClear" onclick="clearDateFilter()">مسح</button>
-          </div>
-        </div>
-        <div class="actionBtns">
-          <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
-          <button class="btnExcel" onclick="exportExcel('my')">📥 Excel</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead><tr><th>#</th><th>التاريخ</th><th>النظام</th><th>الجنس</th><th>المهمة</th><th>التفاصيل</th><th>الجهة المعنية</th><th>مرفق</th><th>ملاحظة</th><th>حذف</th></tr></thead>
-            <tbody id="myTasksBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- تسجيل مهمة -->
-    <div class="tabPane" id="addTask">
-      <div class="formCard">
-        <h3>✅ تسجيل عمل جديد</h3>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">سجّل العمل بعد إنجازه</p>
-        <div class="formRow">
-          <div class="formGroup"><label>النظام *</label>
-            <select id="taskSystem" onchange="loadTaskList()"><option value="">اختر النظام</option></select>
-          </div>
-          <div class="formGroup"><label>المهمة *</label>
-            <select id="taskName"><option value="">اختر النظام أولاً</option></select>
-          </div>
-        </div>
-        <div class="formRow">
-          <div class="formGroup"><label>تاريخ الإنجاز *</label>
-            <input type="date" id="taskDate"/>
-          </div>
-          <div class="formGroup"><label>جنس المهمة</label>
-            <select id="taskGender">
-              <option value="الكل">الكل</option>
-              <option value="بنين">بنين</option>
-              <option value="بنات">بنات</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- الجهة المعنية مع بحث -->
-        <div class="formGroup">
-          <label>الجهة المعنية</label>
-          <input type="text" id="targetSearch" placeholder="🔍 ابحث باسم الجهة أو المدرسة..." oninput="filterTargets()" autocomplete="off"/>
-          <div class="searchDropdown" id="targetDropdown"></div>
-          <input type="hidden" id="taskTarget"/>
-          <div id="selectedTarget" style="margin-top:6px;font-size:13px;color:var(--primary);font-weight:600;"></div>
-        </div>
-        <!-- خانة كتابة يدوية إذا اختار أخرى -->
-        <div class="formGroup" id="otherTargetGroup" style="display:none">
-          <label>اكتب اسم الجهة يدوياً</label>
-          <input type="text" id="otherTarget" placeholder="اكتب اسم الجهة..."/>
-        </div>
-
-        <div class="formGroup"><label>تفاصيل إضافية</label>
-          <textarea id="taskDetails" rows="3" placeholder="أي تفاصيل..."></textarea>
-        </div>
-        <div class="formRow">
-          <div class="formGroup"><label>رابط مرفق (Drive)</label>
-            <input type="text" id="taskLink" placeholder="https://drive.google.com/..."/>
-          </div>
-          <div class="formGroup"><label>ملاحظة</label>
-            <input type="text" id="taskNote" placeholder="ملاحظة مختصرة"/>
-          </div>
-        </div>
-        <button class="btnAccent" onclick="submitTask()">حفظ العمل ✓</button>
-      </div>
-    </div>
-
-    <!-- إحصائياتي -->
-    <div class="tabPane" id="myChart">
-      <div class="sectionTitle">📊 إحصائياتي</div>
-      <div class="statsGrid" id="chartStats"></div>
-      <div class="actionBtns" style="margin-bottom:16px">
-        <button class="btnExcel" onclick="exportChartExcel()">📥 تصدير إحصائيات Excel</button>
-      </div>
-      <div class="chartCard"><h3>المهام حسب النظام</h3><div class="chartBars" id="systemChart"></div></div>
-      <div class="chartCard"><h3>المهام حسب الشهر (آخر 6 أشهر)</h3><div class="chartBars" id="monthChart"></div></div>
-    </div>
-
-    <!-- لوحة التحكم -->
-    <div class="tabPane" id="adminView">
-      <div class="sectionTitle">🛡️ لوحة القيادة — رئيس الوحدة</div>
-      <div class="statsGrid" id="adminStats"></div>
-      <div class="chartCard"><h3>🏆 إنجازات الفريق</h3><div class="chartBars" id="empChart"></div></div>
-      <div class="divider"></div>
-      <div class="sectionTitle">أداء الموظفين</div>
-      <div class="empGrid" id="empGrid"></div>
-      <div class="divider"></div>
-      <div class="tableCard">
-        <div class="tableHeader">
-          <h3>جميع المهام</h3>
-          <div class="filterGroup">
-            <input type="text" id="adminSearch" placeholder="🔍 بحث..." oninput="renderAdminTable()" style="width:130px"/>
-            <select id="adminFilterEmp" onchange="renderAdminTable()"><option value="">كل الموظفين</option></select>
-            <select id="adminFilterSys" onchange="renderAdminTable()"><option value="">كل الأنظمة</option></select>
-            <input type="date" id="adminDateFrom" onchange="renderAdminTable()" title="من"/>
-            <input type="date" id="adminDateTo" onchange="renderAdminTable()" title="إلى"/>
-            <button class="btnClear" onclick="clearAdminDateFilter()">مسح</button>
-          </div>
-        </div>
-        <div class="actionBtns">
-          <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
-          <button class="btnExcel" onclick="exportExcel('admin')">📥 Excel</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead><tr><th>#</th><th>التاريخ</th><th>الموظف</th><th>النظام</th><th>الجنس</th><th>المهمة</th><th>التفاصيل</th><th>الجهة المعنية</th><th>مرفق</th><th>ملاحظة</th></tr></thead>
-            <tbody id="adminTasksBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="footer">
-    إعداد وتصميم: <strong>ماجدة الفريدي</strong> — وحدة دعم التميز المدرسي — إدارة التعليم منطقة القصيم
+  <div class="topRight">
+    <button class="btnTop" onclick="refreshData()">🔄 تحديث</button>
+    <span class="userBadge" id="topUser"></span>
+    <button class="btnTop" onclick="doLogout()">خروج</button>
   </div>
 </div>
 
-<div class="successToast" id="toast">✓ تم تسجيل المهمة بنجاح</div>
+<div class="tabs">
+  <button class="tab active" onclick="sw('tabMy',this)">📋 أعمالي</button>
+  <button class="tab" onclick="sw('tabAdd',this)">➕ تسجيل عمل</button>
+  <button class="tab" onclick="sw('tabStats',this)">📊 إحصائياتي</button>
+  <button class="tab" id="adminTab" style="display:none" onclick="sw('tabAdmin',this)">🛡️ لوحة القيادة</button>
+</div>
+
+<div class="content">
+
+<!-- أعمالي -->
+<div class="tabPane active" id="tabMy">
+  <div class="statsGrid" id="myStatCards"></div>
+  <div class="tableCard">
+    <div class="tableHeader">
+      <h3>📋 سجل الأعمال المنجزة</h3>
+      <div class="fg2">
+        <input type="text" id="srch" placeholder="🔍 بحث..." oninput="renderMy()" style="width:130px"/>
+        <select id="fType" onchange="renderMy()"><option value="">كل التصنيفات</option></select>
+        <input type="date" id="fFrom" onchange="renderMy()"/>
+        <input type="date" id="fTo" onchange="renderMy()"/>
+        <button class="btnClear" onclick="clearF()">مسح</button>
+      </div>
+    </div>
+    <div class="actionBtns">
+      <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
+      <button class="btnExcel" onclick="exportXLS('my')">📥 Excel</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>#</th><th>التاريخ</th><th>التصنيف</th><th>المهمة الفرعية</th>
+          <th>الوصف</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th><th>حذف</th>
+        </tr></thead>
+        <tbody id="myBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- تسجيل عمل -->
+<div class="tabPane" id="tabAdd">
+<div class="formCard">
+  <h3>➕ تسجيل عمل جديد</h3>
+  <div class="fg" style="background:var(--primary-pale);padding:10px;border-radius:8px;margin-bottom:14px">
+    <span style="font-size:13px;color:var(--primary);font-weight:700">👤 يُسجَّل باسم: </span>
+    <span id="currentUserLabel" style="font-size:13px;color:var(--primary);font-weight:900"></span>
+  </div>
+  <div class="formRow">
+    <div class="fg"><label>التصنيف الرئيسي *</label>
+      <select id="wType" onchange="loadSubs()"><option value="">اختر التصنيف</option></select>
+    </div>
+    <div class="fg"><label>المهمة الفرعية</label>
+      <select id="wSub"><option value="">اختر التصنيف أولاً</option></select>
+    </div>
+  </div>
+  <div class="fg"><label>وصف العمل *</label>
+    <textarea id="wDesc" rows="3" placeholder="اكتب وصفاً مختصراً للعمل المنجز..."></textarea>
+  </div>
+  <div class="formRow">
+    <div class="fg"><label>تاريخ الإنجاز *</label><input type="date" id="wDate"/></div>
+    <div class="fg"><label>الحالة</label>
+      <select id="wStatus">
+        <option value="مكتمل">✅ مكتمل</option>
+        <option value="قيد التنفيذ">🔄 قيد التنفيذ</option>
+        <option value="يحتاج متابعة">⚠️ يحتاج متابعة</option>
+      </select>
+    </div>
+  </div>
+  <div class="fg">
+    <label>الجهة المعنية / المدرسة</label>
+    <div class="dropWrap">
+      <input type="text" id="targetInput" placeholder="🔍 ابحث أو اكتب اسم الجهة..." oninput="filterTarget()" autocomplete="off" style="width:100%"/>
+      <div class="searchDrop" id="targetDrop"></div>
+    </div>
+  </div>
+  <div class="formRow">
+    <div class="fg"><label>رابط مرفق (Drive)</label>
+      <input type="text" id="wLink" placeholder="https://drive.google.com/..."/></div>
+    <div class="fg"><label>ملاحظة</label>
+      <input type="text" id="wNote" placeholder="ملاحظة مختصرة"/></div>
+  </div>
+  <button class="btnGold" onclick="submitWork()">حفظ العمل ✓</button>
+</div>
+</div>
+
+<!-- إحصائياتي -->
+<div class="tabPane" id="tabStats">
+  <div class="secTitle">📊 إحصائياتي</div>
+  <div class="statsGrid" id="myStatCards2"></div>
+  <div class="actionBtns" style="margin-bottom:14px">
+    <button class="btnExcel" onclick="exportStatsXLS()">📥 تصدير إحصائيات</button>
+  </div>
+  <div class="chartCard"><h3>الأعمال حسب التصنيف</h3><div class="chartBars" id="typeChart"></div></div>
+  <div class="chartCard"><h3>الأعمال حسب الشهر (آخر 6 أشهر)</h3><div class="chartBars" id="monthChart"></div></div>
+</div>
+
+<!-- لوحة القيادة -->
+<div class="tabPane" id="tabAdmin">
+  <div class="secTitle">🛡️ لوحة القيادة — رئيس الوحدة</div>
+  <div class="statsGrid" id="adminStatCards"></div>
+  <div class="chartCard"><h3>🏆 إنجازات أعضاء الفريق</h3><div class="chartBars" id="empChart"></div></div>
+  <div class="divider"></div>
+  <div class="secTitle">أداء أعضاء الفريق</div>
+  <div class="empGrid" id="empGrid"></div>
+  <div class="divider"></div>
+  <div class="tableCard">
+    <div class="tableHeader">
+      <h3>جميع أعمال الوحدة</h3>
+      <div class="fg2">
+        <input type="text" id="aSrch" placeholder="🔍 بحث..." oninput="renderAdmin()" style="width:120px"/>
+        <select id="aEmp" onchange="renderAdmin()"><option value="">كل الأعضاء</option></select>
+        <select id="aType" onchange="renderAdmin()"><option value="">كل التصنيفات</option></select>
+        <select id="aStatus" onchange="renderAdmin()">
+          <option value="">كل الحالات</option>
+          <option>مكتمل</option><option>قيد التنفيذ</option><option>يحتاج متابعة</option>
+        </select>
+        <input type="date" id="aFrom" onchange="renderAdmin()"/>
+        <input type="date" id="aTo" onchange="renderAdmin()"/>
+        <button class="btnClear" onclick="clearA()">مسح</button>
+      </div>
+    </div>
+    <div class="actionBtns">
+      <button class="btnPrint" onclick="window.print()">🖨️ طباعة</button>
+      <button class="btnExcel" onclick="exportXLS('admin')">📥 Excel</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>#</th><th>التاريخ</th><th>العضو</th><th>التصنيف</th>
+          <th>الفرعية</th><th>الوصف</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th>
+        </tr></thead>
+        <tbody id="adminBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="footer">تنفيذ وتصميم: <strong>ماجدة الفريدي</strong> — وحدة دعم التميز المدرسي — إدارة التعليم منطقة القصيم — 1448هـ</div>
+</div>
+
+<div class="toast" id="toast">✓ تم الحفظ بنجاح</div>
 
 <script>
-const SHEET_ID = '1HkpZ8wrdB9E-GPe62XAH35Dmxh-1b7BRgOefjSd0tng';
-// ملاحظة: بعد إعداد Apps Script في الشيت الجديد، ضعي الرابط هنا
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxO2z-TcY81iQbKgn2AvHwhTwj5HLXG3aVcQhuBtxp1L7JziQdXnq9ST15YorinuVaySw/exec';
 
 const USERS = {
-  "فهد":     {pass:"1111", name:"فهد العناز",      role:"رئيس الوحدة", isAdmin:true,  color:"#1b4332"},
-  "ماجدة":   {pass:"2222", name:"ماجدة الفريدي",   role:"إدارية",      isAdmin:true,  color:"#b7950b"},
-  "عبدالله": {pass:"3333", name:"عبدالله الغضية",  role:"إداري",       isAdmin:false, color:"#1565c0"},
-  "عايد":    {pass:"4444", name:"عايد العايد",      role:"مشرف",        isAdmin:false, color:"#2d6a4f"},
-  "هند":     {pass:"5555", name:"هند المحيميد",     role:"مشرفة",       isAdmin:false, color:"#6a1b9a"},
-  "لميس":    {pass:"6666", name:"لميس الرجيعي",    role:"مشرفة",       isAdmin:false, color:"#880e4f"},
+  "فهد":    {pass:"1111", name:"فهد العناز",     role:"رئيس الوحدة", isAdmin:true,  color:"#1b4332"},
+  "ماجدة":  {pass:"2222", name:"ماجدة الفريدي",  role:"إدارية",      isAdmin:true,  color:"#b7950b"},
+  "عبدالله":{pass:"3333", name:"عبدالله الغضية", role:"إداري",       isAdmin:false, color:"#1565c0"},
+  "عايد":   {pass:"4444", name:"عايد العايد",     role:"مشرف",        isAdmin:false, color:"#2d6a4f"},
+  "هند":    {pass:"5555", name:"هند المحيميد",    role:"مشرفة",       isAdmin:false, color:"#6a1b9a"},
+  "لميس":   {pass:"6666", name:"لميس الرجيعي",   role:"مشرفة",       isAdmin:false, color:"#880e4f"},
 };
 
-const ALL_SYSTEMS = {
-  "نور": {
-    "اللقطة اليومية": [],
-    "متابعة المدارس المتأخرة في تثبيت الغياب": ["التواصل مع المدراء","الرصد في الاكسل","إرسال خطابات التذكير"],
-    "حصر المدارس المتكررة في عدم التثبيت": [],
-    "تحديث قاعدة بيانات مدراء ومديرات المدارس": [],
-    "متابعة رصد درجات الطلاب بالمدارس": [],
-    "متابعة فك الغياب لفترة معينة": [],
-    "فتح صلاحية غياب للمدارس": [],
-    "أخرى": []
-  },
-  "حضوري": {
-    "اعتماد الاستئذان": [],
-    "حصر اسبوعي للغياب والاستئذان": [],
-    "معالجة كثرة الاستئذان والغياب": [],
-    "برنت الاكسل وتصديرها": [],
-    "أخرى": []
-  },
-  "أعمالي": {
-    "معالجة بريد صادر": [],
-    "معالجة بريد وارد": [],
-    "أخرى": []
-  },
-  "فارس": {
-    "اجازات موظفين الوحدة ومدراء المدارس": [],
-    "اعتماد أنشطة التطوير المهني للمدراء": [],
-    "نقل العهدة للمدراء": [],
-    "اعتماد الأداء الوظيفي والاهداف الوظيفية": [],
-    "تمديد التكليف للمدراء": [],
-    "اعتماد الأداء الوظيفي للمدراء والتابعين": [],
-    "اعتماد التقاعد للمدراء": [],
-    "أخرى": []
-  },
-  "تواصل": {
-    "الرد على التذاكر": [],
-    "تحرير خطابات التذاكر": [],
-    "تصدير تذاكر تواصل": [],
-    "أخرى": []
-  },
-  "البريد الإلكتروني": {
-    "استلام بريد وارد": [],
-    "إرسال بريد صادر": [],
-    "متابعة ردود البريد": [],
-    "أرشفة المراسلات": [],
-    "أخرى": []
-  },
-  "خطابات": {
-    "كتابة نماذج المخاطبات": [],
-    "شهادات شكر وتقدير": [],
-    "إفادات": [],
-    "أخرى": []
-  },
-  "متابعة أعمال الموظفين": {
-    "تقرير أسبوعي للموظفين": [],
-    "متابعة إنجاز المهام": [],
-    "تطوير وإدارة المنظومة الإدارية": [],
-    "أخرى": []
-  },
-  "إشراف": {
-    "متابعة المدارس": [],
-    "زيارات إشرافية": [],
-    "تقارير الإشراف": [],
-    "أخرى": []
-  },
-  "إداري عام": {
-    "مراجعة التقارير الأسبوعية": [],
-    "اعتماد الوثائق": [],
-    "متابعة أعمال الوحدة": [],
-    "الاجتماعات الإدارية": [],
-    "أخرى": []
-  },
+const SYSTEMS = {
+  "زيارة ميدانية / تقديم دعم":       ["دعم حضوري","دعم عن بعد","أخرى"],
+  "تقييم استباقي ورصد تحديات":       ["رصد مشكلات محتملة","وضع خطط تحسين استباقية","تحليل بيانات الأداء","أخرى"],
+  "إعداد / تحديث خطة عمل":           ["خطة سنوية شاملة","خطة تشغيلية إجرائية","خطة دعم مدرسة","أخرى"],
+  "قياس رضا المستفيدين":              ["تطبيق أداة القياس","تفريغ وتحليل النتائج","إعداد تقرير الرضا","أخرى"],
+  "معالجة التغذية الراجعة والتحسين": ["استعراض الملاحظات الواردة","تنفيذ إجراء تصحيحي","توثيق الممارسات المتميزة","أخرى"],
+  "حضور اجتماع أو ورشة عمل":         ["اجتماع داخلي بالوحدة","اجتماع مع إدارات خارجية","ورشة عمل","أخرى"],
+  "نظام حضوري":                       ["اعتماد الاستئذان","حصر الغياب الأسبوعي","أخرى"],
+  "نظام أعمالي":                      ["بريد صادر","بريد وارد","أخرى"],
+  "نظام فارس":                        ["إجازات","تطوير مهني","أداء وظيفي","أخرى"],
+  "سكرتارية":                         ["كتابة خطابات","توثيق محاضر","أرشفة وتوثيق","أخرى"],
+  "أخرى":                             ["أخرى"],
 };
 
-const DEPARTMENTS = [
-  "إدارة التعليم منطقة القصيم",
-  "وحدة دعم التميز المدرسي",
-  "وحدة المرحلة الابتدائية",
-  "وحدة المرحلة الثانوية",
-  "المساعد للشؤون التعليمية",
-  "إدارة الموارد البشرية",
-  "إدارة الموارد البشرية (قسم شؤون المعلمين)",
-  "إدارة المراجعة الداخلية",
-  "إدارة الشؤون القانونية",
-  "إدارة جودة الخدمات",
-  "إدارة تنمية القدرات (قسم ذوي الإعاقة)",
-  "إدارة تقويم الأداء المعرفي والمهاري",
-  "إدارة التطوير والتحول",
-  "قسم الأمن والسلامة والمرافق",
-  "قسم الإشراف التربوي",
-  "قسم التوجيه الطلابي",
-  "تصدير من وحدة دعم التميز المدرسي إلى مدراء المدارس",
-  "تصدير من وحدة دعم التميز المدرسي لقسم الإدارة المدرسية",
+const DEPTS = [
+  "إدارة التعليم منطقة القصيم","وحدة دعم التميز المدرسي",
+  "وحدة المرحلة المتوسطة","وحدة المرحلة الابتدائية","وحدة المرحلة الثانوية",
+  "المساعد للشؤون التعليمية","إدارة الموارد البشرية",
+  "إدارة المراجعة الداخلية","إدارة الشؤون القانونية",
+  "إدارة جودة الخدمات","إدارة تنمية القدرات",
+  "إدارة تقويم الأداء المعرفي والمهاري","إدارة التطوير والتحول",
+  "قسم الأمن والسلامة والمرافق","قسم الإشراف التربوي",
+  "قسم التوجيه الطلابي","التخطيط المدرسي",
   "أخرى (اكتب يدوياً)",
 ];
 
-const SCHOOLS = [
-  // أضيفي أسماء المدارس هنا لاحقاً
-];
+const COLORS = ["#1b4332","#b7950b","#2d6a4f","#1565c0","#6a1b9a","#880e4f","#e65100","#00695c","#37474f","#0277bd","#bf360c"];
 
-const ALL_TARGETS = [...DEPARTMENTS, ...SCHOOLS];
+let cu = null;
+let works = [];
 
-let currentUser = null;
-let tasks = JSON.parse(localStorage.getItem('whdaTasks') || '[]');
-
+// ===== LOGIN =====
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value.trim();
-  const user = USERS[u];
-  if (user && user.pass === p) {
-    currentUser = {key:u,...user};
+  const usr = USERS[u];
+  if (usr && usr.pass === p) {
+    cu = {key:u,...usr};
     document.getElementById('loginErr').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appScreen').style.display = 'block';
@@ -420,404 +440,375 @@ function doLogin() {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   document.addEventListener('click', e => {
-    if (!e.target.closest('.searchBox') && !e.target.closest('#targetSearch') && !e.target.closest('#targetDropdown')) {
-      document.getElementById('targetDropdown').classList.remove('show');
-    }
+    if (!e.target.closest('#targetInput') && !e.target.closest('#targetDrop'))
+      document.getElementById('targetDrop').classList.remove('show');
   });
 });
-
 function doLogout() {
-  currentUser = null;
+  cu = null;
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('appScreen').style.display = 'none';
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
 }
 
+// ===== INIT =====
 async function initApp() {
-  document.getElementById('topUserName').textContent = currentUser.name + ' · ' + currentUser.role;
-  if (currentUser.isAdmin) document.getElementById('adminTab').style.display = 'block';
-  await loadFromSheet();
-  buildTaskForm();
-  populateSystemFilter();
-  renderMyTasks();
-  renderMyChart();
-  if (currentUser.isAdmin) { populateAdminFilters(); renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
-  switchTab('myTasks', document.querySelector('.tab'));
+  document.getElementById('topUser').textContent = cu.name + ' · ' + cu.role;
+  document.getElementById('currentUserLabel').textContent = cu.name;
+  if (cu.isAdmin) document.getElementById('adminTab').style.display = 'block';
+  buildForm();
+  populateTypeFilters();
+  await loadData();
+  renderMy();
+  renderMyCharts();
+  if (cu.isAdmin) { populateAdminFilters(); renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
+  sw('tabMy', document.querySelector('.tab'));
 }
 
 async function refreshData() {
-  await loadFromSheet();
-  renderMyTasks();
-  renderMyChart();
-  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
+  await loadData();
+  renderMy(); renderMyCharts();
+  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
   showToast('✓ تم تحديث البيانات');
 }
 
-async function saveToSheet(task) {
-  try { await fetch(SCRIPT_URL, {method:'POST', body:JSON.stringify(task)}); } catch(e) {}
-}
-
-async function loadFromSheet() {
+// ===== DATA =====
+async function loadData() {
   try {
     const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
     const data = await res.json();
     if (data.success && data.data.length > 1) {
-      tasks = data.data.slice(1).map(r => ({
-        id:r[0], date:r[1], userName:r[2],
-        user: Object.keys(USERS).find(k=>USERS[k].name===r[2]) || '',
-        system:r[3], task:r[4], details:r[5]||'', target:r[6]||'',
-        link:r[7]||'', note:r[8]||'', gender:r[9]||'الكل'
-      })).filter(t=>t.id);
-      localStorage.setItem('whdaTasks', JSON.stringify(tasks));
+      works = data.data.slice(1).map(r => ({
+        id: r[0], date: r[1], userName: r[2],
+        user: Object.keys(USERS).find(k => USERS[k].name === r[2]) || '',
+        type: r[3], desc: r[4], sub: r[5]||'', target: r[6]||'',
+        status: r[7]||'مكتمل', note: r[8]||'', link: r[9]||''
+      })).filter(w => w.id);
     }
+  } catch(e) { console.log('Local mode'); }
+}
+
+async function saveToSheet(w) {
+  try {
+    await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(w) });
   } catch(e) {}
 }
 
-function saveTasks() { localStorage.setItem('whdaTasks', JSON.stringify(tasks)); }
-
-// SEARCH TARGET
-function filterTargets() {
-  const q = document.getElementById('targetSearch').value.trim();
-  const dropdown = document.getElementById('targetDropdown');
-  if (!q) { dropdown.classList.remove('show'); return; }
-  const filtered = ALL_TARGETS.filter(t => t.includes(q)).slice(0, 20);
-  if (!filtered.length) { dropdown.classList.remove('show'); return; }
-  dropdown.innerHTML = filtered.map(t =>
-    `<div class="searchDropItem" onclick="selectTarget('${t.replace(/'/g,"\'")}')">  ${t}</div>`
-  ).join('');
-  dropdown.classList.add('show');
+// ===== FORM =====
+function buildForm() {
+  const sel = document.getElementById('wType');
+  sel.innerHTML = '<option value="">اختر التصنيف</option>';
+  Object.keys(SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+  document.getElementById('wDate').value = new Date().toISOString().split('T')[0];
 }
 
-function selectTarget(val) {
-  document.getElementById('targetSearch').value = val;
-  document.getElementById('taskTarget').value = val;
-  document.getElementById('selectedTarget').textContent = '';
-  document.getElementById('targetDropdown').classList.remove('show');
-  if (val === 'أخرى (اكتب يدوياً)') {
-    document.getElementById('otherTargetGroup').style.display = 'block';
-  } else {
-    document.getElementById('otherTargetGroup').style.display = 'none';
-  }
+function loadSubs() {
+  const t = document.getElementById('wType').value;
+  const subs = SYSTEMS[t] || [];
+  const sel = document.getElementById('wSub');
+  sel.innerHTML = '<option value="">اختياري</option>';
+  subs.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
 }
 
-function buildTaskForm() {
-  const sel = document.getElementById('taskSystem');
-  sel.innerHTML = '<option value="">اختر النظام</option>';
-  Object.keys(ALL_SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
-  document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+function filterTarget() {
+  const q = document.getElementById('targetInput').value.trim();
+  const drop = document.getElementById('targetDrop');
+  if (!q) { drop.classList.remove('show'); return; }
+  const filtered = DEPTS.filter(d => d.includes(q)).slice(0, 12);
+  if (!filtered.length) { drop.classList.remove('show'); return; }
+  drop.innerHTML = filtered.map(d => `<div class="dropItem" onclick="pickTarget('${d.replace(/'/g,"\\'")}')"> ${d}</div>`).join('');
+  drop.classList.add('show');
 }
 
-function loadTaskList() {
-  const sys = document.getElementById('taskSystem').value;
-  const tasks_list = ALL_SYSTEMS[sys] ? Object.keys(ALL_SYSTEMS[sys]) : [];
-  const sel = document.getElementById('taskName');
-  sel.innerHTML = '<option value="">اختر المهمة</option>';
-  tasks_list.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
+function pickTarget(val) {
+  document.getElementById('targetInput').value = val;
+  document.getElementById('targetDrop').classList.remove('show');
 }
 
-function submitTask() {
-  const sys = document.getElementById('taskSystem').value;
-  const name = document.getElementById('taskName').value;
-  const date = document.getElementById('taskDate').value;
-  if (!sys) { alert('يرجى اختيار النظام'); return; }
-  if (!name) { alert('يرجى اختيار المهمة'); return; }
-  if (!date) { alert('يرجى اختيار تاريخ الإنجاز'); return; }
-
-  let target = document.getElementById('taskTarget').value || document.getElementById('targetSearch').value;
-  if (target === 'أخرى (اكتب يدوياً)') {
-    target = document.getElementById('otherTarget').value.trim();
-  }
-
-  const task = {
-    id: Date.now(), user: currentUser.key, userName: currentUser.name,
-    date, system: sys, task: name,
-    details: document.getElementById('taskDetails').value.trim(),
-    target: target,
-    link: document.getElementById('taskLink').value.trim(),
-    note: document.getElementById('taskNote').value.trim(),
-    gender: document.getElementById('taskGender').value,
+function submitWork() {
+  const type = document.getElementById('wType').value;
+  const desc = document.getElementById('wDesc').value.trim();
+  const date = document.getElementById('wDate').value;
+  if (!type) { alert('يرجى اختيار التصنيف'); return; }
+  if (!desc) { alert('يرجى كتابة وصف العمل'); return; }
+  if (!date) { alert('يرجى اختيار التاريخ'); return; }
+  const w = {
+    id: Date.now(), user: cu.key, userName: cu.name, date,
+    type, sub: document.getElementById('wSub').value,
+    desc, target: document.getElementById('targetInput').value.trim(),
+    status: document.getElementById('wStatus').value,
+    link: document.getElementById('wLink').value.trim(),
+    note: document.getElementById('wNote').value.trim(),
   };
-  tasks.push(task);
-  saveTasks();
-  saveToSheet(task);
-
-  ['taskDetails','taskLink','taskNote','targetSearch','otherTarget'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('taskTarget').value = '';
-  document.getElementById('taskSystem').value = '';
-  document.getElementById('taskName').innerHTML = '<option value="">اختر النظام أولاً</option>';
-  document.getElementById('taskGender').value = 'الكل';
-  document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('otherTargetGroup').style.display = 'none';
-
-  showToast('✓ تم تسجيل المهمة بنجاح');
-  renderMyTasks(); renderMyChart();
-  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
-  switchTab('myTasks', document.querySelectorAll('.tab')[0]);
+  works.push(w);
+  saveToSheet(w);
+  ['wDesc','wLink','wNote','targetInput'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('wType').value = '';
+  document.getElementById('wSub').innerHTML = '<option value="">اختر التصنيف أولاً</option>';
+  document.getElementById('wStatus').value = 'مكتمل';
+  document.getElementById('wDate').value = new Date().toISOString().split('T')[0];
+  showToast('✓ تم تسجيل العمل بنجاح');
+  renderMy(); renderMyCharts();
+  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
+  sw('tabMy', document.querySelectorAll('.tab')[0]);
 }
 
-function deleteTask(id) {
-  if (!confirm('هل تريدين حذف هذه المهمة؟')) return;
-  tasks = tasks.filter(t => t.id !== id);
-  saveTasks();
-  renderMyTasks(); renderMyChart();
-  if (currentUser.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdminTable(); renderEmpChart(); }
+function deleteWork(id) {
+  if (!confirm('حذف هذا العمل؟')) return;
+  works = works.filter(w => w.id !== id);
+  renderMy(); renderMyCharts();
+  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
 }
 
-function clearDateFilter() {
-  document.getElementById('dateFrom').value = '';
-  document.getElementById('dateTo').value = '';
-  renderMyTasks();
+// ===== FILTERS =====
+function populateTypeFilters() {
+  ['fType','aType'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">كل التصنيفات</option>';
+    Object.keys(SYSTEMS).forEach(s => el.innerHTML += `<option value="${s}">${s}</option>`);
+  });
 }
 
-function clearAdminDateFilter() {
-  document.getElementById('adminDateFrom').value = '';
-  document.getElementById('adminDateTo').value = '';
-  renderAdminTable();
-}
-
-function populateSystemFilter() {
-  const sel = document.getElementById('filterSystem');
-  sel.innerHTML = '<option value="">كل الأنظمة</option>';
-  Object.keys(ALL_SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
-}
-
-function filterTasks(list, searchId, sysId, fromId, toId) {
-  const search = document.getElementById(searchId).value.trim().toLowerCase();
-  const sys = document.getElementById(sysId).value;
-  const from = document.getElementById(fromId).value;
-  const to = document.getElementById(toId).value;
-  if (search) list = list.filter(t=>(t.task+t.system+t.details+t.target+t.note+(t.userName||'')).toLowerCase().includes(search));
-  if (sys) list = list.filter(t=>t.system===sys);
-  if (from) list = list.filter(t=>t.date>=from);
-  if (to) list = list.filter(t=>t.date<=to);
+function applyFilters(list, srchId, typeId, fromId, toId) {
+  const q = document.getElementById(srchId)?.value.trim().toLowerCase() || '';
+  const ty = document.getElementById(typeId)?.value || '';
+  const fr = document.getElementById(fromId)?.value || '';
+  const to = document.getElementById(toId)?.value || '';
+  if (q) list = list.filter(w => (w.desc+w.type+w.userName+w.target+w.note+w.sub).toLowerCase().includes(q));
+  if (ty) list = list.filter(w => w.type === ty);
+  if (fr) list = list.filter(w => w.date >= fr);
+  if (to) list = list.filter(w => w.date <= to);
   return list;
 }
 
-function renderMyTasks() {
-  let mine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
-  const allMine = mine.slice();
-  mine = filterTasks(mine,'searchInput','filterSystem','dateFrom','dateTo');
-  mine = mine.slice().reverse();
-  const thisMonth = allMine.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('myStats').innerHTML = `
-    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام</div></div>
-    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
-  `;
-  const tbody = document.getElementById('myTasksBody');
-  if (!mine.length) { tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`; return; }
-  tbody.innerHTML = mine.map((t,i)=>`
-    <tr>
-      <td>${mine.length-i}</td><td>${formatDate(t.date)}</td>
-      <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
-      <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
-      <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
-      <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
-      <td>${t.note||'—'}</td>
-      <td><button class="btnDelete" onclick="deleteTask(${t.id})">🗑️</button></td>
-    </tr>`).join('');
+function clearF() {
+  document.getElementById('fFrom').value = '';
+  document.getElementById('fTo').value = '';
+  renderMy();
+}
+function clearA() {
+  document.getElementById('aFrom').value = '';
+  document.getElementById('aTo').value = '';
+  renderAdmin();
 }
 
-function renderMyChart() {
-  const allMine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
-  const thisMonth = allMine.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('chartStats').innerHTML = `
-    <div class="statCard"><div class="statNum">${allMine.length}</div><div class="statLabel">إجمالي المهام</div></div>
-    <div class="statCard"><div class="statNum">${thisMonth.length}</div><div class="statLabel">هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${[...new Set(allMine.map(t=>t.system))].length}</div><div class="statLabel">أنظمة نشطة</div></div>
-  `;
-  const colors = ['#1a3a5c','#c8973a','#2e7d52','#6a1b9a','#1565c0','#e65100','#880e4f','#00695c','#37474f','#bf360c'];
-  const sysCounts = {};
-  allMine.forEach(t=>{ sysCounts[t.system]=(sysCounts[t.system]||0)+1; });
-  const maxSys = Math.max(...Object.values(sysCounts),1);
-  document.getElementById('systemChart').innerHTML = Object.entries(sysCounts).map(([s,c],i)=>`
-    <div class="chartBar"><div class="chartBarNum">${c}</div>
-    <div class="chartBarInner" style="height:${Math.max((c/maxSys)*130,4)}px;background:${colors[i%colors.length]};"></div>
-    <div class="chartBarLabel">${s}</div></div>`).join('') || '<p style="color:var(--text-muted);padding:20px">لا توجد بيانات</p>';
-  const months=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
-  const mc=months.map(m=>allMine.filter(t=>t.date&&t.date.startsWith(m)).length);
-  const maxM=Math.max(...mc,1);
-  document.getElementById('monthChart').innerHTML = months.map((m,i)=>`
-    <div class="chartBar"><div class="chartBarNum">${mc[i]}</div>
-    <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*130,4)}px;background:${colors[i%colors.length]};"></div>
-    <div class="chartBarLabel">${m.slice(5)}</div></div>`).join('');
+// ===== MY =====
+function renderMy() {
+  let mine = cu.isAdmin ? works : works.filter(w => w.user === cu.key);
+  const all = mine.slice();
+  mine = applyFilters(mine,'srch','fType','fFrom','fTo').slice().reverse();
+  const mo = all.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('myStatCards').innerHTML = `
+    <div class="statCard"><div class="statNum">${all.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
+    <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${all.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة ✅</div></div>
+    <div class="statCard"><div class="statNum">${[...new Set(all.map(w=>w.type))].length}</div><div class="statLabel">تصنيفات نشطة</div></div>`;
+  const tbody = document.getElementById('myBody');
+  if (!mine.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال مسجلة</p></div></td></tr>`; return; }
+  tbody.innerHTML = mine.map((w,i) => `<tr>
+    <td>${mine.length-i}</td>
+    <td>${fd(w.date)}</td>
+    <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
+    <td>${w.sub||'—'}</td>
+    <td class="tdWrap" title="${w.desc}">${w.desc}</td>
+    <td class="tdWrap">${w.target||'—'}</td>
+    <td><span class="badge ${bc(w.status)}">${w.status}</span></td>
+    <td>${w.link?`<a href="${w.link}" target="_blank" style="color:var(--primary)">📎</a>`:'—'}</td>
+    <td>${w.note||'—'}</td>
+    <td><button class="btnDel" onclick="deleteWork(${w.id})">🗑️</button></td>
+  </tr>`).join('');
 }
 
+// ===== CHARTS =====
+function renderMyCharts() {
+  const mine = cu.isAdmin ? works : works.filter(w => w.user === cu.key);
+  const mo = mine.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('myStatCards2').innerHTML = `
+    <div class="statCard"><div class="statNum">${mine.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
+    <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${mine.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة</div></div>`;
+  const tc = {};
+  mine.forEach(w => { tc[w.type] = (tc[w.type]||0)+1; });
+  const maxT = Math.max(...Object.values(tc), 1);
+  document.getElementById('typeChart').innerHTML = Object.entries(tc).map(([t,c],i) => `
+    <div class="chartBar">
+      <div class="chartBarNum">${c}</div>
+      <div class="chartBarInner" style="height:${Math.max((c/maxT)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
+      <div class="chartBarLabel">${t}</div>
+    </div>`).join('') || '<p style="color:var(--muted);padding:20px">لا توجد بيانات بعد</p>';
+  const months = [];
+  for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
+  const mc = months.map(m => mine.filter(w => w.date && w.date.startsWith(m)).length);
+  const maxM = Math.max(...mc, 1);
+  document.getElementById('monthChart').innerHTML = months.map((m,i) => `
+    <div class="chartBar">
+      <div class="chartBarNum">${mc[i]}</div>
+      <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
+      <div class="chartBarLabel">${m.slice(5)}</div>
+    </div>`).join('');
+}
+
+// ===== ADMIN =====
 function renderAdminStats() {
-  const today=new Date().toISOString().split('T')[0];
-  const tm=tasks.filter(t=>t.date&&t.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('adminStats').innerHTML = `
-    <div class="statCard"><div class="statNum">${tasks.length}</div><div class="statLabel">إجمالي المهام</div></div>
-    <div class="statCard"><div class="statNum">${tm.length}</div><div class="statLabel">هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${tasks.filter(t=>t.date===today).length}</div><div class="statLabel">اليوم</div></div>
-    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>
-  `;
+  const today = new Date().toISOString().split('T')[0];
+  const mo = works.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('adminStatCards').innerHTML = `
+    <div class="statCard"><div class="statNum">${works.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
+    <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard"><div class="statNum">${works.filter(w=>w.date===today).length}</div><div class="statLabel">اليوم</div></div>
+    <div class="statCard"><div class="statNum">${works.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة ✅</div></div>
+    <div class="statCard"><div class="statNum">${works.filter(w=>w.status==='قيد التنفيذ').length}</div><div class="statLabel">قيد التنفيذ 🔄</div></div>
+    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>`;
 }
 
 function renderEmpChart() {
-  const entries = Object.entries(USERS);
-  const max = Math.max(...entries.map(([k])=>tasks.filter(t=>t.user===k).length),1);
-  document.getElementById('empChart').innerHTML = entries.map(([k,u])=>{
-    const count = tasks.filter(t=>t.user===k).length;
+  const max = Math.max(...Object.values(USERS).map((_,i) => works.filter(w => w.user === Object.keys(USERS)[i]).length), 1);
+  document.getElementById('empChart').innerHTML = Object.entries(USERS).map(([k,u]) => {
+    const c = works.filter(w => w.user === k).length;
     return `<div class="chartBar">
-      <div class="chartBarNum">${count}</div>
-      <div class="chartBarInner" style="height:${Math.max((count/max)*130,4)}px;background:${u.color};"></div>
-      <div class="chartBarLabel">${u.name.split(' ')[0]}</div></div>`;
-  }).join('');
+      <div class="chartBarNum">${c}</div>
+      <div class="chartBarInner" style="height:${Math.max((c/max)*120,4)}px;background:${u.color}"></div>
+      <div class="chartBarLabel">${u.name.split(' ')[0]}</div>
+    </div>`;}).join('');
 }
 
 function renderEmpGrid() {
-  document.getElementById('empGrid').innerHTML = Object.entries(USERS).map(([k,u])=>{
-    const count = tasks.filter(t=>t.user===k).length;
+  document.getElementById('empGrid').innerHTML = Object.entries(USERS).map(([k,u]) => {
+    const c = works.filter(w => w.user === k).length;
     return `<div class="empCard" onclick="filterByEmp('${k}')" style="border-top-color:${u.color}">
-      <div class="empName">${u.name}</div><div class="empRole">${u.role}</div>
-      <div class="empCount" style="color:${u.color}">${count}</div>
-      <div class="empCountLabel">مهمة منجزة</div></div>`;
-  }).join('');
+      <div class="empName">${u.name}</div>
+      <div class="empRole">${u.role}</div>
+      <div class="empCount" style="color:${u.color}">${c}</div>
+      <div class="empCountLabel">عمل مسجل</div>
+    </div>`;}).join('');
 }
 
-function filterByEmp(key) {
-  document.getElementById('adminFilterEmp').value=key;
-  renderAdminTable();
-  switchTab('adminView',document.getElementById('adminTab'));
+function filterByEmp(k) {
+  document.getElementById('aEmp').value = k;
+  renderAdmin();
+  sw('tabAdmin', document.getElementById('adminTab'));
 }
 
 function populateAdminFilters() {
-  const es=document.getElementById('adminFilterEmp');
-  es.innerHTML='<option value="">كل الموظفين</option>';
-  Object.entries(USERS).forEach(([k,u])=>es.innerHTML+=`<option value="${k}">${u.name}</option>`);
-  const ss=document.getElementById('adminFilterSys');
-  ss.innerHTML='<option value="">كل الأنظمة</option>';
-  Object.keys(ALL_SYSTEMS).forEach(s=>ss.innerHTML+=`<option value="${s}">${s}</option>`);
+  const es = document.getElementById('aEmp');
+  es.innerHTML = '<option value="">كل الأعضاء</option>';
+  Object.entries(USERS).forEach(([k,u]) => es.innerHTML += `<option value="${k}">${u.name}</option>`);
 }
 
-function renderAdminTable() {
-  const empF=document.getElementById('adminFilterEmp').value;
-  let list=tasks.slice();
-  if(empF) list=list.filter(t=>t.user===empF);
-  list=filterTasks(list,'adminSearch','adminFilterSys','adminDateFrom','adminDateTo');
-  list=list.slice().reverse();
-  const tbody=document.getElementById('adminTasksBody');
-  if(!list.length){tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد مهام</p></div></td></tr>`;return;}
-  tbody.innerHTML=list.map((t,i)=>{
-    const uColor = USERS[t.user]?USERS[t.user].color:'var(--primary)';
-    return `<tr>
-      <td>${list.length-i}</td><td>${formatDate(t.date)}</td>
-      <td style="color:${uColor};font-weight:600">${t.userName}</td>
-      <td><span class="systemTag ${getTagClass(t.system)}">${t.system}</span></td>
-      <td><span class="genderTag g-${t.gender||'الكل'}">${t.gender||'الكل'}</span></td>
-      <td>${t.task}</td><td>${t.details||'—'}</td><td>${t.target||'—'}</td>
-      <td>${t.link?`<a href="${t.link}" target="_blank">📎</a>`:'—'}</td>
-      <td>${t.note||'—'}</td></tr>`;
-  }).join('');
+function renderAdmin() {
+  const ef = document.getElementById('aEmp').value;
+  const sf = document.getElementById('aStatus').value;
+  let list = works.slice();
+  if (ef) list = list.filter(w => w.user === ef);
+  if (sf) list = list.filter(w => w.status === sf);
+  list = applyFilters(list,'aSrch','aType','aFrom','aTo').slice().reverse();
+  const tbody = document.getElementById('adminBody');
+  if (!list.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال</p></div></td></tr>`; return; }
+  tbody.innerHTML = list.map((w,i) => `<tr>
+    <td>${list.length-i}</td>
+    <td>${fd(w.date)}</td>
+    <td style="color:${USERS[w.user]?USERS[w.user].color:'var(--primary)'};font-weight:700">${w.userName}</td>
+    <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
+    <td>${w.sub||'—'}</td>
+    <td class="tdWrap" title="${w.desc}">${w.desc}</td>
+    <td class="tdWrap">${w.target||'—'}</td>
+    <td><span class="badge ${bc(w.status)}">${w.status}</span></td>
+    <td>${w.link?`<a href="${w.link}" target="_blank" style="color:var(--primary)">📎</a>`:'—'}</td>
+    <td>${w.note||'—'}</td>
+  </tr>`).join('');
 }
 
-function exportExcel(type) {
+// ===== EXCEL =====
+function exportXLS(type) {
   try {
-    let list = type==='admin' ? tasks : tasks.filter(t=>currentUser.isAdmin?true:t.user===currentUser.key);
+    let list = type==='admin' ? works : works.filter(w => cu.isAdmin ? true : w.user===cu.key);
     if (!list.length) { alert('لا توجد بيانات للتصدير'); return; }
     list = list.slice().reverse();
     const h = type==='admin'
-      ?['#','التاريخ','الموظف','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة']
-      :['#','التاريخ','النظام','الجنس','المهمة','التفاصيل','الجهة المعنية','ملاحظة'];
-    const rows = list.map((t,i)=> type==='admin'
-      ?[list.length-i, t.date||'', t.userName||'', t.system||'', t.gender||'الكل', t.task||'', t.details||'', t.target||'', t.note||'']
-      :[list.length-i, t.date||'', t.system||'', t.gender||'الكل', t.task||'', t.details||'', t.target||'', t.note||'']);
-
-    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8">
-    <style>
-      body{direction:rtl;font-family:Tahoma,Arial,sans-serif;}
-      table{border-collapse:collapse;width:100%;direction:rtl;}
-      th{background-color:#1b4332;color:white;font-weight:bold;padding:10px 12px;border:1px solid #b7950b;font-size:13px;text-align:right;}
-      td{padding:8px 12px;border:1px solid #DCE6F0;font-size:12px;text-align:right;}
-      tr:nth-child(even) td{background-color:#F0F4F8;}
-      tr:nth-child(odd) td{background-color:#FFFFFF;}
-      .title{background-color:#b7950b;color:white;font-size:15px;font-weight:bold;padding:12px;text-align:center;border:2px solid #1b4332;}
-      .footer{color:#6b7c93;font-size:11px;text-align:center;padding:8px;}
-    </style></head><body>
-    <table>
-      <tr><td colspan="${h.length}" class="title">سجل مهام وحدة دعم التميز المدرسي — إدارة التعليم منطقة القصيم</td></tr>
-      <tr>${h.map(col=>`<th>${col}</th>`).join('')}</tr>
-      ${rows.map(row=>`<tr>${row.map(cell=>`<td>${cell||''}</td>`).join('')}</tr>`).join('')}
-      <tr><td colspan="${h.length}" class="footer">إعداد وتصميم: ماجدة الفريدي | تاريخ التصدير: ${new Date().toLocaleDateString('ar-SA')}</td></tr>
+      ? ['#','التاريخ','العضو','التصنيف','الفرعية','الوصف','الجهة','الحالة','ملاحظة']
+      : ['#','التاريخ','التصنيف','الفرعية','الوصف','الجهة','الحالة','ملاحظة'];
+    const rows = list.map((w,i) => type==='admin'
+      ? [list.length-i,w.date,w.userName,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']
+      : [list.length-i,w.date,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']);
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+    <head><meta charset="UTF-8"><style>
+      body{direction:rtl;font-family:Tahoma;}table{border-collapse:collapse;width:100%;direction:rtl;}
+      th{background:#1b4332;color:white;font-weight:bold;padding:10px 12px;border:1px solid #b7950b;text-align:right;}
+      td{padding:8px 12px;border:1px solid #cde0cd;text-align:right;}
+      tr:nth-child(even) td{background:#f0f7f0;}
+      .hdr{background:#b7950b;color:white;font-size:15px;font-weight:bold;text-align:center;padding:12px;}
+      .ftr{color:#6b7c6b;font-size:11px;text-align:center;padding:8px;}
+    </style></head><body><table>
+    <tr><td colspan="${h.length}" class="hdr">سجل أعمال وحدة دعم التميز المدرسي — 1448هـ</td></tr>
+    <tr>${h.map(c=>`<th>${c}</th>`).join('')}</tr>
+    ${rows.map(r=>`<tr>${r.map(c=>`<td>${c||''}</td>`).join('')}</tr>`).join('')}
+    <tr><td colspan="${h.length}" class="ftr">تنفيذ وتصميم: ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
     </table></body></html>`;
-
-    const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
+    const b = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
     const a = document.createElement('a');
-    a.href = url;
+    a.href = URL.createObjectURL(b);
     a.download = `أعمال_التميز_${new Date().toISOString().slice(0,10)}.xls`;
     a.click();
-    URL.revokeObjectURL(url);
-  } catch(e) {
-    alert('حدث خطأ في التصدير');
-    console.error(e);
-  }
+  } catch(e) { alert('خطأ في التصدير'); }
 }
 
-function exportChartExcel() {
+function exportStatsXLS() {
   try {
-    const allMine = currentUser.isAdmin ? tasks : tasks.filter(t=>t.user===currentUser.key);
-    if (!allMine.length) { alert('لا توجد بيانات للتصدير'); return; }
-    const sysCounts = {};
-    allMine.forEach(t=>{ sysCounts[t.system]=(sysCounts[t.system]||0)+1; });
-    const sorted = Object.entries(sysCounts).sort((a,b)=>b[1]-a[1]);
-
-    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8">
-    <style>
-      body{direction:rtl;font-family:Tahoma,Arial,sans-serif;}
-      table{border-collapse:collapse;width:60%;direction:rtl;}
-      th{background-color:#b7950b;color:white;font-weight:bold;padding:10px 14px;border:1px solid #1b4332;font-size:13px;text-align:right;}
-      td{padding:8px 14px;border:1px solid #DCE6F0;font-size:12px;text-align:right;}
-      tr:nth-child(even) td{background-color:#F0F4F8;}
-      .title{background-color:#1b4332;color:white;font-size:15px;font-weight:bold;padding:12px;text-align:center;}
-      .footer{color:#6b7c93;font-size:11px;text-align:center;padding:8px;}
-    </style></head><body>
-    <table>
-      <tr><td colspan="2" class="title">إحصائيات المهام — وحدة دعم التميز المدرسي</td></tr>
-      <tr><th>النظام</th><th>عدد المهام</th></tr>
-      ${sorted.map(([s,c])=>`<tr><td>${s}</td><td style="text-align:center;font-weight:bold;color:#1b4332">${c}</td></tr>`).join('')}
-      <tr><td style="font-weight:bold;background:#1b4332;color:white">الإجمالي</td><td style="font-weight:bold;text-align:center;background:#1b4332;color:white">${allMine.length}</td></tr>
-      <tr><td colspan="2" class="footer">إعداد وتصميم: ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
+    const mine = cu.isAdmin ? works : works.filter(w => w.user===cu.key);
+    if (!mine.length) { alert('لا توجد بيانات'); return; }
+    const tc = {};
+    mine.forEach(w => { tc[w.type] = (tc[w.type]||0)+1; });
+    const sorted = Object.entries(tc).sort((a,b) => b[1]-a[1]);
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8">
+    <style>body{direction:rtl;font-family:Tahoma;}table{border-collapse:collapse;direction:rtl;}
+    th{background:#1b4332;color:white;padding:10px;border:1px solid #b7950b;text-align:right;}
+    td{padding:8px;border:1px solid #cde0cd;text-align:right;}
+    tr:nth-child(even) td{background:#f0f7f0;}
+    .hdr{background:#b7950b;color:white;font-weight:bold;text-align:center;padding:12px;}
+    .ftr{color:#6b7c6b;font-size:11px;text-align:center;}</style></head><body><table>
+    <tr><td colspan="2" class="hdr">إحصائيات وحدة دعم التميز المدرسي — 1448هـ</td></tr>
+    <tr><th>التصنيف</th><th>عدد الأعمال</th></tr>
+    ${sorted.map(([t,c])=>`<tr><td>${t}</td><td style="text-align:center;font-weight:bold;color:#1b4332">${c}</td></tr>`).join('')}
+    <tr><td style="background:#1b4332;color:white;font-weight:bold">الإجمالي</td>
+        <td style="background:#1b4332;color:white;font-weight:bold;text-align:center">${mine.length}</td></tr>
+    <tr><td colspan="2" class="ftr">ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
     </table></body></html>`;
-
-    const blob = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
+    const b = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `إحصائيات_${new Date().toISOString().slice(0,10)}.xls`;
+    a.href = URL.createObjectURL(b);
+    a.download = `إحصائيات_التميز_${new Date().toISOString().slice(0,10)}.xls`;
     a.click();
-    URL.revokeObjectURL(url);
-  } catch(e) {
-    alert('حدث خطأ في التصدير');
-    console.error(e);
-  }
+  } catch(e) { alert('خطأ في التصدير'); }
 }
 
-function getTagClass(sys){
-  const m={'نور':'tag-نور','حضوري':'tag-حضوري','أعمالي':'tag-أعمالي','فارس':'tag-فارس','تواصل':'tag-تواصل','البريد الإلكتروني':'tag-بريد','خطابات':'tag-خطابات'};
-  return m[sys]||'tag-default';
-}
-
-function switchTab(id,el){
-  document.querySelectorAll('.tabPane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+// ===== HELPERS =====
+function sw(id, el) {
+  document.querySelectorAll('.tabPane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if(el)el.classList.add('active');
-  if(id==='myChart') renderMyChart();
-  if(id==='adminView'&&currentUser&&currentUser.isAdmin){renderAdminStats();renderEmpGrid();renderAdminTable();renderEmpChart();}
+  if (el) el.classList.add('active');
+  if (id==='tabStats') renderMyCharts();
+  if (id==='tabAdmin' && cu && cu.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdmin(); renderEmpChart(); }
 }
 
-function formatDate(d){if(!d)return '—';const[y,m,day]=String(d).split('-');return `${day}/${m}/${y}`;}
+function fd(d) {
+  if (!d) return '—';
+  const parts = String(d).split('-');
+  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return d;
+}
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent = msg || '✓ تم بنجاح';
+function bc(s) {
+  return s==='مكتمل'?'b-done':s==='قيد التنفيذ'?'b-prog':s==='يحتاج متابعة'?'b-follow':'b-late';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg || '✓ تم';
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 </script>
 </body>
