@@ -9,9 +9,8 @@
 :root{
   --primary:#1b4332;--primary-light:#2d6a4f;--primary-pale:#d8f3dc;
   --gold:#b7950b;--gold-light:#d4ac0d;--gold-pale:#fef9e7;
-  --navy:#0d1b2a;--bg:#f4f7f4;--card:#fff;
-  --text:#0d1b2a;--muted:#6b7c6b;--border:#cde0cd;
-  --success:#1b4332;--danger:#c0392b;--warn:#e67e22;--info:#1565c0;
+  --bg:#f4f7f4;--card:#fff;--text:#0d1b2a;--muted:#6b7c6b;
+  --border:#cde0cd;--danger:#c0392b;--warn:#e67e22;
   --shadow:0 2px 16px rgba(27,67,50,0.09);--radius:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -23,29 +22,25 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   position:relative;overflow:hidden;}
 #loginScreen::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;
   background:rgba(183,149,11,0.08);top:-150px;right:-100px;}
-#loginScreen::after{content:'';position:absolute;width:350px;height:350px;border-radius:50%;
-  background:rgba(255,255,255,0.04);bottom:-80px;left:-80px;}
 .loginCard{background:white;border-radius:22px;padding:44px 38px;width:400px;max-width:95vw;
   box-shadow:0 32px 80px rgba(0,0,0,0.28);position:relative;z-index:2;text-align:center;}
-.loginLogo{width:72px;height:72px;margin:0 auto 18px;
+.loginLogo{width:72px;height:72px;margin:0 auto 16px;
   background:linear-gradient(135deg,var(--primary),var(--primary-light));
   border-radius:50%;display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 16px rgba(27,67,50,0.25);}
-.loginLogoSvg{width:40px;height:40px;}
-.loginTitle{font-size:19px;font-weight:900;color:var(--primary);margin-bottom:3px;}
-.loginSub{font-size:12px;color:var(--muted);margin-bottom:3px;}
-.loginYear{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:28px;}
+.loginTitle{font-size:19px;font-weight:900;color:var(--primary);margin-bottom:2px;}
+.loginSub{font-size:11px;color:var(--muted);margin-bottom:2px;}
+.loginSlogan{font-size:12px;color:var(--gold);font-weight:700;margin-bottom:24px;font-style:italic;}
 .fg{margin-bottom:14px;text-align:right;}
 .fg label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px;}
 .fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);
   border-radius:9px;font-family:'Tajawal',sans-serif;font-size:14px;color:var(--text);
   background:var(--bg);direction:rtl;transition:border-color 0.2s;}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
+.fg.required label::after{content:" *";color:var(--danger);}
 .btnLogin{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--primary-light));
   color:white;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;
-  font-size:15px;font-weight:800;cursor:pointer;margin-top:6px;
-  transition:opacity 0.2s;}
-.btnLogin:hover{opacity:0.9;}
+  font-size:15px;font-weight:800;cursor:pointer;}
 .errMsg{color:var(--danger);font-size:12px;margin-top:8px;display:none;}
 
 /* APP */
@@ -54,31 +49,32 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.18);}
 .topLeft{display:flex;align-items:center;gap:10px;}
-.topLogoSvg{width:30px;height:30px;}
 .topTitle{font-size:15px;font-weight:800;}
 .topRight{display:flex;align-items:center;gap:7px;}
 .userBadge{background:rgba(255,255,255,0.15);padding:4px 11px;border-radius:16px;font-size:12px;}
 .btnTop{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);
   color:white;padding:5px 11px;border-radius:7px;cursor:pointer;
-  font-family:'Tajawal',sans-serif;font-size:12px;transition:background 0.2s;}
-.btnTop:hover{background:rgba(255,255,255,0.2);}
+  font-family:'Tajawal',sans-serif;font-size:12px;}
 
 /* TABS */
 .tabs{background:white;border-bottom:2px solid var(--border);
   display:flex;padding:0 16px;gap:2px;overflow-x:auto;}
 .tab{padding:13px 14px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;
   color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;
-  cursor:pointer;white-space:nowrap;margin-bottom:-2px;transition:all 0.2s;}
+  cursor:pointer;white-space:nowrap;margin-bottom:-2px;}
 .tab.active{color:var(--primary);border-bottom-color:var(--gold);}
 
 .content{max-width:1100px;margin:0 auto;padding:22px 16px;}
 .tabPane{display:none;}.tabPane.active{display:block;}
 .secTitle{font-size:17px;font-weight:900;color:var(--primary);margin-bottom:16px;}
 
-/* STATS */
+/* STAT CARDS */
 .statsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px;}
 .statCard{background:var(--card);border-radius:var(--radius);padding:16px 18px;
-  box-shadow:var(--shadow);border-right:4px solid var(--gold);}
+  box-shadow:var(--shadow);border-right:4px solid var(--gold);
+  cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;position:relative;}
+.statCard:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(27,67,50,0.14);}
+.statCard::after{content:'↗';position:absolute;top:8px;left:10px;font-size:11px;color:var(--gold);opacity:0.7;}
 .statNum{font-size:30px;font-weight:900;color:var(--primary);line-height:1;}
 .statLabel{font-size:11px;color:var(--muted);margin-top:3px;}
 
@@ -89,12 +85,9 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);}
 .formRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:600px){.formRow{grid-template-columns:1fr;}.statsGrid{grid-template-columns:1fr 1fr;}}
-.btnGold{padding:11px 22px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+.btnGold{padding:12px 28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
   color:white;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;
-  font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;}
-.btnGreen{padding:11px 22px;background:var(--primary);color:white;border:none;
-  border-radius:9px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
-  cursor:pointer;margin-top:8px;margin-right:8px;}
+  font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;display:block;width:100%;}
 
 /* TABLE */
 .tableCard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
@@ -102,37 +95,30 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .tableHeader{padding:14px 18px;display:flex;align-items:center;
   justify-content:space-between;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px;}
 .tableHeader h3{font-size:14px;font-weight:800;color:var(--primary);}
-.fg2{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-.fg2 select,.fg2 input{padding:6px 10px;border:1.5px solid var(--border);
+.filterBar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.filterBar select,.filterBar input{padding:6px 10px;border:1.5px solid var(--border);
   border-radius:7px;font-family:'Tajawal',sans-serif;font-size:12px;background:var(--bg);}
-.btnClear{padding:6px 10px;background:var(--danger);color:white;border:none;
+.filterLabel{font-size:11px;color:var(--muted);font-weight:600;}
+.btnClear{padding:6px 12px;background:var(--danger);color:white;border:none;
   border-radius:7px;font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
 thead{background:var(--primary);color:white;}
 thead th{padding:10px 12px;text-align:right;font-weight:700;font-size:11px;}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
+tbody tr{border-bottom:1px solid var(--border);}
 tbody tr:hover{background:#f0f7f0;}
 tbody td{padding:10px 12px;}
 .tdWrap{max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
 /* BADGES */
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge{display:inline-block;padding:3px 9px;border-radius:10px;font-size:10px;font-weight:700;}
 .b-done{background:#d8f3dc;color:var(--primary);}
 .b-prog{background:#fff3cd;color:#856404;}
-.b-follow{background:#fff8e1;color:#f57f17;}
-.b-late{background:#fde8e8;color:var(--danger);}
-
 .typeBadge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;}
-.t0{background:#d8f3dc;color:#1b4332;}
-.t1{background:#e8f4fd;color:#1565c0;}
-.t2{background:#fff3e0;color:#e65100;}
-.t3{background:#f3e5f5;color:#6a1b9a;}
-.t4{background:#fce4ec;color:#880e4f;}
-.t5{background:#e0f2f1;color:#00695c;}
-.t6{background:#e8eaf6;color:#283593;}
-.t7{background:#fff8e1;color:#f57f17;}
-.t8{background:#fde8e8;color:#c0392b;}
-.t9{background:#e8f4fd;color:#0277bd;}
+.t0{background:#d8f3dc;color:#1b4332;}.t1{background:#e8f4fd;color:#1565c0;}
+.t2{background:#fff3e0;color:#e65100;}.t3{background:#f3e5f5;color:#6a1b9a;}
+.t4{background:#fce4ec;color:#880e4f;}.t5{background:#e0f2f1;color:#00695c;}
+.t6{background:#e8eaf6;color:#283593;}.t7{background:#fff8e1;color:#f57f17;}
+.t8{background:#fde8e8;color:#c0392b;}.t9{background:#e8f4fd;color:#0277bd;}
 
 /* CHART */
 .chartCard{background:var(--card);border-radius:var(--radius);padding:18px;
@@ -142,18 +128,20 @@ tbody td{padding:10px 12px;}
 .chartBar{min-width:48px;flex:1;display:flex;flex-direction:column;
   align-items:center;gap:3px;height:100%;justify-content:flex-end;}
 .chartBarInner{width:76%;border-radius:5px 5px 0 0;min-height:4px;transition:height 0.5s;}
-.chartBarLabel{font-size:9px;color:var(--muted);text-align:center;word-break:break-all;line-height:1.2;}
+.chartBarLabel{font-size:9px;color:var(--muted);text-align:center;word-break:break-all;}
 .chartBarNum{font-size:11px;font-weight:800;color:var(--primary);}
 
-/* EMP */
-.empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:20px;}
+/* EMP GRID */
+.empGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;}
 .empCard{background:var(--card);border-radius:var(--radius);padding:16px;
   box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;border-top:4px solid var(--primary);}
-.empCard:hover{transform:translateY(-2px);}
+.empCard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(27,67,50,0.14);}
 .empName{font-size:13px;font-weight:800;color:var(--primary);}
 .empRole{font-size:10px;color:var(--muted);margin-top:2px;}
 .empCount{font-size:24px;font-weight:900;margin-top:8px;}
-.empCountLabel{font-size:10px;color:var(--muted);}
+.empMini{display:flex;gap:8px;margin-top:6px;}
+.empMiniItem{font-size:10px;color:var(--muted);}
+.empMiniItem span{font-weight:700;color:var(--primary);}
 
 /* SEARCH DROP */
 .dropWrap{position:relative;}
@@ -172,18 +160,39 @@ tbody td{padding:10px 12px;}
   border-radius:7px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
 .btnDel{background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px;padding:2px 5px;}
 
+/* MODAL */
+.modalOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;
+  display:none;align-items:center;justify-content:center;}
+.modalOverlay.show{display:flex;}
+.modalBox{background:white;border-radius:16px;padding:0;width:90%;max-width:820px;
+  max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.3);}
+.modalHead{padding:18px 22px;border-bottom:2px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--primary);border-radius:16px 16px 0 0;color:white;}
+.modalHead h3{font-size:15px;font-weight:800;}
+.btnClose{background:rgba(255,255,255,0.15);border:none;color:white;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;}
+.modalBody{overflow-y:auto;padding:16px 20px;flex:1;}
+
+/* TOAST */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
-  background:var(--primary);color:white;padding:11px 22px;border-radius:10px;
-  font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;transition:transform 0.3s;}
+  color:white;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;transition:transform 0.3s;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--primary);}
+.toast.error{background:var(--danger);}
+
 .emptyState{text-align:center;padding:36px;color:var(--muted);}
 .emptyIcon{font-size:36px;margin-bottom:8px;}
 .divider{height:1px;background:var(--border);margin:18px 0;}
 .footer{text-align:left;padding:16px 20px;font-size:11px;color:var(--muted);
   border-top:1px solid var(--border);margin-top:20px;}
+.fieldErr{border-color:var(--danger)!important;background:#fff5f5!important;}
+.errHint{font-size:11px;color:var(--danger);margin-top:3px;}
 
 @media print{
-  .topBar,.tabs,.actionBtns,.fg2,.btnDel,.btnTop{display:none!important;}
+  .topBar,.tabs,.actionBtns,.filterBar,.btnDel,.btnTop,.modalOverlay{display:none!important;}
   .content{padding:0!important;max-width:100%!important;}
   .tableCard{box-shadow:none!important;}
   .footer{display:block!important;}
@@ -194,23 +203,21 @@ tbody td{padding:10px 12px;}
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
+<!-- LOGIN -->
 <div id="loginScreen">
 <div class="loginCard">
   <div class="loginLogo">
-    <svg class="loginLogoSvg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- نجمة سداسية ذهبية -->
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
       <polygon points="20,3 23.5,13 34,13 25.5,19.5 29,30 20,23.5 11,30 14.5,19.5 6,13 16.5,13"
         fill="none" stroke="#b7950b" stroke-width="1.8" stroke-linejoin="round"/>
-      <!-- كتاب مفتوح أبيض -->
       <path d="M13 22 Q20 18 27 22" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M13 22 L13 28 Q20 24 27 28 L27 22" fill="rgba(255,255,255,0.15)" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M13 22 L13 28 Q20 24 27 28 L27 22" fill="rgba(255,255,255,0.15)" stroke="white" stroke-width="1.4"/>
       <path d="M20 18 L20 28" stroke="#b7950b" stroke-width="1.2" stroke-linecap="round"/>
     </svg>
   </div>
   <div class="loginTitle">وحدة دعم التميز المدرسي</div>
   <div class="loginSub">إدارة التعليم — منطقة القصيم</div>
-  <div class="loginYear">العام الدراسي 1448هـ</div>
+  <div class="loginSlogan">دعم نوعي نحو مدارس أكثر تميزًا</div>
   <div class="fg"><label>اسم المستخدم</label>
     <input type="text" id="loginUser" placeholder="أدخل اسمك"/></div>
   <div class="fg"><label>كلمة السر</label>
@@ -220,17 +227,15 @@ tbody td{padding:10px 12px;}
 </div>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- APP -->
 <div id="appScreen">
 <div class="topBar">
   <div class="topLeft">
-    <svg class="topLogoSvg" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- نجمة سداسية ذهبية صغيرة -->
+    <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
       <polygon points="15,2 17.5,9.5 25.5,9.5 19,14.5 21.5,22 15,17.5 8.5,22 11,14.5 4.5,9.5 12.5,9.5"
         fill="none" stroke="#b7950b" stroke-width="1.4" stroke-linejoin="round"/>
-      <!-- كتاب مفتوح -->
       <path d="M10,17 Q15,14 20,17" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
-      <path d="M10,17 L10,21 Q15,18 20,21 L20,17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.1" stroke-linejoin="round"/>
+      <path d="M10,17 L10,21 Q15,18 20,21 L20,17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.1"/>
       <path d="M15,14 L15,21" stroke="#b7950b" stroke-width="1" stroke-linecap="round"/>
     </svg>
     <span class="topTitle">وحدة دعم التميز المدرسي</span>
@@ -244,7 +249,7 @@ tbody td{padding:10px 12px;}
 
 <div class="tabs">
   <button class="tab active" onclick="sw('tabMy',this)">📋 أعمالي</button>
-  <button class="tab" onclick="sw('tabAdd',this)">➕ تسجيل عمل</button>
+  <button class="tab" onclick="sw('tabAdd',this)">➕ إضافة مهمة</button>
   <button class="tab" onclick="sw('tabStats',this)">📊 إحصائياتي</button>
   <button class="tab" id="adminTab" style="display:none" onclick="sw('tabAdmin',this)">🛡️ لوحة القيادة</button>
 </div>
@@ -256,13 +261,15 @@ tbody td{padding:10px 12px;}
   <div class="statsGrid" id="myStatCards"></div>
   <div class="tableCard">
     <div class="tableHeader">
-      <h3>📋 سجل الأعمال المنجزة</h3>
-      <div class="fg2">
-        <input type="text" id="srch" placeholder="🔍 بحث..." oninput="renderMy()" style="width:130px"/>
+      <h3>📋 سجل الأعمال</h3>
+      <div class="filterBar">
+        <input type="text" id="srch" placeholder="🔍 بحث..." oninput="renderMy()" style="width:120px"/>
         <select id="fType" onchange="renderMy()"><option value="">كل التصنيفات</option></select>
+        <span class="filterLabel">من:</span>
         <input type="date" id="fFrom" onchange="renderMy()"/>
+        <span class="filterLabel">إلى:</span>
         <input type="date" id="fTo" onchange="renderMy()"/>
-        <button class="btnClear" onclick="clearF()">مسح</button>
+        <button class="btnClear" onclick="clearF()">✕ مسح</button>
       </div>
     </div>
     <div class="actionBtns">
@@ -272,8 +279,8 @@ tbody td{padding:10px 12px;}
     <div style="overflow-x:auto">
       <table>
         <thead><tr>
-          <th>#</th><th>التاريخ</th><th>التصنيف</th><th>المهمة الفرعية</th>
-          <th>الوصف</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th><th>حذف</th>
+          <th>#</th><th>التاريخ</th><th>التصنيف</th><th>الفرعية</th>
+          <th>وصف المهمة</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th><th>حذف</th>
         </tr></thead>
         <tbody id="myBody"></tbody>
       </table>
@@ -281,49 +288,47 @@ tbody td{padding:10px 12px;}
   </div>
 </div>
 
-<!-- تسجيل عمل -->
+<!-- إضافة مهمة -->
 <div class="tabPane" id="tabAdd">
 <div class="formCard">
-  <h3>➕ تسجيل عمل جديد</h3>
-  <div class="fg" style="background:var(--primary-pale);padding:10px;border-radius:8px;margin-bottom:14px">
-    <span style="font-size:13px;color:var(--primary);font-weight:700">👤 يُسجَّل باسم: </span>
-    <span id="currentUserLabel" style="font-size:13px;color:var(--primary);font-weight:900"></span>
+  <h3>📝 توثيق مهمة منجزة</h3>
+  <div style="background:var(--primary-pale);padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--primary);font-weight:700;">
+    👤 يُسجَّل باسم: <span id="currentUserLabel"></span>
   </div>
-  <div class="formRow">
-    <div class="fg"><label>التصنيف الرئيسي *</label>
-      <select id="wType" onchange="loadSubs()"><option value="">اختر التصنيف</option></select>
-    </div>
-    <div class="fg"><label>المهمة الفرعية</label>
-      <select id="wSub"><option value="">اختر التصنيف أولاً</option></select>
-    </div>
-  </div>
-  <div class="fg"><label>وصف العمل *</label>
-    <textarea id="wDesc" rows="3" placeholder="اكتب وصفاً مختصراً للعمل المنجز..."></textarea>
-  </div>
-  <div class="formRow">
-    <div class="fg"><label>تاريخ الإنجاز *</label><input type="date" id="wDate"/></div>
-    <div class="fg"><label>الحالة</label>
-      <select id="wStatus">
-        <option value="مكتمل">✅ مكتمل</option>
-        <option value="قيد التنفيذ">🔄 قيد التنفيذ</option>
-        <option value="يحتاج متابعة">⚠️ يحتاج متابعة</option>
-      </select>
-    </div>
-  </div>
-  <div class="fg">
-    <label>الجهة المعنية / المدرسة</label>
+
+  <div class="fg required"><label>تاريخ المهمة</label>
+    <input type="date" id="wDate"/></div>
+
+  <div class="fg required"><label>التصنيف الرئيسي</label>
+    <select id="wType" onchange="loadSubs()"><option value="">اختر التصنيف</option></select></div>
+
+  <div class="fg required"><label>وصف المهمة</label>
+    <textarea id="wDesc" rows="3" placeholder="اكتب وصفاً واضحاً للمهمة المنجزة..."></textarea></div>
+
+  <div class="fg required"><label>الجهة المعنية / المدرسة</label>
     <div class="dropWrap">
-      <input type="text" id="targetInput" placeholder="🔍 ابحث أو اكتب اسم الجهة..." oninput="filterTarget()" autocomplete="off" style="width:100%"/>
+      <input type="text" id="targetInput" placeholder="🔍 ابحث أو اكتب اسم الجهة..." oninput="filterTarget()" autocomplete="off"/>
       <div class="searchDrop" id="targetDrop"></div>
-    </div>
-  </div>
+    </div></div>
+
+  <div class="fg required"><label>المهمة الفرعية</label>
+    <select id="wSub"><option value="">اختر التصنيف أولاً</option></select></div>
+
+  <div class="fg required"><label>الحالة</label>
+    <select id="wStatus">
+      <option value="مكتمل">✅ مكتمل</option>
+      <option value="قيد التنفيذ">🔄 قيد التنفيذ</option>
+    </select></div>
+
   <div class="formRow">
     <div class="fg"><label>رابط مرفق (Drive)</label>
       <input type="text" id="wLink" placeholder="https://drive.google.com/..."/></div>
-    <div class="fg"><label>ملاحظة</label>
-      <input type="text" id="wNote" placeholder="ملاحظة مختصرة"/></div>
+    <div class="fg"><label>ملاحظات</label>
+      <input type="text" id="wNote" placeholder="ملاحظة اختيارية"/></div>
   </div>
-  <button class="btnGold" onclick="submitWork()">حفظ العمل ✓</button>
+
+  <div id="formErrMsg" style="display:none;background:#fde8e8;color:var(--danger);padding:10px 14px;border-radius:8px;font-size:13px;margin-top:8px;"></div>
+  <button class="btnGold" onclick="submitWork()">💾 حفظ المهمة</button>
 </div>
 </div>
 
@@ -342,25 +347,27 @@ tbody td{padding:10px 12px;}
 <div class="tabPane" id="tabAdmin">
   <div class="secTitle">🛡️ لوحة القيادة — رئيس الوحدة</div>
   <div class="statsGrid" id="adminStatCards"></div>
-  <div class="chartCard"><h3>🏆 إنجازات أعضاء الفريق</h3><div class="chartBars" id="empChart"></div></div>
+  <div class="chartCard"><h3>📈 أداء أعضاء الفريق</h3><div class="chartBars" id="empChart"></div></div>
   <div class="divider"></div>
-  <div class="secTitle">أداء أعضاء الفريق</div>
+  <div class="secTitle">أعضاء الفريق — اضغط للاطلاع على أعمال كل عضو</div>
   <div class="empGrid" id="empGrid"></div>
   <div class="divider"></div>
   <div class="tableCard">
     <div class="tableHeader">
       <h3>جميع أعمال الوحدة</h3>
-      <div class="fg2">
-        <input type="text" id="aSrch" placeholder="🔍 بحث..." oninput="renderAdmin()" style="width:120px"/>
+      <div class="filterBar">
+        <input type="text" id="aSrch" placeholder="🔍 بحث..." oninput="renderAdmin()" style="width:110px"/>
         <select id="aEmp" onchange="renderAdmin()"><option value="">كل الأعضاء</option></select>
         <select id="aType" onchange="renderAdmin()"><option value="">كل التصنيفات</option></select>
         <select id="aStatus" onchange="renderAdmin()">
           <option value="">كل الحالات</option>
-          <option>مكتمل</option><option>قيد التنفيذ</option><option>يحتاج متابعة</option>
+          <option>مكتمل</option><option>قيد التنفيذ</option>
         </select>
+        <span class="filterLabel">من:</span>
         <input type="date" id="aFrom" onchange="renderAdmin()"/>
+        <span class="filterLabel">إلى:</span>
         <input type="date" id="aTo" onchange="renderAdmin()"/>
-        <button class="btnClear" onclick="clearA()">مسح</button>
+        <button class="btnClear" onclick="clearA()">✕ مسح</button>
       </div>
     </div>
     <div class="actionBtns">
@@ -371,7 +378,7 @@ tbody td{padding:10px 12px;}
       <table>
         <thead><tr>
           <th>#</th><th>التاريخ</th><th>العضو</th><th>التصنيف</th>
-          <th>الفرعية</th><th>الوصف</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th>
+          <th>الفرعية</th><th>وصف المهمة</th><th>الجهة</th><th>الحالة</th><th>مرفق</th><th>ملاحظة</th>
         </tr></thead>
         <tbody id="adminBody"></tbody>
       </table>
@@ -379,22 +386,33 @@ tbody td{padding:10px 12px;}
   </div>
 </div>
 
-</div>
+</div><!-- /content -->
 <div class="footer">تنفيذ وتصميم: <strong>ماجدة الفريدي</strong> — وحدة دعم التميز المدرسي — إدارة التعليم منطقة القصيم — 1448هـ</div>
+</div><!-- /appScreen -->
+
+<!-- MODAL -->
+<div class="modalOverlay" id="modal">
+  <div class="modalBox">
+    <div class="modalHead">
+      <h3 id="modalTitle">عرض الأعمال</h3>
+      <button class="btnClose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modalBody" id="modalBody"></div>
+  </div>
 </div>
 
-<div class="toast" id="toast">✓ تم الحفظ بنجاح</div>
+<div class="toast" id="toast"></div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxO2z-TcY81iQbKgn2AvHwhTwj5HLXG3aVcQhuBtxp1L7JziQdXnq9ST15YorinuVaySw/exec';
 
 const USERS = {
-  "فهد":    {pass:"1111", name:"فهد العناز",     role:"رئيس الوحدة", isAdmin:true,  color:"#1b4332"},
-  "ماجدة":  {pass:"2222", name:"ماجدة الفريدي",  role:"إدارية",      isAdmin:true,  color:"#b7950b"},
-  "عبدالله":{pass:"3333", name:"عبدالله الغضية", role:"إداري",       isAdmin:false, color:"#1565c0"},
-  "عايد":   {pass:"4444", name:"عايد العايد",     role:"مشرف",        isAdmin:false, color:"#2d6a4f"},
-  "هند":    {pass:"5555", name:"هند المحيميد",    role:"مشرفة",       isAdmin:false, color:"#6a1b9a"},
-  "لميس":   {pass:"6666", name:"لميس الرجيعي",   role:"مشرفة",       isAdmin:false, color:"#880e4f"},
+  "فهد":    {pass:"1111",name:"فهد العناز",     role:"رئيس الوحدة",isAdmin:true, color:"#1b4332"},
+  "ماجدة":  {pass:"2222",name:"ماجدة الفريدي",  role:"إدارية",     isAdmin:true, color:"#b7950b"},
+  "عبدالله":{pass:"3333",name:"عبدالله الغضية", role:"إداري",      isAdmin:false,color:"#1565c0"},
+  "عايد":   {pass:"4444",name:"عايد العايد",     role:"مشرف",       isAdmin:false,color:"#2d6a4f"},
+  "هند":    {pass:"5555",name:"هند المحيميد",    role:"مشرفة",      isAdmin:false,color:"#6a1b9a"},
+  "لميس":   {pass:"6666",name:"لميس الرجيعي",   role:"مشرفة",      isAdmin:false,color:"#880e4f"},
 };
 
 const SYSTEMS = {
@@ -419,8 +437,7 @@ const DEPTS = [
   "إدارة جودة الخدمات","إدارة تنمية القدرات",
   "إدارة تقويم الأداء المعرفي والمهاري","إدارة التطوير والتحول",
   "قسم الأمن والسلامة والمرافق","قسم الإشراف التربوي",
-  "قسم التوجيه الطلابي","التخطيط المدرسي",
-  "أخرى (اكتب يدوياً)",
+  "قسم التوجيه الطلابي","التخطيط المدرسي","أخرى",
 ];
 
 const COLORS = ["#1b4332","#b7950b","#2d6a4f","#1565c0","#6a1b9a","#880e4f","#e65100","#00695c","#37474f","#0277bd","#bf360c"];
@@ -429,192 +446,250 @@ let cu = null;
 let works = [];
 
 // ===== LOGIN =====
-function doLogin() {
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value.trim();
-  const usr = USERS[u];
-  if (usr && usr.pass === p) {
-    cu = {key:u,...usr};
-    document.getElementById('loginErr').style.display = 'none';
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appScreen').style.display = 'block';
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  const usr=USERS[u];
+  if(usr&&usr.pass===p){
+    cu={key:u,...usr};
+    document.getElementById('loginErr').style.display='none';
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appScreen').style.display='block';
     initApp();
-  } else {
-    document.getElementById('loginErr').style.display = 'block';
+  }else{
+    document.getElementById('loginErr').style.display='block';
   }
 }
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#targetInput') && !e.target.closest('#targetDrop'))
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('#targetInput')&&!e.target.closest('#targetDrop'))
       document.getElementById('targetDrop').classList.remove('show');
   });
 });
-function doLogout() {
-  cu = null;
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('appScreen').style.display = 'none';
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
+function doLogout(){
+  cu=null;
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
 }
 
 // ===== INIT =====
-async function initApp() {
-  document.getElementById('topUser').textContent = cu.name + ' · ' + cu.role;
-  document.getElementById('currentUserLabel').textContent = cu.name;
-  if (cu.isAdmin) document.getElementById('adminTab').style.display = 'block';
+async function initApp(){
+  document.getElementById('topUser').textContent=cu.name+' · '+cu.role;
+  document.getElementById('currentUserLabel').textContent=cu.name;
+  if(cu.isAdmin) document.getElementById('adminTab').style.display='block';
   buildForm();
   populateTypeFilters();
   await loadData();
   renderMy();
   renderMyCharts();
-  if (cu.isAdmin) { populateAdminFilters(); renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
-  sw('tabMy', document.querySelector('.tab'));
+  if(cu.isAdmin){populateAdminFilters();renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
+  sw('tabMy',document.querySelector('.tab'));
 }
 
-async function refreshData() {
+async function refreshData(){
   await loadData();
-  renderMy(); renderMyCharts();
-  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
-  showToast('✓ تم تحديث البيانات');
+  renderMy();renderMyCharts();
+  if(cu&&cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
+  showToast('✓ تم تحديث البيانات','success');
 }
 
 // ===== DATA =====
-async function loadData() {
-  try {
-    const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
-    const data = await res.json();
-    if (data.success && data.data.length > 1) {
-      works = data.data.slice(1).map(r => ({
-        id: r[0], date: r[1], userName: r[2],
-        user: Object.keys(USERS).find(k => USERS[k].name === r[2]) || '',
-        type: r[3], desc: r[4], sub: r[5]||'', target: r[6]||'',
-        status: r[7]||'مكتمل', note: r[8]||'', link: r[9]||''
-      })).filter(w => w.id);
+async function loadData(){
+  try{
+    const res=await fetch(SCRIPT_URL+'?t='+Date.now());
+    const data=await res.json();
+    if(data.success&&data.data.length>1){
+      works=data.data.slice(1).map(r=>({
+        id:String(r[0]),date:r[1],userName:r[2],
+        user:Object.keys(USERS).find(k=>USERS[k].name===r[2])||'',
+        type:r[3],desc:r[4],sub:r[5]||'',target:r[6]||'',
+        status:r[7]||'مكتمل',note:r[8]||'',link:r[9]||''
+      })).filter(w=>w.id);
     }
-  } catch(e) { console.log('Local mode'); }
+  }catch(e){console.log('offline');}
 }
 
-async function saveToSheet(w) {
-  try {
-    await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(w) });
-  } catch(e) {}
+async function saveToSheet(w){
+  const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(w)});
+  const data=await res.json();
+  return data.success;
+}
+
+async function deleteFromSheet(id){
+  const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'delete',id:String(id)})});
+  const data=await res.json();
+  return data.success;
 }
 
 // ===== FORM =====
-function buildForm() {
-  const sel = document.getElementById('wType');
-  sel.innerHTML = '<option value="">اختر التصنيف</option>';
-  Object.keys(SYSTEMS).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
-  document.getElementById('wDate').value = new Date().toISOString().split('T')[0];
+function buildForm(){
+  const sel=document.getElementById('wType');
+  sel.innerHTML='<option value="">اختر التصنيف</option>';
+  Object.keys(SYSTEMS).forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
+  document.getElementById('wDate').value=new Date().toISOString().split('T')[0];
 }
-
-function loadSubs() {
-  const t = document.getElementById('wType').value;
-  const subs = SYSTEMS[t] || [];
-  const sel = document.getElementById('wSub');
-  sel.innerHTML = '<option value="">اختياري</option>';
-  subs.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+function loadSubs(){
+  const t=document.getElementById('wType').value;
+  const subs=SYSTEMS[t]||[];
+  const sel=document.getElementById('wSub');
+  sel.innerHTML='<option value="">اختياري</option>';
+  subs.forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
 }
-
-function filterTarget() {
-  const q = document.getElementById('targetInput').value.trim();
-  const drop = document.getElementById('targetDrop');
-  if (!q) { drop.classList.remove('show'); return; }
-  const filtered = DEPTS.filter(d => d.includes(q)).slice(0, 12);
-  if (!filtered.length) { drop.classList.remove('show'); return; }
-  drop.innerHTML = filtered.map(d => `<div class="dropItem" onclick="pickTarget('${d.replace(/'/g,"\\'")}')"> ${d}</div>`).join('');
+function filterTarget(){
+  const q=document.getElementById('targetInput').value.trim();
+  const drop=document.getElementById('targetDrop');
+  if(!q){drop.classList.remove('show');return;}
+  const filtered=DEPTS.filter(d=>d.includes(q)).slice(0,12);
+  if(!filtered.length){drop.classList.remove('show');return;}
+  drop.innerHTML=filtered.map(d=>`<div class="dropItem" onclick="pickTarget('${d.replace(/'/g,"\\'")}')"> ${d}</div>`).join('');
   drop.classList.add('show');
 }
-
-function pickTarget(val) {
-  document.getElementById('targetInput').value = val;
+function pickTarget(val){
+  document.getElementById('targetInput').value=val;
   document.getElementById('targetDrop').classList.remove('show');
 }
 
-function submitWork() {
-  const type = document.getElementById('wType').value;
-  const desc = document.getElementById('wDesc').value.trim();
-  const date = document.getElementById('wDate').value;
-  if (!type) { alert('يرجى اختيار التصنيف'); return; }
-  if (!desc) { alert('يرجى كتابة وصف العمل'); return; }
-  if (!date) { alert('يرجى اختيار التاريخ'); return; }
-  const w = {
-    id: Date.now(), user: cu.key, userName: cu.name, date,
-    type, sub: document.getElementById('wSub').value,
-    desc, target: document.getElementById('targetInput').value.trim(),
-    status: document.getElementById('wStatus').value,
-    link: document.getElementById('wLink').value.trim(),
-    note: document.getElementById('wNote').value.trim(),
+async function submitWork(){
+  const date=document.getElementById('wDate').value;
+  const type=document.getElementById('wType').value;
+  const desc=document.getElementById('wDesc').value.trim();
+  const target=document.getElementById('targetInput').value.trim();
+  const sub=document.getElementById('wSub').value;
+  const status=document.getElementById('wStatus').value;
+  const errDiv=document.getElementById('formErrMsg');
+
+  // تحقق من الحقول الإلزامية
+  const missing=[];
+  if(!date) missing.push('تاريخ المهمة');
+  if(!type) missing.push('التصنيف الرئيسي');
+  if(!desc) missing.push('وصف المهمة');
+  if(!target) missing.push('الجهة المعنية / المدرسة');
+  if(!status) missing.push('الحالة');
+
+  if(missing.length>0){
+    errDiv.style.display='block';
+    errDiv.textContent='⚠️ يرجى استكمال الحقول الإلزامية: '+missing.join(' — ');
+    return;
+  }
+  errDiv.style.display='none';
+
+  const w={
+    id:Date.now(),user:cu.key,userName:cu.name,date,
+    type,sub,desc,target,status,
+    link:document.getElementById('wLink').value.trim(),
+    note:document.getElementById('wNote').value.trim(),
   };
-  works.push(w);
-  saveToSheet(w);
-  ['wDesc','wLink','wNote','targetInput'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('wType').value = '';
-  document.getElementById('wSub').innerHTML = '<option value="">اختر التصنيف أولاً</option>';
-  document.getElementById('wStatus').value = 'مكتمل';
-  document.getElementById('wDate').value = new Date().toISOString().split('T')[0];
-  showToast('✓ تم تسجيل العمل بنجاح');
-  renderMy(); renderMyCharts();
-  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
-  sw('tabMy', document.querySelectorAll('.tab')[0]);
+
+  showToast('⏳ جاري الحفظ...','success');
+  try{
+    const ok=await saveToSheet(w);
+    if(ok){
+      works.push(w);
+      ['wDesc','wLink','wNote','targetInput'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('wType').value='';
+      document.getElementById('wSub').innerHTML='<option value="">اختر التصنيف أولاً</option>';
+      document.getElementById('wStatus').value='مكتمل';
+      document.getElementById('wDate').value=new Date().toISOString().split('T')[0];
+      showToast('✓ تم حفظ المهمة بنجاح','success');
+      renderMy();renderMyCharts();
+      if(cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
+      sw('tabMy',document.querySelectorAll('.tab')[0]);
+    }else{
+      showToast('❌ فشل الحفظ، يرجى المحاولة مرة أخرى','error');
+    }
+  }catch(e){
+    // حفظ محلي عند انقطاع الإنترنت
+    works.push(w);
+    showToast('⚠️ تم الحفظ محلياً (تحقق من الاتصال)','success');
+    renderMy();renderMyCharts();
+    sw('tabMy',document.querySelectorAll('.tab')[0]);
+  }
 }
 
-function deleteWork(id) {
-  if (!confirm('حذف هذا العمل؟')) return;
-  works = works.filter(w => w.id !== id);
-  renderMy(); renderMyCharts();
-  if (cu.isAdmin) { renderAdmin(); renderAdminStats(); renderEmpGrid(); renderEmpChart(); }
+async function deleteWork(id){
+  if(!confirm('هل أنت متأكد من حذف هذا العمل؟')) return;
+  showToast('⏳ جاري الحذف...','success');
+  try{
+    await deleteFromSheet(id);
+    works=works.filter(w=>String(w.id)!==String(id));
+    showToast('✓ تم حذف المهمة بنجاح','success');
+  }catch(e){
+    works=works.filter(w=>String(w.id)!==String(id));
+    showToast('✓ تم الحذف','success');
+  }
+  renderMy();renderMyCharts();
+  if(cu&&cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
 }
 
 // ===== FILTERS =====
-function populateTypeFilters() {
-  ['fType','aType'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = '<option value="">كل التصنيفات</option>';
-    Object.keys(SYSTEMS).forEach(s => el.innerHTML += `<option value="${s}">${s}</option>`);
+function populateTypeFilters(){
+  ['fType','aType'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="">كل التصنيفات</option>';
+    Object.keys(SYSTEMS).forEach(s=>el.innerHTML+=`<option value="${s}">${s}</option>`);
   });
 }
-
-function applyFilters(list, srchId, typeId, fromId, toId) {
-  const q = document.getElementById(srchId)?.value.trim().toLowerCase() || '';
-  const ty = document.getElementById(typeId)?.value || '';
-  const fr = document.getElementById(fromId)?.value || '';
-  const to = document.getElementById(toId)?.value || '';
-  if (q) list = list.filter(w => (w.desc+w.type+w.userName+w.target+w.note+w.sub).toLowerCase().includes(q));
-  if (ty) list = list.filter(w => w.type === ty);
-  if (fr) list = list.filter(w => w.date >= fr);
-  if (to) list = list.filter(w => w.date <= to);
+function applyF(list,srchId,typeId,fromId,toId){
+  const q=document.getElementById(srchId)?.value.trim().toLowerCase()||'';
+  const ty=document.getElementById(typeId)?.value||'';
+  const fr=document.getElementById(fromId)?.value||'';
+  const to=document.getElementById(toId)?.value||'';
+  if(q) list=list.filter(w=>(w.desc+w.type+w.userName+w.target+w.note+w.sub).toLowerCase().includes(q));
+  if(ty) list=list.filter(w=>w.type===ty);
+  if(fr) list=list.filter(w=>w.date>=fr);
+  if(to) list=list.filter(w=>w.date<=to);
   return list;
 }
-
-function clearF() {
-  document.getElementById('fFrom').value = '';
-  document.getElementById('fTo').value = '';
+function clearF(){
+  document.getElementById('fFrom').value='';
+  document.getElementById('fTo').value='';
+  document.getElementById('srch').value='';
+  document.getElementById('fType').value='';
   renderMy();
 }
-function clearA() {
-  document.getElementById('aFrom').value = '';
-  document.getElementById('aTo').value = '';
+function clearA(){
+  document.getElementById('aFrom').value='';
+  document.getElementById('aTo').value='';
+  document.getElementById('aSrch').value='';
+  document.getElementById('aType').value='';
+  document.getElementById('aEmp').value='';
+  document.getElementById('aStatus').value='';
   renderAdmin();
 }
 
-// ===== MY =====
-function renderMy() {
-  let mine = cu.isAdmin ? works : works.filter(w => w.user === cu.key);
-  const all = mine.slice();
-  mine = applyFilters(mine,'srch','fType','fFrom','fTo').slice().reverse();
-  const mo = all.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('myStatCards').innerHTML = `
-    <div class="statCard"><div class="statNum">${all.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
-    <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${all.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة ✅</div></div>
-    <div class="statCard"><div class="statNum">${[...new Set(all.map(w=>w.type))].length}</div><div class="statLabel">تصنيفات نشطة</div></div>`;
-  const tbody = document.getElementById('myBody');
-  if (!mine.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال مسجلة</p></div></td></tr>`; return; }
-  tbody.innerHTML = mine.map((w,i) => `<tr>
-    <td>${mine.length-i}</td>
+// ===== MY WORK =====
+function renderMy(){
+  let mine=cu.isAdmin?works:works.filter(w=>w.user===cu.key);
+  const all=mine.slice();
+  mine=applyF(mine,'srch','fType','fFrom','fTo');
+  // ترتيب: الأحدث أولاً
+  mine=mine.slice().sort((a,b)=>b.date.localeCompare(a.date));
+
+  const mo=all.filter(w=>w.date&&w.date.startsWith(new Date().toISOString().slice(0,7)));
+  const done=all.filter(w=>w.status==='مكتمل');
+  const prog=all.filter(w=>w.status==='قيد التنفيذ');
+
+  document.getElementById('myStatCards').innerHTML=`
+    <div class="statCard" onclick="showModal('all',mine_all())">
+      <div class="statNum">${all.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
+    <div class="statCard" onclick="showModal('month',mine_month())">
+      <div class="statNum">${mo.length}</div><div class="statLabel">أعمال هذا الشهر</div></div>
+    <div class="statCard" onclick="showModal('done',mine_done())">
+      <div class="statNum">${done.length}</div><div class="statLabel">مكتملة ✅</div></div>
+    <div class="statCard" onclick="showModal('prog',mine_prog())">
+      <div class="statNum">${prog.length}</div><div class="statLabel">قيد التنفيذ 🔄</div></div>`;
+
+  const tbody=document.getElementById('myBody');
+  if(!mine.length){
+    tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال مطابقة للبحث.</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=mine.map((w,i)=>`<tr>
+    <td>${i+1}</td>
     <td>${fd(w.date)}</td>
     <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
     <td>${w.sub||'—'}</td>
@@ -623,98 +698,142 @@ function renderMy() {
     <td><span class="badge ${bc(w.status)}">${w.status}</span></td>
     <td>${w.link?`<a href="${w.link}" target="_blank" style="color:var(--primary)">📎</a>`:'—'}</td>
     <td>${w.note||'—'}</td>
-    <td><button class="btnDel" onclick="deleteWork(${w.id})">🗑️</button></td>
+    <td><button class="btnDel" onclick="deleteWork('${w.id}')" title="حذف">🗑️</button></td>
   </tr>`).join('');
 }
 
+function mine_all(){return cu.isAdmin?works:works.filter(w=>w.user===cu.key);}
+function mine_month(){return mine_all().filter(w=>w.date&&w.date.startsWith(new Date().toISOString().slice(0,7)));}
+function mine_done(){return mine_all().filter(w=>w.status==='مكتمل');}
+function mine_prog(){return mine_all().filter(w=>w.status==='قيد التنفيذ');}
+
+// ===== MODAL =====
+function showModal(type, list){
+  const titles={'all':'جميع الأعمال','month':'أعمال هذا الشهر','done':'الأعمال المكتملة','prog':'قيد التنفيذ','emp':'أعمال العضو'};
+  document.getElementById('modalTitle').textContent=titles[type]||'الأعمال';
+  const sorted=list.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  if(!sorted.length){
+    document.getElementById('modalBody').innerHTML='<div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال في هذا التصنيف.</p></div>';
+  }else{
+    document.getElementById('modalBody').innerHTML=`
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>التاريخ</th><th>العضو</th><th>التصنيف</th><th>وصف المهمة</th><th>الجهة</th><th>الحالة</th></tr></thead>
+      <tbody>${sorted.map((w,i)=>`<tr>
+        <td>${i+1}</td><td>${fd(w.date)}</td><td>${w.userName}</td>
+        <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
+        <td class="tdWrap" title="${w.desc}">${w.desc}</td>
+        <td>${w.target||'—'}</td>
+        <td><span class="badge ${bc(w.status)}">${w.status}</span></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
 // ===== CHARTS =====
-function renderMyCharts() {
-  const mine = cu.isAdmin ? works : works.filter(w => w.user === cu.key);
-  const mo = mine.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('myStatCards2').innerHTML = `
+function renderMyCharts(){
+  const mine=mine_all();
+  const mo=mine_month();
+  document.getElementById('myStatCards2').innerHTML=`
     <div class="statCard"><div class="statNum">${mine.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
     <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
     <div class="statCard"><div class="statNum">${mine.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة</div></div>`;
-  const tc = {};
-  mine.forEach(w => { tc[w.type] = (tc[w.type]||0)+1; });
-  const maxT = Math.max(...Object.values(tc), 1);
-  document.getElementById('typeChart').innerHTML = Object.entries(tc).map(([t,c],i) => `
-    <div class="chartBar">
-      <div class="chartBarNum">${c}</div>
-      <div class="chartBarInner" style="height:${Math.max((c/maxT)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
-      <div class="chartBarLabel">${t}</div>
-    </div>`).join('') || '<p style="color:var(--muted);padding:20px">لا توجد بيانات بعد</p>';
-  const months = [];
-  for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
-  const mc = months.map(m => mine.filter(w => w.date && w.date.startsWith(m)).length);
-  const maxM = Math.max(...mc, 1);
-  document.getElementById('monthChart').innerHTML = months.map((m,i) => `
-    <div class="chartBar">
-      <div class="chartBarNum">${mc[i]}</div>
-      <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
-      <div class="chartBarLabel">${m.slice(5)}</div>
-    </div>`).join('');
+  const tc={};mine.forEach(w=>{tc[w.type]=(tc[w.type]||0)+1;});
+  const maxT=Math.max(...Object.values(tc),1);
+  document.getElementById('typeChart').innerHTML=Object.entries(tc).map(([t,c],i)=>`
+    <div class="chartBar"><div class="chartBarNum">${c}</div>
+    <div class="chartBarInner" style="height:${Math.max((c/maxT)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
+    <div class="chartBarLabel">${t}</div></div>`).join('')||'<p style="color:var(--muted);padding:20px">لا توجد بيانات بعد</p>';
+  const months=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7));}
+  const mc=months.map(m=>mine.filter(w=>w.date&&w.date.startsWith(m)).length);
+  const maxM=Math.max(...mc,1);
+  document.getElementById('monthChart').innerHTML=months.map((m,i)=>`
+    <div class="chartBar"><div class="chartBarNum">${mc[i]}</div>
+    <div class="chartBarInner" style="height:${Math.max((mc[i]/maxM)*120,4)}px;background:${COLORS[i%COLORS.length]}"></div>
+    <div class="chartBarLabel">${m.slice(5)}</div></div>`).join('');
 }
 
 // ===== ADMIN =====
-function renderAdminStats() {
-  const today = new Date().toISOString().split('T')[0];
-  const mo = works.filter(w => w.date && w.date.startsWith(new Date().toISOString().slice(0,7)));
-  document.getElementById('adminStatCards').innerHTML = `
-    <div class="statCard"><div class="statNum">${works.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
-    <div class="statCard"><div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
-    <div class="statCard"><div class="statNum">${works.filter(w=>w.date===today).length}</div><div class="statLabel">اليوم</div></div>
-    <div class="statCard"><div class="statNum">${works.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة ✅</div></div>
-    <div class="statCard"><div class="statNum">${works.filter(w=>w.status==='قيد التنفيذ').length}</div><div class="statLabel">قيد التنفيذ 🔄</div></div>
-    <div class="statCard"><div class="statNum">${Object.keys(USERS).length}</div><div class="statLabel">أعضاء الفريق</div></div>`;
+function renderAdminStats(){
+  const today=new Date().toISOString().split('T')[0];
+  const mo=works.filter(w=>w.date&&w.date.startsWith(new Date().toISOString().slice(0,7)));
+  document.getElementById('adminStatCards').innerHTML=`
+    <div class="statCard" onclick="showModal('all',works)">
+      <div class="statNum">${works.length}</div><div class="statLabel">إجمالي الأعمال</div></div>
+    <div class="statCard" onclick="showModal('month',mo)">
+      <div class="statNum">${mo.length}</div><div class="statLabel">هذا الشهر</div></div>
+    <div class="statCard" onclick="showModal('done',works.filter(w=>w.status==='مكتمل'))">
+      <div class="statNum">${works.filter(w=>w.status==='مكتمل').length}</div><div class="statLabel">مكتملة ✅</div></div>
+    <div class="statCard" onclick="showModal('prog',works.filter(w=>w.status==='قيد التنفيذ'))">
+      <div class="statNum">${works.filter(w=>w.status==='قيد التنفيذ').length}</div><div class="statLabel">قيد التنفيذ 🔄</div></div>`;
 }
-
-function renderEmpChart() {
-  const max = Math.max(...Object.values(USERS).map((_,i) => works.filter(w => w.user === Object.keys(USERS)[i]).length), 1);
-  document.getElementById('empChart').innerHTML = Object.entries(USERS).map(([k,u]) => {
-    const c = works.filter(w => w.user === k).length;
-    return `<div class="chartBar">
-      <div class="chartBarNum">${c}</div>
-      <div class="chartBarInner" style="height:${Math.max((c/max)*120,4)}px;background:${u.color}"></div>
-      <div class="chartBarLabel">${u.name.split(' ')[0]}</div>
+function renderEmpChart(){
+  const max=Math.max(...Object.keys(USERS).map(k=>works.filter(w=>w.user===k).length),1);
+  document.getElementById('empChart').innerHTML=Object.entries(USERS).map(([k,u])=>{
+    const c=works.filter(w=>w.user===k).length;
+    return `<div class="chartBar"><div class="chartBarNum">${c}</div>
+      <div class="chartBarInner" style="height:${Math.max((c/max)*120,4)}px;background:${u.color};cursor:pointer" onclick="showEmpModal('${k}')"></div>
+      <div class="chartBarLabel" style="cursor:pointer" onclick="showEmpModal('${k}')">${u.name.split(' ')[0]}</div></div>`;}).join('');
+}
+function showEmpModal(k){
+  const u=USERS[k];
+  const empWorks=works.filter(w=>w.user===k);
+  document.getElementById('modalTitle').textContent='أعمال: '+u.name;
+  const done=empWorks.filter(w=>w.status==='مكتمل').length;
+  const prog=empWorks.filter(w=>w.status==='قيد التنفيذ').length;
+  const sorted=empWorks.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('modalBody').innerHTML=`
+    <div style="display:flex;gap:12px;margin-bottom:14px">
+      <div class="statCard" style="flex:1"><div class="statNum">${empWorks.length}</div><div class="statLabel">إجمالي</div></div>
+      <div class="statCard" style="flex:1"><div class="statNum">${done}</div><div class="statLabel">مكتمل ✅</div></div>
+      <div class="statCard" style="flex:1"><div class="statNum">${prog}</div><div class="statLabel">قيد التنفيذ 🔄</div></div>
+    </div>
+    ${sorted.length?`<div style="overflow-x:auto"><table>
+      <thead><tr><th>#</th><th>التاريخ</th><th>التصنيف</th><th>وصف المهمة</th><th>الجهة</th><th>الحالة</th></tr></thead>
+      <tbody>${sorted.map((w,i)=>`<tr>
+        <td>${i+1}</td><td>${fd(w.date)}</td>
+        <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
+        <td class="tdWrap" title="${w.desc}">${w.desc}</td>
+        <td>${w.target||'—'}</td>
+        <td><span class="badge ${bc(w.status)}">${w.status}</span></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`:'<div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال مسجلة بعد.</p></div>'}`;
+  document.getElementById('modal').classList.add('show');
+}
+function renderEmpGrid(){
+  document.getElementById('empGrid').innerHTML=Object.entries(USERS).map(([k,u])=>{
+    const ew=works.filter(w=>w.user===k);
+    const done=ew.filter(w=>w.status==='مكتمل').length;
+    const prog=ew.filter(w=>w.status==='قيد التنفيذ').length;
+    return `<div class="empCard" onclick="showEmpModal('${k}')" style="border-top-color:${u.color}">
+      <div class="empName">${u.name}</div><div class="empRole">${u.role}</div>
+      <div class="empCount" style="color:${u.color}">${ew.length}</div>
+      <div class="empMini">
+        <div class="empMiniItem">مكتمل: <span>${done}</span></div>
+        <div class="empMiniItem">تنفيذ: <span>${prog}</span></div>
+      </div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px">اضغط لعرض الأعمال ←</div>
     </div>`;}).join('');
 }
-
-function renderEmpGrid() {
-  document.getElementById('empGrid').innerHTML = Object.entries(USERS).map(([k,u]) => {
-    const c = works.filter(w => w.user === k).length;
-    return `<div class="empCard" onclick="filterByEmp('${k}')" style="border-top-color:${u.color}">
-      <div class="empName">${u.name}</div>
-      <div class="empRole">${u.role}</div>
-      <div class="empCount" style="color:${u.color}">${c}</div>
-      <div class="empCountLabel">عمل مسجل</div>
-    </div>`;}).join('');
+function populateAdminFilters(){
+  const es=document.getElementById('aEmp');
+  es.innerHTML='<option value="">كل الأعضاء</option>';
+  Object.entries(USERS).forEach(([k,u])=>es.innerHTML+=`<option value="${k}">${u.name}</option>`);
 }
-
-function filterByEmp(k) {
-  document.getElementById('aEmp').value = k;
-  renderAdmin();
-  sw('tabAdmin', document.getElementById('adminTab'));
-}
-
-function populateAdminFilters() {
-  const es = document.getElementById('aEmp');
-  es.innerHTML = '<option value="">كل الأعضاء</option>';
-  Object.entries(USERS).forEach(([k,u]) => es.innerHTML += `<option value="${k}">${u.name}</option>`);
-}
-
-function renderAdmin() {
-  const ef = document.getElementById('aEmp').value;
-  const sf = document.getElementById('aStatus').value;
-  let list = works.slice();
-  if (ef) list = list.filter(w => w.user === ef);
-  if (sf) list = list.filter(w => w.status === sf);
-  list = applyFilters(list,'aSrch','aType','aFrom','aTo').slice().reverse();
-  const tbody = document.getElementById('adminBody');
-  if (!list.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال</p></div></td></tr>`; return; }
-  tbody.innerHTML = list.map((w,i) => `<tr>
-    <td>${list.length-i}</td>
-    <td>${fd(w.date)}</td>
+function renderAdmin(){
+  const ef=document.getElementById('aEmp').value;
+  const sf=document.getElementById('aStatus').value;
+  let list=works.slice();
+  if(ef) list=list.filter(w=>w.user===ef);
+  if(sf) list=list.filter(w=>w.status===sf);
+  list=applyF(list,'aSrch','aType','aFrom','aTo');
+  list=list.sort((a,b)=>b.date.localeCompare(a.date));
+  const tbody=document.getElementById('adminBody');
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="10"><div class="emptyState"><div class="emptyIcon">📋</div><p>لا توجد أعمال مطابقة للبحث.</p></div></td></tr>`;return;}
+  tbody.innerHTML=list.map((w,i)=>`<tr>
+    <td>${i+1}</td><td>${fd(w.date)}</td>
     <td style="color:${USERS[w.user]?USERS[w.user].color:'var(--primary)'};font-weight:700">${w.userName}</td>
     <td><span class="typeBadge t${Object.keys(SYSTEMS).indexOf(w.type)%10}">${w.type}</span></td>
     <td>${w.sub||'—'}</td>
@@ -727,18 +846,18 @@ function renderAdmin() {
 }
 
 // ===== EXCEL =====
-function exportXLS(type) {
-  try {
-    let list = type==='admin' ? works : works.filter(w => cu.isAdmin ? true : w.user===cu.key);
-    if (!list.length) { alert('لا توجد بيانات للتصدير'); return; }
-    list = list.slice().reverse();
-    const h = type==='admin'
-      ? ['#','التاريخ','العضو','التصنيف','الفرعية','الوصف','الجهة','الحالة','ملاحظة']
-      : ['#','التاريخ','التصنيف','الفرعية','الوصف','الجهة','الحالة','ملاحظة'];
-    const rows = list.map((w,i) => type==='admin'
-      ? [list.length-i,w.date,w.userName,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']
-      : [list.length-i,w.date,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']);
-    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+function exportXLS(type){
+  try{
+    let list=type==='admin'?works:mine_all();
+    if(!list.length){alert('لا توجد بيانات للتصدير');return;}
+    list=list.slice().sort((a,b)=>b.date.localeCompare(a.date));
+    const h=type==='admin'
+      ?['#','التاريخ','العضو','التصنيف','الفرعية','وصف المهمة','الجهة','الحالة','ملاحظة']
+      :['#','التاريخ','التصنيف','الفرعية','وصف المهمة','الجهة','الحالة','ملاحظة'];
+    const rows=list.map((w,i)=>type==='admin'
+      ?[i+1,w.date,w.userName,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']
+      :[i+1,w.date,w.type,w.sub||'',w.desc,w.target||'',w.status,w.note||'']);
+    const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
     <head><meta charset="UTF-8"><style>
       body{direction:rtl;font-family:Tahoma;}table{border-collapse:collapse;width:100%;direction:rtl;}
       th{background:#1b4332;color:white;font-weight:bold;padding:10px 12px;border:1px solid #b7950b;text-align:right;}
@@ -752,26 +871,21 @@ function exportXLS(type) {
     ${rows.map(r=>`<tr>${r.map(c=>`<td>${c||''}</td>`).join('')}</tr>`).join('')}
     <tr><td colspan="${h.length}" class="ftr">تنفيذ وتصميم: ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
     </table></body></html>`;
-    const b = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(b);
-    a.download = `أعمال_التميز_${new Date().toISOString().slice(0,10)}.xls`;
-    a.click();
-  } catch(e) { alert('خطأ في التصدير'); }
+    const b=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);
+    a.download=`أعمال_التميز_${new Date().toISOString().slice(0,10)}.xls`;a.click();
+  }catch(e){alert('خطأ في التصدير');}
 }
-
-function exportStatsXLS() {
-  try {
-    const mine = cu.isAdmin ? works : works.filter(w => w.user===cu.key);
-    if (!mine.length) { alert('لا توجد بيانات'); return; }
-    const tc = {};
-    mine.forEach(w => { tc[w.type] = (tc[w.type]||0)+1; });
-    const sorted = Object.entries(tc).sort((a,b) => b[1]-a[1]);
-    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8">
+function exportStatsXLS(){
+  try{
+    const mine=mine_all();
+    if(!mine.length){alert('لا توجد بيانات');return;}
+    const tc={};mine.forEach(w=>{tc[w.type]=(tc[w.type]||0)+1;});
+    const sorted=Object.entries(tc).sort((a,b)=>b[1]-a[1]);
+    const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta charset="UTF-8">
     <style>body{direction:rtl;font-family:Tahoma;}table{border-collapse:collapse;direction:rtl;}
     th{background:#1b4332;color:white;padding:10px;border:1px solid #b7950b;text-align:right;}
-    td{padding:8px;border:1px solid #cde0cd;text-align:right;}
-    tr:nth-child(even) td{background:#f0f7f0;}
+    td{padding:8px;border:1px solid #cde0cd;text-align:right;}tr:nth-child(even) td{background:#f0f7f0;}
     .hdr{background:#b7950b;color:white;font-weight:bold;text-align:center;padding:12px;}
     .ftr{color:#6b7c6b;font-size:11px;text-align:center;}</style></head><body><table>
     <tr><td colspan="2" class="hdr">إحصائيات وحدة دعم التميز المدرسي — 1448هـ</td></tr>
@@ -781,40 +895,33 @@ function exportStatsXLS() {
         <td style="background:#1b4332;color:white;font-weight:bold;text-align:center">${mine.length}</td></tr>
     <tr><td colspan="2" class="ftr">ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
     </table></body></html>`;
-    const b = new Blob([html], {type:'application/vnd.ms-excel;charset=utf-8'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(b);
-    a.download = `إحصائيات_التميز_${new Date().toISOString().slice(0,10)}.xls`;
-    a.click();
-  } catch(e) { alert('خطأ في التصدير'); }
+    const b=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);
+    a.download=`إحصائيات_التميز_${new Date().toISOString().slice(0,10)}.xls`;a.click();
+  }catch(e){alert('خطأ في التصدير');}
 }
 
 // ===== HELPERS =====
-function sw(id, el) {
-  document.querySelectorAll('.tabPane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+function sw(id,el){
+  document.querySelectorAll('.tabPane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (el) el.classList.add('active');
-  if (id==='tabStats') renderMyCharts();
-  if (id==='tabAdmin' && cu && cu.isAdmin) { renderAdminStats(); renderEmpGrid(); renderAdmin(); renderEmpChart(); }
+  if(el)el.classList.add('active');
+  if(id==='tabStats')renderMyCharts();
+  if(id==='tabAdmin'&&cu&&cu.isAdmin){renderAdminStats();renderEmpGrid();renderAdmin();renderEmpChart();}
 }
-
-function fd(d) {
-  if (!d) return '—';
-  const parts = String(d).split('-');
-  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  return d;
+function fd(d){
+  if(!d)return'—';
+  const p=String(d).split('-');
+  return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;
 }
-
-function bc(s) {
-  return s==='مكتمل'?'b-done':s==='قيد التنفيذ'?'b-prog':s==='يحتاج متابعة'?'b-follow':'b-late';
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg || '✓ تم';
+function bc(s){return s==='مكتمل'?'b-done':'b-prog';}
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.className=`toast ${type||'success'}`;
+  t.textContent=msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>
