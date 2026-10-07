@@ -404,7 +404,7 @@ tbody td{padding:10px 12px;}
 <div class="toast" id="toast"></div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxO2z-TcY81iQbKgn2AvHwhTwj5HLXG3aVcQhuBtxp1L7JziQdXnq9ST15YorinuVaySw/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHt-45dQRyS8T2CH8XaG2-63DBDdfclPf0D92VCHoSufb3oVAGZN-s2k6lvR7MBesN_g/exec';
 
 const USERS = {
   "فهد":    {pass:"1111",name:"فهد العناز",     role:"رئيس الوحدة",isAdmin:true, color:"#1b4332"},
@@ -609,12 +609,26 @@ async function submitWork(){
   }
 }
 
-function deleteWork(id){
-  if(!confirm('هل أنت متأكد من حذف هذا العمل؟')) return;
-  works=works.filter(w=>String(w.id)!==String(id));
-  renderMy();renderMyCharts();
-  if(cu&&cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
-  showToast('✓ تم حذف المهمة','success');
+async function deleteWork(id){
+  if(!confirm('هل أنت متأكد من حذف هذا العمل؟\nلا يمكن التراجع عن هذه العملية.')) return;
+  showToast('⏳ جاري الحذف...','success');
+  try{
+    const res=await fetch(SCRIPT_URL,{
+      method:'POST',
+      body:JSON.stringify({action:'delete',id:String(id)})
+    });
+    const data=await res.json();
+    if(data.success){
+      works=works.filter(w=>String(w.id)!==String(id));
+      renderMy();renderMyCharts();
+      if(cu&&cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
+      showToast('✓ تم حذف المهمة نهائياً','success');
+    }else{
+      showToast('❌ فشل الحذف: '+( data.error||'خطأ غير معروف'),'error');
+    }
+  }catch(e){
+    showToast('❌ تعذر الحذف — تحقق من الاتصال','error');
+  }
 }
 
 // ===== FILTERS =====
@@ -863,7 +877,47 @@ function exportXLS(type){
     <tr>${h.map(c=>`<th>${c}</th>`).join('')}</tr>
     ${rows.map(r=>`<tr>${r.map(c=>`<td>${c||''}</td>`).join('')}</tr>`).join('')}
     <tr><td colspan="${h.length}" class="ftr">تنفيذ وتصميم: ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
-    </table></body></html>`;
+    </table>
+<!--
+=== كود Google Apps Script المطلوب ===
+الصق هذا الكود في Apps Script الخاص بك (استبدل الكود القديم كاملاً):
+
+const SHEET_ID = '1HkpZ8wrdB9E-GPe62XAH35Dmxh-1b7BRgOefjSd0tng';
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    
+    if (data.action === 'delete') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]) === String(data.id)) {
+          sheet.deleteRow(i + 1);
+          return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({success: false, error: 'not_found'})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    sheet.appendRow([data.id, data.date, data.userName, data.type, data.desc, data.sub||'', data.target||'', data.status||'مكتمل', data.note||'', data.link||'']);
+    return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    var rows = sheet.getDataRange().getValues();
+    return ContentService.createTextOutput(JSON.stringify({success: true, data: rows})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+-->
+</body></html>`;
     const b=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
     const a=document.createElement('a');a.href=URL.createObjectURL(b);
     a.download=`أعمال_التميز_${new Date().toISOString().slice(0,10)}.xls`;a.click();
@@ -887,7 +941,47 @@ function exportStatsXLS(){
     <tr><td style="background:#1b4332;color:white;font-weight:bold">الإجمالي</td>
         <td style="background:#1b4332;color:white;font-weight:bold;text-align:center">${mine.length}</td></tr>
     <tr><td colspan="2" class="ftr">ماجدة الفريدي | ${new Date().toLocaleDateString('ar-SA')}</td></tr>
-    </table></body></html>`;
+    </table>
+<!--
+=== كود Google Apps Script المطلوب ===
+الصق هذا الكود في Apps Script الخاص بك (استبدل الكود القديم كاملاً):
+
+const SHEET_ID = '1HkpZ8wrdB9E-GPe62XAH35Dmxh-1b7BRgOefjSd0tng';
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    
+    if (data.action === 'delete') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]) === String(data.id)) {
+          sheet.deleteRow(i + 1);
+          return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({success: false, error: 'not_found'})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    sheet.appendRow([data.id, data.date, data.userName, data.type, data.desc, data.sub||'', data.target||'', data.status||'مكتمل', data.note||'', data.link||'']);
+    return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    var rows = sheet.getDataRange().getValues();
+    return ContentService.createTextOutput(JSON.stringify({success: true, data: rows})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+-->
+</body></html>`;
     const b=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
     const a=document.createElement('a');a.href=URL.createObjectURL(b);
     a.download=`إحصائيات_التميز_${new Date().toISOString().slice(0,10)}.xls`;a.click();
@@ -904,9 +998,16 @@ function sw(id,el){
   if(id==='tabAdmin'&&cu&&cu.isAdmin){renderAdminStats();renderEmpGrid();renderAdmin();renderEmpChart();}
 }
 function fd(d){
-  if(!d)return'—';
-  const p=String(d).split('-');
-  return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;
+  if(!d||d==='—')return'—';
+  try{
+    // نأخذ فقط الجزء قبل T لتجنب مشاكل UTC
+    const clean=String(d).split('T')[0].trim();
+    const p=clean.split('-');
+    if(p.length===3&&p[0].length===4){
+      return p[2]+'/'+p[1]+'/'+p[0];
+    }
+    return d;
+  }catch(e){return d;}
 }
 function bc(s){return s==='مكتمل'?'b-done':'b-prog';}
 function showToast(msg,type){
@@ -917,5 +1018,45 @@ function showToast(msg,type){
   setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
+
+<!--
+=== كود Google Apps Script المطلوب ===
+الصق هذا الكود في Apps Script الخاص بك (استبدل الكود القديم كاملاً):
+
+const SHEET_ID = '1HkpZ8wrdB9E-GPe62XAH35Dmxh-1b7BRgOefjSd0tng';
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    
+    if (data.action === 'delete') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]) === String(data.id)) {
+          sheet.deleteRow(i + 1);
+          return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({success: false, error: 'not_found'})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    sheet.appendRow([data.id, data.date, data.userName, data.type, data.desc, data.sub||'', data.target||'', data.status||'مكتمل', data.note||'', data.link||'']);
+    return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+    var rows = sheet.getDataRange().getValues();
+    return ContentService.createTextOutput(JSON.stringify({success: true, data: rows})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+-->
 </body>
 </html>
