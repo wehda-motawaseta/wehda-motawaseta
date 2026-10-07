@@ -266,9 +266,9 @@ tbody td{padding:10px 12px;}
         <input type="text" id="srch" placeholder="🔍 بحث..." oninput="renderMy()" style="width:120px"/>
         <select id="fType" onchange="renderMy()"><option value="">كل التصنيفات</option></select>
         <span class="filterLabel">من:</span>
-        <input type="date" id="fFrom" onchange="renderMy()"/>
+        <input type="date" id="fFrom" onchange="renderMy()" style="direction:ltr"/>
         <span class="filterLabel">إلى:</span>
-        <input type="date" id="fTo" onchange="renderMy()"/>
+        <input type="date" id="fTo" onchange="renderMy()" style="direction:ltr"/>
         <button class="btnClear" onclick="clearF()">✕ مسح</button>
       </div>
     </div>
@@ -297,7 +297,7 @@ tbody td{padding:10px 12px;}
   </div>
 
   <div class="fg required"><label>تاريخ المهمة</label>
-    <input type="date" id="wDate"/></div>
+    <input type="date" id="wDate" style="direction:ltr"/></div>
 
   <div class="fg required"><label>التصنيف الرئيسي</label>
     <select id="wType" onchange="loadSubs()"><option value="">اختر التصنيف</option></select></div>
@@ -364,9 +364,9 @@ tbody td{padding:10px 12px;}
           <option>مكتمل</option><option>قيد التنفيذ</option>
         </select>
         <span class="filterLabel">من:</span>
-        <input type="date" id="aFrom" onchange="renderAdmin()"/>
+        <input type="date" id="aFrom" onchange="renderAdmin()" style="direction:ltr"/>
         <span class="filterLabel">إلى:</span>
-        <input type="date" id="aTo" onchange="renderAdmin()"/>
+        <input type="date" id="aTo" onchange="renderAdmin()" style="direction:ltr"/>
         <button class="btnClear" onclick="clearA()">✕ مسح</button>
       </div>
     </div>
@@ -507,7 +507,7 @@ async function loadData(){
         user:Object.keys(USERS).find(k=>USERS[k].name===r[2])||'',
         type:r[3],desc:r[4],sub:r[5]||'',target:r[6]||'',
         status:r[7]||'مكتمل',note:r[8]||'',link:r[9]||''
-      })).filter(w=>w.id);
+      })).filter(w=>w.id&&w.date&&w.userName&&w.type&&w.desc);
     }
   }catch(e){console.log('offline');}
 }
@@ -609,19 +609,12 @@ async function submitWork(){
   }
 }
 
-async function deleteWork(id){
+function deleteWork(id){
   if(!confirm('هل أنت متأكد من حذف هذا العمل؟')) return;
-  showToast('⏳ جاري الحذف...','success');
-  try{
-    await deleteFromSheet(id);
-    works=works.filter(w=>String(w.id)!==String(id));
-    showToast('✓ تم حذف المهمة بنجاح','success');
-  }catch(e){
-    works=works.filter(w=>String(w.id)!==String(id));
-    showToast('✓ تم الحذف','success');
-  }
+  works=works.filter(w=>String(w.id)!==String(id));
   renderMy();renderMyCharts();
   if(cu&&cu.isAdmin){renderAdmin();renderAdminStats();renderEmpGrid();renderEmpChart();}
+  showToast('✓ تم حذف المهمة','success');
 }
 
 // ===== FILTERS =====
