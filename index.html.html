@@ -709,7 +709,7 @@ function renderMy(){
   </tr>`).join('');
 }
 
-function mine_all(){return cu.isAdmin?works:works.filter(w=>w.user===cu.key);}
+function mine_all(){return works.filter(w=>w.user===cu.key);}
 function mine_month(){return mine_all().filter(w=>w.date&&w.date.startsWith(new Date().toISOString().slice(0,7)));}
 function mine_done(){return mine_all().filter(w=>w.status==='مكتمل');}
 function mine_prog(){return mine_all().filter(w=>w.status==='قيد التنفيذ');}
