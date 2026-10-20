@@ -600,12 +600,8 @@ async function submitWork(){
     }else{
       showToast('❌ فشل الحفظ، يرجى المحاولة مرة أخرى','error');
     }
-  }catch(e){
-    // حفظ محلي عند انقطاع الإنترنت
-    works.push(w);
-    showToast('⚠️ تم الحفظ محلياً (تحقق من الاتصال)','success');
-    renderMy();renderMyCharts();
-    sw('tabMy',document.querySelectorAll('.tab')[0]);
+}catch(e){
+    showToast('❌ تعذّر الحفظ. تحققي من الاتصال وحاولي مرة أخرى','error');
   }
 }
 
